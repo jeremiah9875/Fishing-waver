@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Word Fishing 🎣</title>
+<style>
+:root{--navy:#10344a;--blue:#168aad;--sky:#dff6ff;--teal:#21b6a8;--gold:#ffca3a;--coral:#ff6b6b;--paper:#fffdf5;--ink:#163447}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:linear-gradient(#b9efff,#e9fbff 42%,#c5f0d8);min-height:100vh}
+button{font:inherit;font-weight:800;border:0;border-radius:14px;padding:12px 16px;cursor:pointer;touch-action:manipulation;transition:transform .08s,filter .15s}
+button:active{transform:scale(.98)}button:disabled{opacity:.45;cursor:not-allowed}
+.primary{background:var(--teal);color:#fff;box-shadow:0 4px 0 #168579}.gold{background:var(--gold);color:#533d00;box-shadow:0 4px 0 #d69d16}.dark{background:var(--navy);color:#fff}.soft{background:#e7f7ff;color:var(--navy);border:2px solid #b8e5f3}
+header{max-width:1100px;margin:auto;padding:18px 16px 8px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:1000;letter-spacing:-1px;color:var(--navy)}.brand span{color:#168aad}
+.stats{display:flex;gap:8px;flex-wrap:wrap}.pill{background:#ffffffd9;border:2px solid #c2e9f2;border-radius:999px;padding:8px 12px;font-weight:900;white-space:nowrap}
+main{max-width:1100px;margin:auto;padding:8px 16px 30px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,1fr);gap:16px}
+.panel{background:var(--paper);border:3px solid #fff;border-radius:24px;box-shadow:0 8px 24px #1c64751a;overflow:hidden}
+.scene{position:relative;min-height:340px;background:linear-gradient(#72d7f4 0 55%,#34b6cf 55% 100%);overflow:hidden}
+.sun{position:absolute;right:8%;top:8%;width:60px;height:60px;border-radius:50%;background:#ffe17b;box-shadow:0 0 0 12px #ffe17b44}
+.cloud{position:absolute;width:100px;height:25px;border-radius:30px;background:#ffffffb8;top:16%;left:10%}.cloud:before,.cloud:after{content:"";position:absolute;background:inherit;border-radius:50%;width:38px;height:38px;top:-16px;left:15px}.cloud:after{left:43px;top:-10px;width:30px;height:30px}
+.hill{position:absolute;bottom:43%;width:75%;height:90px;background:#55c77d;border-radius:50% 50% 0 0}.hill.one{left:-15%;}.hill.two{right:-25%;height:120px;background:#3eb66d}
+.bank{position:absolute;left:0;right:0;bottom:44%;height:20px;background:#329c5b;border-top:5px solid #a8e878}
+.water{position:absolute;left:0;right:0;bottom:0;height:45%;background:repeating-linear-gradient(180deg,#27b8d0 0 18px,#51d0df 19px 22px)}
+.ripple{position:absolute;width:70px;height:15px;border:3px solid #a7f5fa;border-left-color:transparent;border-right-color:transparent;border-radius:50%;opacity:.8}
+.fisher{position:absolute;left:15%;bottom:43%;font-size:clamp(3.5rem,8vw,5.5rem);filter:drop-shadow(0 5px 2px #1a617544);z-index:3}
+.rod{position:absolute;left:24%;bottom:64%;width:95px;height:5px;background:#7b4d29;transform:rotate(-33deg);transform-origin:left center;border-radius:5px;z-index:2}
+.line{position:absolute;left:34%;bottom:58%;height:100px;width:2px;background:#f4fff9;transform:rotate(-8deg);transform-origin:top;z-index:2}
+.bobber{position:absolute;left:33%;bottom:32%;font-size:24px;z-index:3;animation:bob 2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(8px)}}
+.fish{position:absolute;right:18%;bottom:15%;font-size:clamp(2.5rem,7vw,4rem);filter:drop-shadow(0 4px 2px #075b7040);animation:swim 3s ease-in-out infinite}
+@keyframes swim{50%{transform:translateX(-22px) rotate(-4deg)}}
+.scene-label{position:absolute;left:14px;top:12px;background:#ffffffdb;border-radius:999px;padding:7px 11px;font-weight:900;font-size:.9rem}
+.scene-bottom{position:absolute;bottom:10px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;align-items:center;color:white;font-weight:900;text-shadow:0 2px 3px #075b70}
+.controls{padding:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.small-note{font-size:.9rem;color:#56717d;margin:0}
+.side{display:flex;flex-direction:column;gap:16px}
+.card-head{padding:16px 18px 0;display:flex;justify-content:space-between;align-items:center;gap:8px}
+h2{margin:0;font-size:1.2rem} .content{padding:14px 18px 18px}
+.question-word{font-size:clamp(1.8rem,5vw,2.5rem);font-weight:1000;color:#087e8b;line-height:1.1;margin:8px 0}
+.question-type{font-size:.82rem;text-transform:uppercase;letter-spacing:1px;color:#67828b;font-weight:900}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+.option{background:#f0faff;border:2px solid #b8e5f3;color:var(--navy);text-align:left;min-height:58px;box-shadow:none}.option:hover{filter:brightness(.97)}
+.option.correct{background:#d9f8df;border-color:#45b86a}.option.wrong{background:#ffe2e2;border-color:#ff6b6b}
+.feedback{margin-top:12px;padding:11px 12px;border-radius:12px;background:#edf9ed;font-weight:800;line-height:1.35}.feedback.bad{background:#fff0e8}
+.hidden{display:none!important}
+.progress-wrap{height:12px;background:#e1edf0;border-radius:99px;overflow:hidden;margin:9px 0 5px}.progress{height:100%;background:linear-gradient(90deg,#21b6a8,#a5e66b);width:0%;transition:width .25s}
+.ability{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #e4eef0}.ability:last-child{border:0}.ability-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:#e3f7fa;font-size:1.35rem;flex-shrink:0}.ability-text{flex:1}.ability-text strong{display:block}.ability-text small{color:#6b858d;display:block;margin-top:2px}
+.shop-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #e4eef0}.shop-row:last-child{border:0}.shop-row small{display:block;color:#6b858d;margin-top:3px}
+footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
+#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#10344a;color:#fff;padding:12px 18px;border-radius:14px;box-shadow:0 8px 25px #0003;z-index:20;max-width:90vw;text-align:center;font-weight:800}
+@media(max-width:760px){main{grid-template-columns:1fr;padding:8px 10px 22px}header{padding:14px 10px 8px}.scene{min-height:300px}.options{grid-template-columns:1fr 1fr}.pill{font-size:.9rem;padding:7px 10px}}
+@media(max-width:390px){.options{grid-template-columns:1fr}.scene{min-height:280px}.stats{gap:5px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">🎣 Word <span>Fishing</span></div>
+  <div class="stats">
+    <div class="pill">🪙 <span id="coins">300</span></div>
+    <div class="pill">⭐ Level <span id="level">1</span></div>
+    <div class="pill">🐟 Caught <span id="caught">0</span></div>
+  </div>
+</header>
+<main>
+  <section class="panel">
+    <div class="scene" aria-label="A colorful fishing lake scene">
+      <div class="sun"></div><div class="cloud"></div><div class="hill one"></div><div class="hill two"></div><div class="bank"></div><div class="water"></div>
+      <div class="ripple" style="left:42%;bottom:26%"></div><div class="ripple" style="right:12%;bottom:12%;width:50px"></div>
+      <div class="scene-label" id="sceneStatus">Sunny Lake · Zone 1</div>
+      <div class="fisher">🧑‍🌾</div><div class="rod"></div><div class="line"></div><div class="bobber">🔴</div><div class="fish" id="sceneFish">🐟</div>
+      <div class="scene-bottom"><span id="sceneMessage">Ready to fish?</span><span id="zoneLabel">🌿 Starter Pond</span></div>
+    </div>
+    <div class="controls">
+      <button class="primary" id="castBtn">🎣 Cast Line</button>
+      <button class="gold" id="shopJump">🛒 Open Shop</button>
+      <button class="soft" id="resetBtn" title="Reset saved game">↻ Reset</button>
+      <p class="small-note" id="controlHint">Cast a line to hook a vocabulary fish!</p>
+    </div>
+  </section>
+  <div class="side">
+    <section class="panel" id="questionPanel">
+      <div class="card-head"><h2>📚 Fishy Word Challenge</h2><span class="pill" id="questionCount">Ready</span></div>
+      <div class="content" id="questionContent">
+        <p>Cast your line to catch a fish. Then answer two questions: choose a synonym and the word's meaning.</p>
+        <p class="small-note">Correct answers earn coins and XP. A wrong answer lets the fish escape and breaks your line!</p>
+      </div>
+      <div class="content hidden" id="quizContent">
+        <div class="question-type" id="questionType">Synonym</div>
+        <div class="question-word" id="wordText">Brave</div>
+        <p id="questionPrompt">Choose the closest synonym.</p>
+        <div class="options" id="options"></div>
+        <div id="feedback" class="feedback hidden" role="status"></div>
+      </div>
+    </section>
+    <section class="panel">
+      <div class="card-head"><h2>📈 Level Progress</h2><span id="xpText">0 / 100 XP</span></div>
+      <div class="content">
+        <div class="progress-wrap"><div class="progress" id="xpBar"></div></div>
+        <p class="small-note">Earn XP by answering correctly. Each level takes 100 XP.</p>
+        <div style="margin-top:12px;font-weight:900">Abilities</div>
+        <div class="ability"><div class="ability-icon">🔁</div><div class="ability-text"><strong>Level 5 · Auto Cast</strong><small id="autoStatus">Locked — cast automatically after a catch.</small></div></div>
+        <div class="ability"><div class="ability-icon">⚡</div><div class="ability-text"><strong>Level 10 · Instant Guess</strong><small id="instantStatus">Locked — automatically answers word questions.</small></div></div>
+        <div class="ability"><div class="ability-icon">👑</div><div class="ability-text"><strong>Level 25 · Automatic Wins</strong><small id="winStatus">Locked — automatically wins catches.</small></div></div>
+      </div>
+    </section>
+    <section class="panel" id="shopPanel">
+      <div class="card-head"><h2>🛒 Fisher's Shop</h2><span class="pill">Coins</span></div>
+      <div class="content">
+        <div class="shop-row"><div><strong>🧵 Replacement Line</strong><small>Required after a wrong answer</small></div><button class="gold" id="buyLine">300 🪙</button></div>
+        <div class="shop-row"><div><strong>🪱 Lucky Bait</strong><small>Earn +10 bonus coins on your next correct catch</small></div><button class="soft" id="buyBait">80 🪙</button></div>
+        <div class="shop-row"><div><strong>📖 Word Guide</strong><small>Reveals a short hint on the next question</small></div><button class="soft" id="buyHint">50 🪙</button></div>
+        <p class="small-note" style="margin-top:10px" id="lineStatus">Fishing line: ready</p>
+      </div>
+    </section>
+  </div>
+</main>
+<footer>Word Fishing · Practice vocabulary, reel in rewards, and explore new levels. Progress saves in this browser.</footer>
+<div id="toast" class="hidden"></div>
+<script>
+(() => {
+"use strict";
+const SAVE_KEY = "wordFishingSave_v1";
+const words = [
+ {w:"brave",syn:"courageous",meaning:"Ready to face danger or difficulty",s:["cowardly","courageous","sleepy","careless"],m:["Feeling very tired","Ready to face danger or difficulty","Easy to break","Moving very slowly"]},
+ {w:"enormous",syn:"huge",meaning:"Very large in size",s:["tiny","huge","quiet","gentle"],m:["Very large in size","Very loud","Not sure about something","Full of energy"]},
+ {w:"ancient",syn:"old",meaning:"Belonging to a time long ago",s:["modern","young","old","bright"],m:["Belonging to a time long ago","Made very recently","Able to swim quickly","Easy to understand"]},
+ {w:"swift",syn:"quick",meaning:"Moving or happening very fast",s:["slow","quick","heavy","careful"],m:["Moving or happening very fast","Hard to lift","Not making a sound","Full of color"]},
+ {w:"delighted",syn:"pleased",meaning:"Very happy or pleased",s:["upset","confused","pleased","worried"],m:["Very happy or pleased","Feeling cold","Very difficult to find","Completely empty"]},
+ {w:"fragile",syn:"delicate",meaning:"Easily broken or damaged",s:["strong","delicate","huge","rough"],m:["Easily broken or damaged","Able to run fast","Very old","Full of courage"]},
+ {w:"observe",syn:"watch",meaning:"To look at something carefully",s:["ignore","watch","forget","create"],m:["To look at something carefully","To make something new","To leave in a hurry","To speak very loudly"]},
+ {w:"silent",syn:"quiet",meaning:"Making little or no sound",s:["noisy","bright","quiet","wild"],m:["Making little or no sound","Full of people","Very hard to lift","Moving quickly"]},
+ {w:"assist",syn:"help",meaning:"To give support or aid",s:["hinder","help","hide","argue"],m:["To give support or aid","To travel far away","To make a loud sound","To take something apart"]},
+ {w:"scarce",syn:"rare",meaning:"Not common or hard to find",s:["plentiful","ordinary","rare","smooth"],m:["Not common or hard to find","Easy to find everywhere","Very noisy","Full of water"]},
+ {w:"predict",syn:"forecast",meaning:"To say what you think will happen in the future",s:["remember","forecast","repair","discover"],m:["To say what you think will happen in the future","To fix something broken","To look at the past","To carry something"]},
+ {w:"generous",syn:"giving",meaning:"Willing to give or share with others",s:["selfish","giving","angry","nervous"],m:["Willing to give or share with others","Always in a hurry","Hard to please","Unable to move"]},
+ {w:"drowsy",syn:"sleepy",meaning:"Feeling like you need to sleep",s:["alert","sleepy","excited","brave"],m:["Feeling like you need to sleep","Feeling very hungry","Able to bend easily","Very bright"]},
+ {w:"fortunate",syn:"lucky",meaning:"Having good things happen by chance",s:["unlucky","lucky","angry","weak"],m:["Having good things happen by chance","Feeling unwell","Very hard to understand","Making no sound"]},
+ {w:"sturdy",syn:"strong",meaning:"Strong and not easily damaged",s:["fragile","strong","tiny","shy"],m:["Strong and not easily damaged","Easily broken","Very old-fashioned","Not easy to see"]},
+ {w:"curious",syn:"inquisitive",meaning:"Wanting to learn or know more",s:["bored","inquisitive","careless","silent"],m:["Wanting to learn or know more","Feeling ready to sleep","Afraid of everything","Not willing to share"]},
+ {w:"wander",syn:"roam",meaning:"To move around without a fixed path",s:["stay","roam","build","whisper"],m:["To move around without a fixed path","To sit perfectly still","To make a plan","To shout for help"]},
+ {w:"purchase",syn:"buy",meaning:"To get something by paying for it",s:["sell","buy","borrow","drop"],m:["To get something by paying for it","To give something away","To lose something","To make something grow"]},
+ {w:"mend",syn:"repair",meaning:"To fix something that is broken or damaged",s:["break","repair","hide","trade"],m:["To fix something that is broken or damaged","To make something disappear","To go on a trip","To choose between options"]},
+ {w:"astonished",syn:"amazed",meaning:"Very surprised",s:["bored","amazed","sleepy","calm"],m:["Very surprised","Not interested","Feeling cold","Moving very slowly"]},
+ {w:"humble",syn:"modest",meaning:"Not acting as if you are better than others",s:["proud","modest","loud","greedy"],m:["Not acting as if you are better than others","Wanting everything for yourself","Feeling very tired","Easy to damage"]},
+ {w:"eager",syn:"keen",meaning:"Very excited and ready to do something",s:["unwilling","keen","sleepy","uncertain"],m:["Very excited and ready to do something","Not wanting to try","Feeling ill","Hard to find"]},
+ {w:"vivid",syn:"bright",meaning:"Very clear, strong, or colorful",s:["dull","bright","weak","quiet"],m:["Very clear, strong, or colorful","Not making any sound","Very old","Easy to break"]},
+ {w:"weary",syn:"tired",meaning:"Very tired, especially after effort",s:["energetic","tired","curious","cheerful"],m:["Very tired, especially after effort","Full of energy","Ready to share","Very surprised"]},
+ {w:"beneath",syn:"under",meaning:"In a lower position than something",s:["above","beside","under","beyond"],m:["In a lower position than something","At a higher level","Far away from everything","In the middle of something"]}
+];
+const fishIcons = ["🐟","🐠","🐡","🐬","🦈","🐙","🦑","🦀"];
+const fresh = () => ({coins:300,xp:0,level:1,caught:0,lineReady:true,phase:"idle",wordIndex:-1,step:0,roundWord:null,used:[],bait:false,hint:false,autoCast:false,instantGuess:false,autoWins:false});
+let state = load();
+let toastTimer = null;
+const $ = id => document.getElementById(id);
+function load(){try{const v=JSON.parse(localStorage.getItem(SAVE_KEY));if(v&&typeof v.coins==="number")return {...fresh(),...v,phase:"idle",roundWord:null,step:0};}catch(e){}return fresh();}
+function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify({...state,phase:"idle",roundWord:null,step:0}));}catch(e){}}
+function toast(msg){const t=$("toast");t.textContent=msg;t.classList.remove("hidden");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.add("hidden"),2400);}
+function levelFor(xp){return Math.floor(xp/100)+1;}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function update(){
+ state.level=levelFor(state.xp);
+ $("coins").textContent=state.coins;$("level").textContent=state.level;$("caught").textContent=state.caught;
+ const into=state.xp%100;$("xpText").textContent=`${into} / 100 XP`;$("xpBar").style.width=into+"%";
+ $("autoStatus").textContent=state.level>=5?"Unlocked! Auto Cast is active.":"Locked — unlocks at level 5.";
+ $("instantStatus").textContent=state.level>=10?"Unlocked! Instant Guess is active.":"Locked — unlocks at level 10.";
+ $("winStatus").textContent=state.level>=25?"Unlocked! Automatic Wins is active.":"Locked — unlocks at level 25.";
+ $("buyLine").disabled=state.lineReady||state.coins<300;
+ $("buyLine").textContent=state.lineReady?"Line Ready ✓":"300 🪙";
+ $("buyBait").disabled=state.coins<80||state.bait;
+ $("buyBait").textContent=state.bait?"Bait Ready ✓":"80 🪙";
+ $("buyHint").disabled=state.coins<50||state.hint;
+ $("buyHint").textContent=state.hint?"Hint Ready ✓":"50 🪙";
+ $("lineStatus").textContent=state.lineReady?"Fishing line: ready":"Fishing line: broken — buy a replacement for 300 coins.";
+ $("castBtn").disabled=state.phase!=="idle"||!state.lineReady;
+ $("castBtn").textContent=!state.lineReady?"🧵 Line Broken":state.phase==="idle"?"🎣 Cast Line":"🐟 Fish on the line!";
+ $("sceneStatus").textContent=`Sunny Lake · Zone ${Math.min(5,Math.floor((state.level-1)/5)+1)}`;
+ const zones=["🌿 Starter Pond","🌳 Willow Lake","🌊 Coral Bay","🪸 Deep Reef","🌙 Moonlit Sea"];
+ $("zoneLabel").textContent=zones[Math.min(4,Math.floor((state.level-1)/5))];
+ $("sceneFish").textContent=fishIcons[Math.min(fishIcons.length-1,Math.floor((state.level-1)/4))];
+ $("controlHint").textContent=!state.lineReady?"Visit the shop to buy a replacement line.":state.level>=25?"Automatic Wins is unlocked! Cast to earn a catch.":state.level>=10?"Instant Guess is unlocked! Cast to solve a word automatically.":state.level>=5?"Auto Cast is unlocked! Casting continues after successful catches.":"Cast a line to hook a vocabulary fish!";
+}
+function setIdle(message="Ready to fish?"){
+ state.phase="idle";state.roundWord=null;state.step=0;
+ $("quizContent").classList.add("hidden");$("questionContent").classList.remove("hidden");
+ $("questionContent").innerHTML=`<p>${message}</p><p class="small-note">Catch fish by answering both the synonym and meaning questions. Correct answers earn coins and XP. A wrong answer lets the fish escape and breaks your line!</p>`;
+ $("questionCount").textContent="Ready";$("sceneMessage").textContent="Ready to fish?";
+ update();save();
+}
+function chooseWord(){let choices=words.map((_,i)=>i).filter(i=>!state.used.includes(i));if(!choices.length){state.used=[];choices=words.map((_,i)=>i);}return choices[Math.floor(Math.random()*choices.length)];}
+function cast(){
+ if(state.phase!=="idle")return;
+ if(!state.lineReady){toast("Your line is broken. Buy a replacement for 300 coins.");return;}
+ state.lineReady=true;state.phase="quiz";state.wordIndex=chooseWord();state.roundWord=words[state.wordIndex];state.step=0;
+ state.used.push(state.wordIndex);state.used=state.used.slice(-words.length);
+ $("questionContent").classList.add("hidden");$("quizContent").classList.remove("hidden");
+ $("sceneMessage").textContent="A fish is hooked!";$("questionCount").textContent="Catch #"+(state.caught+1);
+ $("feedback").classList.add("hidden");
+ if(state.level>=25){automaticWin();return;}
+ showQuestion();
+ if(state.level>=10){setTimeout(()=>{if(state.phase==="quiz")autoAnswer();},550);}
+ update();
+}
+function showQuestion(){
+ if(state.phase!=="quiz")return;
+ const w=state.roundWord;
+ $("questionType").textContent=state.step===0?"Question 1 of 2 · Synonym":"Question 2 of 2 · Meaning";
+ $("wordText").textContent=w.w.charAt(0).toUpperCase()+w.w.slice(1);
+ $("questionPrompt").textContent=state.step===0?"Choose the closest synonym.":"Choose the correct meaning.";
+ let opts=shuffle(state.step===0?w.s:w.m);
+ if(state.hint){$("questionPrompt").textContent+=" Hint: "+(state.step===0?`It means “${w.syn}.”`:`${w.meaning.split(" ").slice(0,3).join(" ")}…`);}
+ const wrap=$("options");wrap.innerHTML="";
+ opts.forEach(opt=>{const b=document.createElement("button");b.className="option";b.textContent=opt;b.addEventListener("click",()=>answer(opt,b));wrap.appendChild(b);});
+ $("feedback").classList.add("hidden");
+ if(state.level>=10){setTimeout(()=>{if(state.phase==="quiz")autoAnswer();},300);}
+}
+function correctAnswer(){return state.step===0?state.roundWord.syn:state.roundWord.meaning;}
+function answer(value,button){
+ if(state.phase!=="quiz")return;
+ const correct=correctAnswer();
+ if(value!==correct){
+   [...$("options").children].forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add("correct");});
+   if(button)button.classList.add("wrong");
+   fail("Not quite! The correct answer was: "+correct+". The fish escaped and broke your line.");
+   return;
+ }
+ [...$("options").children].forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add("correct");});
+ if(state.step===0){
+   $("feedback").textContent="Correct! Now choose the word's meaning.";
+   $("feedback").classList.remove("hidden","bad");
+   state.step=1;
+   setTimeout(()=>{if(state.phase==="quiz")showQuestion();},500);
+ }else winCatch();
+}
+function fail(msg){
+ state.phase="failed";state.lineReady=false;state.roundWord=null;state.step=0;
+ $("feedback").textContent=msg;$("feedback").classList.remove("hidden");$("feedback").classList.add("bad");
+ $("sceneMessage").textContent="Oh no! The fish got away!";
+ $("questionCount").textContent="Line broken";
+ const b=document.createElement("button");b.className="gold";b.textContent="🛒 Buy a new line · 300 coins";b.style.marginTop="12px";b.addEventListener("click",buyLine);
+ $("options").appendChild(b);
+ update();save();
+}
+function winCatch(){
+ const wasBait=state.bait;
+ state.coins+=25+(wasBait?10:0);state.xp+=25;state.caught++;state.bait=false;state.hint=false;
+ const oldLevel=state.level;state.level=levelFor(state.xp);
+ state.phase="idle";state.roundWord=null;state.step=0;
+ $("quizContent").classList.add("hidden");$("questionContent").classList.remove("hidden");
+ $("questionContent").innerHTML=`<div style="font-size:2rem;font-weight:1000;color:#168a68">🎉 Fish caught!</div><p>You answered both questions correctly.</p><p><strong>+${25+(wasBait?10:0)} coins</strong> · <strong>+25 XP</strong></p><p class="small-note">Keep fishing to discover more words and unlock new abilities.</p>`;
+ $("questionCount").textContent="Catch complete";$("sceneMessage").textContent="Great catch! +"+(25+(wasBait?10:0))+" coins";
+ update();save();
+ if(state.level>oldLevel){toast(`Level up! You're now level ${state.level}!`);}
+ else toast("Nice catch! +25 XP");
+ if(state.level>=25){toast("Level 25 unlocked: Automatic Wins!");}
+ else if(state.level>=10){toast("Instant Guess is unlocked!");}
+ else if(state.level>=5){toast("Auto Cast is unlocked!");}
+ if(state.level>=5&&state.level<25){setTimeout(()=>{if(state.phase==="idle"&&state.lineReady)cast();},900);}
+}
+function automaticWin(){
+ // At level 25, both questions are auto-correct and catch rewards are granted.
+ $("questionContent").classList.add("hidden");$("quizContent").classList.remove("hidden");
+ $("questionType").textContent="Level 25 · Automatic Wins";
+ $("wordText").textContent=state.roundWord.w;
+ $("questionPrompt").textContent="Your ability caught this fish automatically!";
+ $("options").innerHTML="";winCatch();
+}
+function autoAnswer(){
+ if(state.phase!=="quiz")return;
+ const correct=correctAnswer();
+ const button=[...$("options").children].find(b=>b.textContent===correct);
+ answer(correct,button);
+}
+function buyLine(){
+ if(state.lineReady){toast("Your fishing line is already ready.");return;}
+ if(state.coins<300){toast("You need 300 coins for a replacement line. Catch fish to earn more.");return;}
+ state.coins-=300;state.lineReady=true;state.phase="idle";setIdle("Your new fishing line is ready! Cast when you're ready.");toast("Replacement line purchased for 300 coins.");update();save();
+}
+function buyBait(){if(state.bait)return;if(state.coins<80){toast("Not enough coins!");return;}state.coins-=80;state.bait=true;update();save();toast("Lucky Bait ready: +10 coins on your next catch.");}
+function buyHint(){if(state.hint)return;if(state.coins<50){toast("Not enough coins!");return;}state.coins-=50;state.hint=true;update();save();toast("Word Guide ready for your next question.");}
+$("castBtn").addEventListener("click",cast);
+$("buyLine").addEventListener("click",buyLine);
+$("buyBait").addEventListener("click",buyBait);
+$("buyHint").addEventListener("click",buyHint);
+$("shopJump").addEventListener("click",()=>{$("shopPanel").scrollIntoView({behavior:"smooth",block:"center"});});
+$("resetBtn").addEventListener("click",()=>{if(confirm("Reset all Word Fishing progress saved in this browser? This cannot be undone.")){state=fresh();save();setIdle("Welcome back, fisher! Cast your line to begin.");update();toast("Game progress reset.");}});
+update();
+setIdle("Welcome to Word Fishing! Cast your line to hook your first vocabulary fish.");
+})();
+</script>
+</body>
+</html>
