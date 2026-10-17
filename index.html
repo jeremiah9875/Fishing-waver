@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,23 +30,6 @@ main{max-width:1100px;margin:auto;padding:8px 16px 30px;display:grid;grid-templa
 .word-float{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);z-index:6;background:#fff3;border:2px solid #ffffffc9;color:#fff;text-shadow:0 2px 5px #00384b;padding:10px 18px;border-radius:16px;font-size:clamp(1.2rem,4vw,2rem);font-weight:1000;letter-spacing:1px;backdrop-filter:blur(5px);text-align:center;pointer-events:none;box-shadow:0 6px 25px #00384b55}
 .word-float small{display:block;font-size:.7rem;letter-spacing:0}
 .scene-underwater{position:absolute;bottom:0;left:0;right:0;height:24%;z-index:1;background:linear-gradient(#ffffff00,#ffe0a8a8);pointer-events:none}
-.sun{position:absolute;right:8%;top:8%;width:60px;height:60px;border-radius:50%;background:#ffe17b;box-shadow:0 0 0 12px #ffe17b44}
-.cloud{position:absolute;width:100px;height:25px;border-radius:30px;background:#ffffffb8;top:16%;left:10%}
-.cloud:before,.cloud:after{content:"";position:absolute;background:inherit;border-radius:50%;width:38px;height:38px;top:-16px;left:15px}
-.cloud:after{left:43px;top:-10px;width:30px;height:30px}
-.hill{position:absolute;bottom:43%;width:75%;height:90px;background:#55c77d;border-radius:50% 50% 0 0}
-.hill.one{left:-15%}
-.hill.two{right:-25%;height:120px;background:#3eb66d}
-.bank{position:absolute;left:0;right:0;bottom:44%;height:20px;background:#329c5b;border-top:5px solid #a8e878}
-.water{position:absolute;left:0;right:0;bottom:0;height:45%;background:repeating-linear-gradient(180deg,#27b8d0 0 18px,#51d0df 19px 22px)}
-.ripple{position:absolute;width:70px;height:15px;border:3px solid #a7f5fa;border-left-color:transparent;border-right-color:transparent;border-radius:50%;opacity:.8}
-.fisher{position:absolute;left:15%;bottom:43%;font-size:clamp(3.5rem,8vw,5.5rem);filter:drop-shadow(0 5px 2px #1a617544);z-index:3}
-.rod{position:absolute;left:24%;bottom:64%;width:95px;height:5px;background:#7b4d29;transform:rotate(-33deg);transform-origin:left center;border-radius:5px;z-index:2}
-.line{position:absolute;left:34%;bottom:58%;height:100px;width:2px;background:#f4fff9;transform:rotate(-8deg);transform-origin:top;z-index:2}
-.bobber{position:absolute;left:33%;bottom:32%;font-size:24px;z-index:3;animation:bob 2s ease-in-out infinite}
-@keyframes bob{50%{transform:translateY(8px)}}
-.fish{position:absolute;right:18%;bottom:15%;font-size:clamp(2.5rem,7vw,4rem);filter:drop-shadow(0 4px 2px #075b7040);animation:swim 3s ease-in-out infinite}
-@keyframes swim{50%{transform:translateX(-22px) rotate(-4deg)}}
 .scene-label{position:absolute;left:14px;top:12px;background:#ffffffdb;border-radius:999px;padding:7px 11px;font-weight:900;font-size:.9rem}
 .scene-bottom{position:absolute;bottom:10px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;align-items:center;color:white;font-weight:900;text-shadow:0 2px 3px #075b70}
 .controls{padding:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -58,7 +42,6 @@ h2{margin:0;font-size:1.2rem}
 .question-type{font-size:.82rem;text-transform:uppercase;letter-spacing:1px;color:#67828b;font-weight:900}
 .options{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
 .option{background:#f0faff;border:2px solid #b8e5f3;color:var(--navy);text-align:left;min-height:58px;box-shadow:none}
-.option:hover{filter:brightness(.97)}
 .option.correct{background:#d9f8df;border-color:#45b86a}
 .option.wrong{background:#ffe2e2;border-color:#ff6b6b}
 .feedback{margin-top:12px;padding:11px 12px;border-radius:12px;background:#edf9ed;font-weight:800;line-height:1.35}
@@ -67,18 +50,16 @@ h2{margin:0;font-size:1.2rem}
 .progress-wrap{height:12px;background:#e1edf0;border-radius:99px;overflow:hidden;margin:9px 0 5px}
 .progress{height:100%;background:linear-gradient(90deg,#21b6a8,#a5e66b);width:0%;transition:width .25s}
 .ability{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #e4eef0}
-.ability:last-child{border:0}
 .ability-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:#e3f7fa;font-size:1.35rem;flex-shrink:0}
 .ability-text{flex:1}
 .ability-text strong{display:block}
 .ability-text small{color:#6b858d;display:block;margin-top:2px}
 .shop-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #e4eef0}
-.shop-row:last-child{border:0}
 .shop-row small{display:block;color:#6b858d;margin-top:3px}
 footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
 .admin-panel .content{display:grid;gap:10px}
 .admin-panel input{width:100%;padding:12px;border:2px solid #b8e5f3;border-radius:12px;font:inherit;color:var(--ink);background:#fff}
-.admin-status{padding:12px;border-radius:12px;background:#e8f8ff;font-weight:800;line-height:1.4}
+.admin-status{padding:12px;border-radius:12px;background:#e8f8ff;font-weight:800;line-height:1.4;overflow-wrap:anywhere}
 .event-banner{padding:13px 15px;border-radius:14px;background:linear-gradient(110deg,#fff0a8,#ffe0b2);border:2px solid #ffd36a;color:#633f00;font-weight:900;line-height:1.4}
 #toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#10344a;color:#fff;padding:12px 18px;border-radius:14px;box-shadow:0 8px 25px #0003;z-index:20;max-width:90vw;text-align:center;font-weight:800}
 @media(max-width:760px){main{grid-template-columns:1fr;padding:8px 10px 22px}header{padding:14px 10px 8px}.scene{min-height:300px}.options{grid-template-columns:1fr 1fr}.pill{font-size:.9rem;padding:7px 10px}}
@@ -94,6 +75,7 @@ footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
     <div class="pill">🐟 Caught <span id="caught">0</span></div>
   </div>
 </header>
+
 <main>
   <section class="panel">
     <div class="scene" aria-label="Interactive 3D underwater fishing scene">
@@ -106,10 +88,11 @@ footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
     <div class="controls">
       <button class="primary" id="castBtn">🎣 Cast Line</button>
       <button class="gold" id="shopJump">🛒 Open Shop</button>
-      <button class="soft" id="resetBtn" title="Reset saved game">↻ Reset</button>
+      <button class="soft" id="resetBtn">↻ Reset</button>
       <p class="small-note" id="controlHint">Cast a line to hook a vocabulary fish!</p>
     </div>
   </section>
+
   <div class="side">
     <section class="panel" id="questionPanel">
       <div class="card-head"><h2>📚 Fishy Word Challenge</h2><span class="pill" id="questionCount">Ready</span></div>
@@ -125,17 +108,19 @@ footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
         <div id="feedback" class="feedback hidden" role="status"></div>
       </div>
     </section>
+
     <section class="panel">
       <div class="card-head"><h2>📈 Level Progress</h2><span id="xpText">0 / 100 XP</span></div>
       <div class="content">
         <div class="progress-wrap"><div class="progress" id="xpBar"></div></div>
         <p class="small-note">Earn XP by answering correctly. Each level takes 100 XP.</p>
         <div style="margin-top:12px;font-weight:900">Abilities</div>
-        <div class="ability"><div class="ability-icon">🔁</div><div class="ability-text"><strong>Level 5 · Auto Cast</strong><small id="autoStatus">Locked — cast automatically after a catch.</small></div></div>
-        <div class="ability"><div class="ability-icon">⚡</div><div class="ability-text"><strong>Level 10 · Instant Guess</strong><small id="instantStatus">Locked — automatically answers word questions.</small></div></div>
-        <div class="ability"><div class="ability-icon">👑</div><div class="ability-text"><strong>Level 25 · Automatic Wins</strong><small id="winStatus">Locked — automatically wins catches.</small></div></div>
+        <div class="ability"><div class="ability-icon">🔁</div><div class="ability-text"><strong>Level 5 · Auto Cast</strong><small id="autoStatus">Locked — unlocks at level 5.</small></div></div>
+        <div class="ability"><div class="ability-icon">⚡</div><div class="ability-text"><strong>Level 10 · Instant Guess</strong><small id="instantStatus">Locked — unlocks at level 10.</small></div></div>
+        <div class="ability"><div class="ability-icon">👑</div><div class="ability-text"><strong>Level 25 · Automatic Wins</strong><small id="winStatus">Locked — unlocks at level 25.</small></div></div>
       </div>
     </section>
+
     <section class="panel" id="shopPanel">
       <div class="card-head"><h2>🛒 Fisher's Shop</h2><span class="pill">Coins</span></div>
       <div class="content">
@@ -146,11 +131,10 @@ footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
       </div>
     </section>
 
-    <!-- NEW ADMIN EVENT PANEL -->
     <section class="panel admin-panel" id="adminPanel">
-      <div class="card-head"><h2>🔐 Admin Event Panel</h2><span class="pill">Admin</span></div>
+      <div class="card-head"><h2>🔐 Admin & Owner Panel</h2><span class="pill">Admin</span></div>
       <div class="content">
-        <p class="small-note">Enter the access code to unlock event controls.</p>
+        <p class="small-note">Enter your access code to unlock the event and owner controls.</p>
         <label for="adminCode"><strong>Access code</strong></label>
         <input id="adminCode" type="password" autocomplete="off" placeholder="Enter admin code">
         <button class="dark" id="unlockAdminBtn">🔓 Unlock Panel</button>
@@ -161,7 +145,22 @@ footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
             <span style="font-weight:700">Event reward: +250 coins once per browser.</span>
           </div>
           <button class="gold" id="startEventBtn">🎉 Start Golden Fish Event</button>
-          <p class="small-note">Starting this event announces it and adds 250 coins to this browser's saved game once. Re-starting the same event will not award coins again.</p>
+          <p class="small-note">The event reward is awarded only once in this browser.</p>
+
+          <hr style="border:0;border-top:2px solid #d9edf2;width:100%">
+
+          <h3 style="margin:4px 0">👑 Owner Controls</h3>
+          <p class="small-note">Double-click a button to confirm the action.</p>
+
+          <label for="ownerLevel"><strong>Change Level</strong></label>
+          <input id="ownerLevel" type="number" min="1" max="1000000" step="1" placeholder="Level from 1 to 1,000,000">
+          <button class="dark" id="changeLevelBtn" type="button">👑 Double-click to Change Level</button>
+
+          <label for="ownerCoins"><strong>Give Yourself Coins</strong></label>
+          <input id="ownerCoins" type="number" min="1" max="1000000000000000" step="1" placeholder="Coins up to 1 Qa">
+          <button class="gold" id="giveCoinsBtn" type="button">🪙 Double-click to Give Coins</button>
+
+          <div id="ownerStatus" class="admin-status" role="status">Owner controls ready.</div>
         </div>
 
         <div id="eventAnnouncement" class="event-banner hidden" aria-live="polite"></div>
@@ -169,16 +168,17 @@ footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
     </section>
   </div>
 </main>
+
 <footer>Word Fishing · Practice vocabulary, reel in rewards, and explore new levels. Progress saves in this browser.</footer>
 <div id="toast" class="hidden"></div>
 
 <script>
 (() => {
-  const canvas = document.getElementById('underwater3d');
-  const wordLabel = document.getElementById('underwaterWord');
+  const canvas = document.getElementById("underwater3d");
+  const wordLabel = document.getElementById("underwaterWord");
 
   if (!canvas || !window.THREE) {
-    wordLabel.textContent = '3D scene could not load. Check your internet connection.';
+    wordLabel.textContent = "3D scene could not load. Check your internet connection.";
     return;
   }
 
@@ -195,15 +195,15 @@ footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-  scene.add(new THREE.HemisphereLight(0xc9f8ff, 0x164e6c, 2.0));
+  scene.add(new THREE.HemisphereLight(0xc9f8ff, 0x164e6c, 2));
   const sun = new THREE.DirectionalLight(0xffffff, 2.2);
   sun.position.set(-4, 9, 6);
   sun.castShadow = true;
   scene.add(sun);
 
   const water = new THREE.Mesh(
-    new THREE.PlaneGeometry(200,200),
-    new THREE.MeshStandardMaterial({color:0x087da8, roughness:.32, metalness:.1})
+    new THREE.PlaneGeometry(200, 200),
+    new THREE.MeshStandardMaterial({color:0x087da8,roughness:.32,metalness:.1})
   );
   water.rotation.x = -Math.PI/2;
   water.position.y = -1.7;
@@ -211,29 +211,27 @@ footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
   scene.add(water);
 
   const sand = new THREE.Mesh(
-    new THREE.PlaneGeometry(200,200),
-    new THREE.MeshStandardMaterial({color:0xd8bd7a, roughness:1})
+    new THREE.PlaneGeometry(200, 200),
+    new THREE.MeshStandardMaterial({color:0xd8bd7a,roughness:1})
   );
   sand.rotation.x = -Math.PI/2;
   sand.position.y = -3.4;
   scene.add(sand);
 
-  // Sunbeams visible through the water.
-  for(let i=0;i<5;i++){
+  for (let i=0; i<5; i++) {
     const beam = new THREE.Mesh(
-      new THREE.ConeGeometry(.7,10,4,1,true),
+      new THREE.ConeGeometry(.7, 10, 4, 1, true),
       new THREE.MeshBasicMaterial({
         color:0xb8f8ff,transparent:true,opacity:.09,
         side:THREE.DoubleSide,depthWrite:false
       })
     );
-    beam.position.set(-5+i*2.5,2,-3);
+    beam.position.set(-5+i*2.5, 2, -3);
     beam.rotation.z = Math.PI;
     scene.add(beam);
   }
 
-  // Seaweed and rocks along the bottom.
-  for(let i=0;i<17;i++){
+  for (let i=0; i<17; i++) {
     const x = (Math.random()-.5)*24;
     const z = -3-Math.random()*8;
     const h = .7+Math.random()*1.6;
@@ -244,59 +242,59 @@ footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
       })
     );
     plant.position.set(x,-3.35+h/2,z);
-    plant.rotation.z=(Math.random()-.5)*.35;
+    plant.rotation.z = (Math.random()-.5)*.35;
     scene.add(plant);
   }
 
-  for(let i=0;i<12;i++){
+  for (let i=0; i<12; i++) {
     const rock = new THREE.Mesh(
       new THREE.DodecahedronGeometry(.25+Math.random()*.45,0),
       new THREE.MeshStandardMaterial({color:0x698d9a,roughness:1})
     );
     rock.position.set((Math.random()-.5)*24,-3.15,-2-Math.random()*10);
-    rock.scale.y=.6;
+    rock.scale.y = .6;
     scene.add(rock);
   }
 
-  const fishMeshes=[];
-  const fishColors=[0xffb347,0xff6b8a,0x66e0d0,0xffdf5d,0xb59cff,0xff8c42];
+  const fishMeshes = [];
+  const fishColors = [0xffb347,0xff6b8a,0x66e0d0,0xffdf5d,0xb59cff,0xff8c42];
 
-  function makeFish(x,y,z,scale,color,index){
-    const group=new THREE.Group();
-    const body=new THREE.Mesh(
+  function makeFish(x,y,z,scale,color,index) {
+    const group = new THREE.Group();
+    const body = new THREE.Mesh(
       new THREE.SphereGeometry(.48,18,12),
       new THREE.MeshStandardMaterial({color,roughness:.35,metalness:.05})
     );
     body.scale.set(1.35,.72,.72);
-    body.castShadow=true;
+    body.castShadow = true;
     group.add(body);
 
-    const tail=new THREE.Mesh(
+    const tail = new THREE.Mesh(
       new THREE.ConeGeometry(.34,.55,4),
       new THREE.MeshStandardMaterial({color,roughness:.4})
     );
-    tail.rotation.z=-Math.PI/2;
-    tail.position.x=-.72;
+    tail.rotation.z = -Math.PI/2;
+    tail.position.x = -.72;
     group.add(tail);
 
-    const eye=new THREE.Mesh(
+    const eye = new THREE.Mesh(
       new THREE.SphereGeometry(.07,10,8),
       new THREE.MeshBasicMaterial({color:0x102d3c})
     );
     eye.position.set(.42,.12,.27);
     group.add(eye);
 
-    const fin=new THREE.Mesh(
+    const fin = new THREE.Mesh(
       new THREE.ConeGeometry(.18,.35,4),
       new THREE.MeshStandardMaterial({color:0xfff1a8})
     );
-    fin.rotation.z=Math.PI;
+    fin.rotation.z = Math.PI;
     fin.position.set(0,-.35,0);
     group.add(fin);
 
     group.position.set(x,y,z);
     group.scale.setScalar(scale);
-    group.userData={
+    group.userData = {
       homeX:x,homeY:y,homeZ:z,
       speed:.35+Math.random()*.45,
       phase:Math.random()*6,index
@@ -306,7 +304,7 @@ footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
     return group;
   }
 
-  for(let i=0;i<9;i++){
+  for (let i=0; i<9; i++) {
     makeFish(
       (Math.random()-.5)*15,
       -.1+Math.random()*2.3,
@@ -317,114 +315,113 @@ footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
     );
   }
 
-  // Bubble particles.
-  const bubbles=[];
-  for(let i=0;i<45;i++){
-    const b=new THREE.Mesh(
+  const bubbles = [];
+  for (let i=0; i<45; i++) {
+    const b = new THREE.Mesh(
       new THREE.SphereGeometry(.045+Math.random()*.07,8,8),
       new THREE.MeshBasicMaterial({color:0xc9faff,transparent:true,opacity:.55})
     );
     b.position.set((Math.random()-.5)*18,-3+Math.random()*7,-1-Math.random()*12);
-    b.userData={speed:.25+Math.random()*.55,offset:Math.random()*6};
+    b.userData = {speed:.25+Math.random()*.55,offset:Math.random()*6};
     scene.add(b);
     bubbles.push(b);
   }
 
-  const hookGroup=new THREE.Group();
-  const hook=new THREE.Mesh(
+  const hookGroup = new THREE.Group();
+  const hook = new THREE.Mesh(
     new THREE.TorusGeometry(.22,.045,8,16,Math.PI*1.6),
     new THREE.MeshStandardMaterial({color:0xf5f5f5,metalness:.85,roughness:.2})
   );
-  hook.rotation.z=Math.PI/2;
+  hook.rotation.z = Math.PI/2;
   hookGroup.add(hook);
 
-  const hookStem=new THREE.Mesh(
+  const hookStem = new THREE.Mesh(
     new THREE.CylinderGeometry(.025,.025,.65,8),
     new THREE.MeshStandardMaterial({color:0xf5f5f5,metalness:.8})
   );
-  hookStem.position.y=.35;
+  hookStem.position.y = .35;
   hookGroup.add(hookStem);
   hookGroup.position.set(0,1.3,1);
-  hookGroup.visible=false;
+  hookGroup.visible = false;
   scene.add(hookGroup);
 
-  let caughtFish=null, hooked=false, targetHookY=1.3;
+  let caughtFish = null;
+  let targetHookY = 1.3;
 
-  function resize(){
-    const w=canvas.clientWidth||640;
-    const h=canvas.clientHeight||390;
+  function resize() {
+    const w = canvas.clientWidth || 640;
+    const h = canvas.clientHeight || 390;
     renderer.setSize(w,h,false);
-    camera.aspect=w/h;
+    camera.aspect = w/h;
     camera.updateProjectionMatrix();
   }
 
-  if('ResizeObserver' in window) new ResizeObserver(resize).observe(canvas.parentElement);
-  else window.addEventListener('resize',resize);
+  if ("ResizeObserver" in window) {
+    new ResizeObserver(resize).observe(canvas.parentElement);
+  } else {
+    window.addEventListener("resize",resize);
+  }
   resize();
 
-  function animate(time){
+  function animate(time) {
     requestAnimationFrame(animate);
-    const t=time*.001;
+    const t = time*.001;
 
-    fishMeshes.forEach(f=>{
-      if(f===caughtFish)return;
-      f.position.x=f.userData.homeX+Math.sin(t*f.userData.speed+f.userData.phase)*1.25;
-      f.position.y=f.userData.homeY+Math.sin(t*1.6+f.userData.phase)*.18;
-      f.rotation.y=Math.sin(t*.6+f.userData.phase)*.18;
-      f.rotation.z=Math.sin(t*1.2+f.userData.phase)*.06;
+    fishMeshes.forEach(f => {
+      if (f === caughtFish) return;
+      f.position.x = f.userData.homeX+Math.sin(t*f.userData.speed+f.userData.phase)*1.25;
+      f.position.y = f.userData.homeY+Math.sin(t*1.6+f.userData.phase)*.18;
+      f.rotation.y = Math.sin(t*.6+f.userData.phase)*.18;
+      f.rotation.z = Math.sin(t*1.2+f.userData.phase)*.06;
     });
 
-    bubbles.forEach(b=>{
-      b.position.y+=b.userData.speed*.012;
-      if(b.position.y>3.5)b.position.y=-3.2;
-      b.position.x+=Math.sin(t+b.userData.offset)*.002;
+    bubbles.forEach(b => {
+      b.position.y += b.userData.speed*.012;
+      if (b.position.y > 3.5) b.position.y = -3.2;
+      b.position.x += Math.sin(t+b.userData.offset)*.002;
     });
 
-    hookGroup.position.y+=(targetHookY-hookGroup.position.y)*.06;
-    camera.position.x=Math.sin(t*.12)*.22;
+    hookGroup.position.y += (targetHookY-hookGroup.position.y)*.06;
+    camera.position.x = Math.sin(t*.12)*.22;
     camera.lookAt(0,.4,0);
     renderer.render(scene,camera);
   }
   requestAnimationFrame(animate);
 
-  window.WordFishing3D={
-    hook(word){
-      hooked=true;
-      hookGroup.visible=true;
-      targetHookY=-.1;
-      wordLabel.innerHTML='<small>YOU CAUGHT A FISH!</small>'+String(word).toUpperCase();
-      wordLabel.classList.remove('hidden');
-
-      if(caughtFish)caughtFish.visible=true;
-      caughtFish=fishMeshes[Math.floor(Math.random()*fishMeshes.length)];
+  window.WordFishing3D = {
+    hook(word) {
+      hookGroup.visible = true;
+      targetHookY = -.1;
+      wordLabel.innerHTML = "<small>YOU CAUGHT A FISH!</small>"+String(word).toUpperCase();
+      wordLabel.classList.remove("hidden");
+      if (!fishMeshes.length) return;
+      caughtFish = fishMeshes[Math.floor(Math.random()*fishMeshes.length)];
       caughtFish.position.set(.7,.1,1.1);
       caughtFish.scale.setScalar(1.15);
-      caughtFish.rotation.y=Math.PI;
+      caughtFish.rotation.y = Math.PI;
     },
-    caught(){
-      hooked=false;
-      hookGroup.visible=false;
-      if(caughtFish){
+    caught() {
+      hookGroup.visible = false;
+      if (caughtFish) {
         scene.remove(caughtFish);
-        const i=fishMeshes.indexOf(caughtFish);
-        if(i>=0)fishMeshes.splice(i,1);
-        caughtFish=null;
+        const i = fishMeshes.indexOf(caughtFish);
+        if (i >= 0) fishMeshes.splice(i,1);
+        caughtFish = null;
       }
-      wordLabel.innerHTML='<small>GREAT CATCH!</small>🐟 Word learned!';
+      wordLabel.innerHTML = "<small>GREAT CATCH!</small>🐟 Word learned!";
     },
-    escaped(){
-      hooked=false;
-      hookGroup.visible=false;
-      if(caughtFish){
+    escaped() {
+      hookGroup.visible = false;
+      if (caughtFish) {
         caughtFish.position.set((Math.random()-.5)*12,-.5-Math.random()*1.5,-3-Math.random()*6);
         caughtFish.scale.setScalar(.8);
-        caughtFish=null;
+        caughtFish = null;
       }
-      wordLabel.innerHTML='<small>THE FISH ESCAPED</small>🧵 Line broken';
+      wordLabel.innerHTML = "<small>THE FISH ESCAPED</small>🧵 Line broken";
     },
-    ready(){
-      wordLabel.innerHTML='<small>UNDERWATER VIEW</small>🐠 Cast to hook a fish!';
-      hookGroup.visible=false;
+    ready() {
+      wordLabel.innerHTML = "<small>UNDERWATER VIEW</small>🐠 Cast to hook a fish!";
+      hookGroup.visible = false;
     }
   };
 })();
@@ -439,6 +436,8 @@ const ADMIN_CODE = "Jeremiah is DADDY";
 const EVENT_ID = "golden-fish-event-2026-10-v1";
 const EVENT_STATE_KEY = "wordFishingEventState_v1";
 const EVENT_CLAIM_KEY = "wordFishingEventClaim_" + EVENT_ID;
+const MAX_OWNER_COINS = 1000000000000000;
+const MAX_OWNER_LEVEL = 1000000;
 
 const words = [
  {w:"brave",syn:"courageous",meaning:"Ready to face danger or difficulty",s:["cowardly","courageous","sleepy","careless"],m:["Feeling very tired","Ready to face danger or difficulty","Easy to break","Moving very slowly"]},
@@ -468,246 +467,372 @@ const words = [
  {w:"beneath",syn:"under",meaning:"In a lower position than something",s:["above","beside","under","beyond"],m:["In a lower position than something","At a higher level","Far away from everything","In the middle of something"]}
 ];
 
-const fishIcons = ["🐟","🐠","🐡","🐬","🦈","🐙","🦑","🦀"];
-const fresh = () => ({coins:300,xp:0,level:1,caught:0,lineReady:true,phase:"idle",wordIndex:-1,step:0,roundWord:null,used:[],bait:false,hint:false,autoCast:false,instantGuess:false,autoWins:false});
+const fresh = () => ({
+  coins:300,xp:0,level:1,caught:0,lineReady:true,
+  phase:"idle",wordIndex:-1,step:0,roundWord:null,
+  used:[],bait:false,hint:false,autoCast:false,
+  instantGuess:false,autoWins:false
+});
+
 let state = load();
 let toastTimer = null;
 const $ = id => document.getElementById(id);
 
-function load(){
-  try{
-    const v=JSON.parse(localStorage.getItem(SAVE_KEY));
-    if(v&&typeof v.coins==="number")return {...fresh(),...v,phase:"idle",roundWord:null,step:0};
-  }catch(e){}
+function load() {
+  try {
+    const v = JSON.parse(localStorage.getItem(SAVE_KEY));
+    if (v && typeof v.coins === "number") {
+      return {...fresh(),...v,phase:"idle",roundWord:null,step:0};
+    }
+  } catch(e) {}
   return fresh();
 }
-function save(){
-  try{localStorage.setItem(SAVE_KEY,JSON.stringify({...state,phase:"idle",roundWord:null,step:0}));}catch(e){}
+
+function save() {
+  try {
+    localStorage.setItem(SAVE_KEY,JSON.stringify({
+      ...state,phase:"idle",roundWord:null,step:0
+    }));
+  } catch(e) {}
 }
-function toast(msg){
-  const t=$("toast");
-  t.textContent=msg;
+
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
   t.classList.remove("hidden");
   clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.add("hidden"),2400);
+  toastTimer = setTimeout(()=>t.classList.add("hidden"),2400);
 }
-function levelFor(xp){return Math.floor(xp/100)+1;}
-function shuffle(arr){
-  const a=[...arr];
-  for(let i=a.length-1;i>0;i--){
+
+function levelFor(xp) {
+  return Math.floor(xp/100)+1;
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i=a.length-1;i>0;i--) {
     const j=Math.floor(Math.random()*(i+1));
     [a[i],a[j]]=[a[j],a[i]];
   }
   return a;
 }
-function update(){
-  state.level=levelFor(state.xp);
-  $("coins").textContent=state.coins;
-  $("level").textContent=state.level;
-  $("caught").textContent=state.caught;
-  const into=state.xp%100;
-  $("xpText").textContent=`${into} / 100 XP`;
-  $("xpBar").style.width=into+"%";
-  $("autoStatus").textContent=state.level>=5?"Unlocked! Auto Cast is active.":"Locked — unlocks at level 5.";
-  $("instantStatus").textContent=state.level>=10?"Unlocked! Instant Guess is active.":"Locked — unlocks at level 10.";
-  $("winStatus").textContent=state.level>=25?"Unlocked! Automatic Wins is active.":"Locked — unlocks at level 25.";
-  $("buyLine").disabled=state.lineReady||state.coins<300;
-  $("buyLine").textContent=state.lineReady?"Line Ready ✓":"300 🪙";
-  $("buyBait").disabled=state.coins<80||state.bait;
-  $("buyBait").textContent=state.bait?"Bait Ready ✓":"80 🪙";
-  $("buyHint").disabled=state.coins<50||state.hint;
-  $("buyHint").textContent=state.hint?"Hint Ready ✓":"50 🪙";
-  $("lineStatus").textContent=state.lineReady?"Fishing line: ready":"Fishing line: broken — buy a replacement for 300 coins.";
-  $("castBtn").disabled=state.phase!=="idle"||!state.lineReady;
-  $("castBtn").textContent=!state.lineReady?"🧵 Line Broken":state.phase==="idle"?"🎣 Cast Line":"🐟 Fish on the line!";
-  $("sceneStatus").textContent=`3D Underwater · Zone ${Math.min(5,Math.floor((state.level-1)/5)+1)}`;
-  const zones=["🌿 Starter Pond","🌳 Willow Lake","🌊 Coral Bay","🪸 Deep Reef","🌙 Moonlit Sea"];
-  $("zoneLabel").textContent=zones[Math.min(4,Math.floor((state.level-1)/5))];
-  if($("sceneFish"))$("sceneFish").textContent=fishIcons[Math.min(fishIcons.length-1,Math.floor((state.level-1)/4))];
-  $("controlHint").textContent=!state.lineReady?"Visit the shop to buy a replacement line.":state.level>=25?"Automatic Wins is unlocked! Cast to earn a catch.":state.level>=10?"Instant Guess is unlocked! Cast to solve a word automatically.":state.level>=5?"Auto Cast is unlocked! Casting continues after successful catches.":"Cast a line to hook a vocabulary fish!";
+
+function update() {
+  state.level = levelFor(state.xp);
+  $("coins").textContent = state.coins.toLocaleString();
+  $("level").textContent = state.level.toLocaleString();
+  $("caught").textContent = state.caught;
+
+  const into = state.xp%100;
+  $("xpText").textContent = `${into} / 100 XP`;
+  $("xpBar").style.width = into+"%";
+
+  $("autoStatus").textContent = state.level>=5
+    ? "Unlocked! Auto Cast is active."
+    : "Locked — unlocks at level 5.";
+  $("instantStatus").textContent = state.level>=10
+    ? "Unlocked! Instant Guess is active."
+    : "Locked — unlocks at level 10.";
+  $("winStatus").textContent = state.level>=25
+    ? "Unlocked! Automatic Wins is active."
+    : "Locked — unlocks at level 25.";
+
+  $("buyLine").disabled = state.lineReady || state.coins<300;
+  $("buyLine").textContent = state.lineReady ? "Line Ready ✓" : "300 🪙";
+  $("buyBait").disabled = state.coins<80 || state.bait;
+  $("buyBait").textContent = state.bait ? "Bait Ready ✓" : "80 🪙";
+  $("buyHint").disabled = state.coins<50 || state.hint;
+  $("buyHint").textContent = state.hint ? "Hint Ready ✓" : "50 🪙";
+
+  $("lineStatus").textContent = state.lineReady
+    ? "Fishing line: ready"
+    : "Fishing line: broken — buy a replacement for 300 coins.";
+
+  $("castBtn").disabled = state.phase!=="idle" || !state.lineReady;
+  $("castBtn").textContent = !state.lineReady
+    ? "🧵 Line Broken"
+    : state.phase==="idle" ? "🎣 Cast Line" : "🐟 Fish on the line!";
+
+  $("sceneStatus").textContent =
+    `3D Underwater · Zone ${Math.min(5,Math.floor((state.level-1)/5)+1)}`;
+
+  const zones = [
+    "🌿 Starter Pond","🌳 Willow Lake","🌊 Coral Bay",
+    "🪸 Deep Reef","🌙 Moonlit Sea"
+  ];
+  $("zoneLabel").textContent = zones[Math.min(4,Math.floor((state.level-1)/5))];
+
+  $("controlHint").textContent = !state.lineReady
+    ? "Visit the shop to buy a replacement line."
+    : state.level>=25 ? "Automatic Wins is unlocked! Cast to earn a catch."
+    : state.level>=10 ? "Instant Guess is unlocked!"
+    : state.level>=5 ? "Auto Cast is unlocked!"
+    : "Cast a line to hook a vocabulary fish!";
 }
-function setIdle(message="Ready to fish?"){
-  if(window.WordFishing3D)window.WordFishing3D.ready();
-  state.phase="idle";
-  state.roundWord=null;
-  state.step=0;
+
+function setIdle(message="Ready to fish?") {
+  if (window.WordFishing3D) window.WordFishing3D.ready();
+  state.phase = "idle";
+  state.roundWord = null;
+  state.step = 0;
+
   $("quizContent").classList.add("hidden");
   $("questionContent").classList.remove("hidden");
-  $("questionContent").innerHTML=`<p>${message}</p><p class="small-note">Catch fish by answering both the synonym and meaning questions. Correct answers earn coins and XP. A wrong answer lets the fish escape and breaks your line!</p>`;
-  $("questionCount").textContent="Ready";
-  $("sceneMessage").textContent="Ready to fish?";
+  $("questionContent").innerHTML =
+    `<p>${message}</p><p class="small-note">Answer both the synonym and meaning questions. Correct answers earn coins and XP. A wrong answer lets the fish escape and breaks your line!</p>`;
+
+  $("questionCount").textContent = "Ready";
+  $("sceneMessage").textContent = "Ready to fish?";
   update();
   save();
 }
-function chooseWord(){
-  let choices=words.map((_,i)=>i).filter(i=>!state.used.includes(i));
-  if(!choices.length){state.used=[];choices=words.map((_,i)=>i);}
+
+function chooseWord() {
+  let choices = words.map((_,i)=>i).filter(i=>!state.used.includes(i));
+  if (!choices.length) {
+    state.used = [];
+    choices = words.map((_,i)=>i);
+  }
   return choices[Math.floor(Math.random()*choices.length)];
 }
-function cast(){
-  if(state.phase!=="idle")return;
-  if(!state.lineReady){toast("Your line is broken. Buy a replacement for 300 coins.");return;}
-  state.lineReady=true;
-  state.phase="quiz";
-  state.wordIndex=chooseWord();
-  state.roundWord=words[state.wordIndex];
-  state.step=0;
-  if(window.WordFishing3D)window.WordFishing3D.hook(state.roundWord.w);
+
+function cast() {
+  if (state.phase!=="idle") return;
+  if (!state.lineReady) {
+    toast("Your line is broken. Buy a replacement for 300 coins.");
+    return;
+  }
+
+  state.phase = "quiz";
+  state.wordIndex = chooseWord();
+  state.roundWord = words[state.wordIndex];
+  state.step = 0;
+
+  if (window.WordFishing3D) window.WordFishing3D.hook(state.roundWord.w);
+
   state.used.push(state.wordIndex);
-  state.used=state.used.slice(-words.length);
+  state.used = state.used.slice(-words.length);
+
   $("questionContent").classList.add("hidden");
   $("quizContent").classList.remove("hidden");
-  $("sceneMessage").textContent="A fish is hooked!";
-  $("questionCount").textContent="Catch #"+(state.caught+1);
+  $("sceneMessage").textContent = "A fish is hooked!";
+  $("questionCount").textContent = "Catch #"+(state.caught+1);
   $("feedback").classList.add("hidden");
-  if(state.level>=25){automaticWin();return;}
+
+  if (state.level>=25) {
+    automaticWin();
+    return;
+  }
+
   showQuestion();
-  if(state.level>=10){setTimeout(()=>{if(state.phase==="quiz")autoAnswer();},550);}
   update();
 }
-function showQuestion(){
-  if(state.phase!=="quiz")return;
-  const w=state.roundWord;
-  $("questionType").textContent=state.step===0?"Question 1 of 2 · Synonym":"Question 2 of 2 · Meaning";
-  $("wordText").textContent=w.w.charAt(0).toUpperCase()+w.w.slice(1);
-  $("questionPrompt").textContent=state.step===0?"Choose the closest synonym.":"Choose the correct meaning.";
-  let opts=shuffle(state.step===0?w.s:w.m);
-  if(state.hint){$("questionPrompt").textContent+=" Hint: "+(state.step===0?`It means “${w.syn}.”`:`${w.meaning.split(" ").slice(0,3).join(" ")}…`);}
-  const wrap=$("options");
-  wrap.innerHTML="";
+
+function showQuestion() {
+  if (state.phase!=="quiz") return;
+  const w = state.roundWord;
+
+  $("questionType").textContent = state.step===0
+    ? "Question 1 of 2 · Synonym"
+    : "Question 2 of 2 · Meaning";
+  $("wordText").textContent = w.w.charAt(0).toUpperCase()+w.w.slice(1);
+  $("questionPrompt").textContent = state.step===0
+    ? "Choose the closest synonym."
+    : "Choose the correct meaning.";
+
+  const opts = shuffle(state.step===0 ? w.s : w.m);
+  if (state.hint) {
+    $("questionPrompt").textContent += " Hint: "+
+      (state.step===0 ? `It means “${w.syn}.”`
+      : `${w.meaning.split(" ").slice(0,3).join(" ")}…`);
+  }
+
+  const wrap = $("options");
+  wrap.innerHTML = "";
   opts.forEach(opt=>{
-    const b=document.createElement("button");
-    b.className="option";
-    b.textContent=opt;
+    const b = document.createElement("button");
+    b.className = "option";
+    b.textContent = opt;
     b.addEventListener("click",()=>answer(opt,b));
     wrap.appendChild(b);
   });
   $("feedback").classList.add("hidden");
-  if(state.level>=10){setTimeout(()=>{if(state.phase==="quiz")autoAnswer();},300);}
+
+  if (state.level>=10) {
+    setTimeout(()=>{if(state.phase==="quiz")autoAnswer();},350);
+  }
 }
-function correctAnswer(){return state.step===0?state.roundWord.syn:state.roundWord.meaning;}
-function answer(value,button){
-  if(state.phase!=="quiz")return;
-  const correct=correctAnswer();
-  if(value!==correct){
-    [...$("options").children].forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add("correct");});
-    if(button)button.classList.add("wrong");
+
+function correctAnswer() {
+  return state.step===0 ? state.roundWord.syn : state.roundWord.meaning;
+}
+
+function answer(value,button) {
+  if (state.phase!=="quiz") return;
+  const correct = correctAnswer();
+
+  if (value!==correct) {
+    [...$("options").children].forEach(b=>{
+      b.disabled = true;
+      if (b.textContent===correct) b.classList.add("correct");
+    });
+    if (button) button.classList.add("wrong");
     fail("Not quite! The correct answer was: "+correct+". The fish escaped and broke your line.");
     return;
   }
-  [...$("options").children].forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add("correct");});
-  if(state.step===0){
-    $("feedback").textContent="Correct! Now choose the word's meaning.";
+
+  [...$("options").children].forEach(b=>{
+    b.disabled = true;
+    if (b.textContent===correct) b.classList.add("correct");
+  });
+
+  if (state.step===0) {
+    $("feedback").textContent = "Correct! Now choose the word's meaning.";
     $("feedback").classList.remove("hidden","bad");
-    state.step=1;
+    state.step = 1;
     setTimeout(()=>{if(state.phase==="quiz")showQuestion();},500);
-  }else winCatch();
+  } else {
+    winCatch();
+  }
 }
-function fail(msg){
-  if(window.WordFishing3D)window.WordFishing3D.escaped();
-  state.phase="failed";
-  state.lineReady=false;
-  state.roundWord=null;
-  state.step=0;
-  $("feedback").textContent=msg;
+
+function fail(msg) {
+  if (window.WordFishing3D) window.WordFishing3D.escaped();
+  state.phase = "failed";
+  state.lineReady = false;
+  state.roundWord = null;
+  state.step = 0;
+
+  $("feedback").textContent = msg;
   $("feedback").classList.remove("hidden");
   $("feedback").classList.add("bad");
-  $("sceneMessage").textContent="Oh no! The fish got away!";
-  $("questionCount").textContent="Line broken";
-  const b=document.createElement("button");
-  b.className="gold";
-  b.textContent="🛒 Buy a new line · 300 coins";
-  b.style.marginTop="12px";
+  $("sceneMessage").textContent = "Oh no! The fish got away!";
+  $("questionCount").textContent = "Line broken";
+
+  const b = document.createElement("button");
+  b.className = "gold";
+  b.textContent = "🛒 Buy a new line · 300 coins";
+  b.style.marginTop = "12px";
   b.addEventListener("click",buyLine);
   $("options").appendChild(b);
+
   update();
   save();
 }
-function winCatch(){
-  if(window.WordFishing3D)window.WordFishing3D.caught();
-  const wasBait=state.bait;
-  state.coins+=25+(wasBait?10:0);
-  state.xp+=25;
+
+function winCatch() {
+  if (window.WordFishing3D) window.WordFishing3D.caught();
+
+  const wasBait = state.bait;
+  const reward = 25+(wasBait?10:0);
+  state.coins += reward;
+  state.xp += 25;
   state.caught++;
-  state.bait=false;
-  state.hint=false;
-  const oldLevel=state.level;
-  state.level=levelFor(state.xp);
-  state.phase="idle";
-  state.roundWord=null;
-  state.step=0;
+  state.bait = false;
+  state.hint = false;
+  state.level = levelFor(state.xp);
+  state.phase = "idle";
+  state.roundWord = null;
+  state.step = 0;
+
   $("quizContent").classList.add("hidden");
   $("questionContent").classList.remove("hidden");
-  $("questionContent").innerHTML=`<div style="font-size:2rem;font-weight:1000;color:#168a68">🎉 Fish caught!</div><p>You answered both questions correctly.</p><p><strong>+${25+(wasBait?10:0)} coins</strong> · <strong>+25 XP</strong></p><p class="small-note">Keep fishing to discover more words and unlock new abilities.</p>`;
-  $("questionCount").textContent="Catch complete";
-  $("sceneMessage").textContent="Great catch! +"+(25+(wasBait?10:0))+" coins";
+  $("questionContent").innerHTML =
+    `<div style="font-size:2rem;font-weight:1000;color:#168a68">🎉 Fish caught!</div><p>You answered both questions correctly.</p><p><strong>+${reward} coins</strong> · <strong>+25 XP</strong></p><p class="small-note">Keep fishing to discover more words and unlock new abilities.</p>`;
+  $("questionCount").textContent = "Catch complete";
+  $("sceneMessage").textContent = "Great catch! +"+reward+" coins";
+
   update();
   save();
-  if(state.level>oldLevel)toast(`Level up! You're now level ${state.level}!`);
-  else toast("Nice catch! +25 XP");
-  if(state.level>=25)toast("Level 25 unlocked: Automatic Wins!");
-  else if(state.level>=10)toast("Instant Guess is unlocked!");
-  else if(state.level>=5)toast("Auto Cast is unlocked!");
-  if(state.level>=5&&state.level<25){
+  toast("Nice catch! +"+reward+" coins and +25 XP");
+
+  if (state.level>=5 && state.level<25) {
     setTimeout(()=>{if(state.phase==="idle"&&state.lineReady)cast();},900);
   }
 }
-function automaticWin(){
+
+function automaticWin() {
   $("questionContent").classList.add("hidden");
   $("quizContent").classList.remove("hidden");
-  $("questionType").textContent="Level 25 · Automatic Wins";
-  $("wordText").textContent=state.roundWord.w;
-  $("questionPrompt").textContent="Your ability caught this fish automatically!";
-  $("options").innerHTML="";
+  $("questionType").textContent = "Level 25 · Automatic Wins";
+  $("wordText").textContent = state.roundWord.w;
+  $("questionPrompt").textContent = "Your ability caught this fish automatically!";
+  $("options").innerHTML = "";
   winCatch();
 }
-function autoAnswer(){
-  if(state.phase!=="quiz")return;
-  const correct=correctAnswer();
-  const button=[...$("options").children].find(b=>b.textContent===correct);
+
+function autoAnswer() {
+  if (state.phase!=="quiz") return;
+  const correct = correctAnswer();
+  const button = [...$("options").children].find(b=>b.textContent===correct);
   answer(correct,button);
 }
-function buyLine(){
-  if(state.lineReady){toast("Your fishing line is already ready.");return;}
-  if(state.coins<300){toast("You need 300 coins for a replacement line. Catch fish to earn more.");return;}
-  state.coins-=300;
-  state.lineReady=true;
-  state.phase="idle";
+
+function buyLine() {
+  if (state.lineReady) {
+    toast("Your fishing line is already ready.");
+    return;
+  }
+  if (state.coins<300) {
+    toast("You need 300 coins for a replacement line.");
+    return;
+  }
+
+  state.coins -= 300;
+  state.lineReady = true;
+  state.phase = "idle";
   setIdle("Your new fishing line is ready! Cast when you're ready.");
   toast("Replacement line purchased for 300 coins.");
-  update();
-  save();
 }
-function buyBait(){
-  if(state.bait)return;
-  if(state.coins<80){toast("Not enough coins!");return;}
-  state.coins-=80;
-  state.bait=true;
+
+function buyBait() {
+  if (state.bait) return;
+  if (state.coins<80) {
+    toast("Not enough coins!");
+    return;
+  }
+  state.coins -= 80;
+  state.bait = true;
   update();
   save();
   toast("Lucky Bait ready: +10 coins on your next catch.");
 }
-function buyHint(){
-  if(state.hint)return;
-  if(state.coins<50){toast("Not enough coins!");return;}
-  state.coins-=50;
-  state.hint=true;
+
+function buyHint() {
+  if (state.hint) return;
+  if (state.coins<50) {
+    toast("Not enough coins!");
+    return;
+  }
+  state.coins -= 50;
+  state.hint = true;
   update();
   save();
   toast("Word Guide ready for your next question.");
 }
 
-/* ADMIN EVENT COMMANDS */
-function getEventState(){
-  try{return JSON.parse(localStorage.getItem(EVENT_STATE_KEY))||{active:false,name:"",startedAt:null};}
-  catch(e){return {active:false,name:"",startedAt:null};}
-}
-function setAdminStatus(message){$("adminStatus").textContent=message;}
+/* ADMIN AND OWNER CONTROLS */
 
-function unlockAdmin(){
-  const entered=$("adminCode").value;
-  if(entered!==ADMIN_CODE){
-    setAdminStatus("Incorrect code. The admin panel is still locked.");
+function getEventState() {
+  try {
+    return JSON.parse(localStorage.getItem(EVENT_STATE_KEY)) ||
+      {active:false,name:"",startedAt:null};
+  } catch(e) {
+    return {active:false,name:"",startedAt:null};
+  }
+}
+
+function setAdminStatus(message) {
+  $("adminStatus").textContent = message;
+}
+
+function ownerMessage(message) {
+  $("ownerStatus").textContent = message;
+}
+
+function unlockAdmin() {
+  if ($("adminCode").value !== ADMIN_CODE) {
+    setAdminStatus("Incorrect code. The panel is still locked.");
     $("adminControls").classList.add("hidden");
     toast("Incorrect admin code.");
     return;
@@ -716,82 +841,144 @@ function unlockAdmin(){
   $("adminControls").classList.remove("hidden");
   setAdminStatus("Admin panel unlocked for this page session.");
 
-  const eventState=getEventState();
-  if(eventState.active){
-    $("eventAnnouncement").textContent="🎉 EVENT LIVE: "+eventState.name+"! The event reward can only be claimed once in this browser.";
+  const eventState = getEventState();
+  if (eventState.active) {
+    $("eventAnnouncement").textContent =
+      "🎉 EVENT LIVE: "+eventState.name+"!";
     $("eventAnnouncement").classList.remove("hidden");
   }
+
+  restoreEventPanel();
 }
 
-function startGoldenFishEvent(){
-  let eventState=getEventState();
+function startGoldenFishEvent() {
+  let eventState = getEventState();
 
-  if(!eventState.active){
-    eventState={
+  if (!eventState.active) {
+    eventState = {
       active:true,
       name:"Golden Fish Event",
       startedAt:new Date().toISOString()
     };
-    try{localStorage.setItem(EVENT_STATE_KEY,JSON.stringify(eventState));}catch(e){}
+    try {
+      localStorage.setItem(EVENT_STATE_KEY,JSON.stringify(eventState));
+    } catch(e) {}
   }
 
-  $("eventAnnouncement").textContent="🎉 GOLDEN FISH EVENT IS LIVE! Golden fish are bringing a 250-coin celebration!";
+  $("eventAnnouncement").textContent =
+    "🎉 GOLDEN FISH EVENT IS LIVE! Enjoy the 250-coin celebration!";
   $("eventAnnouncement").classList.remove("hidden");
 
-  let alreadyClaimed=false;
-  try{alreadyClaimed=localStorage.getItem(EVENT_CLAIM_KEY)==="claimed";}catch(e){}
+  let alreadyClaimed = false;
+  try {
+    alreadyClaimed = localStorage.getItem(EVENT_CLAIM_KEY)==="claimed";
+  } catch(e) {}
 
-  if(!alreadyClaimed){
-    state.coins+=250;
-
-    try{localStorage.setItem(EVENT_CLAIM_KEY,"claimed");}catch(e){}
+  if (!alreadyClaimed) {
+    state.coins += 250;
+    try {
+      localStorage.setItem(EVENT_CLAIM_KEY,"claimed");
+    } catch(e) {}
 
     update();
     save();
-
-    setAdminStatus("Golden Fish Event started! +250 coins awarded once in this browser.");
+    setAdminStatus("Golden Fish Event started! +250 coins awarded.");
     toast("Golden Fish Event started! +250 coins!");
-  }else{
-    setAdminStatus("Golden Fish Event is active. Its 250-coin reward was already claimed in this browser, so no extra coins were added.");
-    toast("Event already claimed here. No duplicate coins added.");
+  } else {
+    setAdminStatus("Event is active. Its reward was already claimed in this browser.");
+    toast("Event reward already claimed here.");
   }
 
-  $("startEventBtn").disabled=true;
-  $("startEventBtn").textContent=alreadyClaimed?"✓ Reward Already Claimed":"✓ Event Started";
+  $("startEventBtn").disabled = true;
+  $("startEventBtn").textContent = alreadyClaimed
+    ? "✓ Reward Already Claimed"
+    : "✓ Event Started";
 }
 
-function restoreEventPanel(){
-  let eventState=getEventState();
-
-  if(eventState.active){
-    $("eventAnnouncement").textContent="🎉 EVENT LIVE: "+eventState.name+"!";
+function restoreEventPanel() {
+  const eventState = getEventState();
+  if (eventState.active) {
+    $("eventAnnouncement").textContent = "🎉 EVENT LIVE: "+eventState.name+"!";
     $("eventAnnouncement").classList.remove("hidden");
   }
 
-  let alreadyClaimed=false;
-  try{alreadyClaimed=localStorage.getItem(EVENT_CLAIM_KEY)==="claimed";}catch(e){}
+  let alreadyClaimed = false;
+  try {
+    alreadyClaimed = localStorage.getItem(EVENT_CLAIM_KEY)==="claimed";
+  } catch(e) {}
 
-  if(alreadyClaimed){
-    $("startEventBtn").disabled=true;
-    $("startEventBtn").textContent="✓ Reward Already Claimed";
+  if (alreadyClaimed) {
+    $("startEventBtn").disabled = true;
+    $("startEventBtn").textContent = "✓ Reward Already Claimed";
   }
 }
 
-$("unlockAdminBtn").addEventListener("click",unlockAdmin);
-$("adminCode").addEventListener("keydown",e=>{if(e.key==="Enter")unlockAdmin();});
-$("startEventBtn").addEventListener("click",startGoldenFishEvent);
+/* Double-click level change */
+function changeOwnerLevel() {
+  const input = $("ownerLevel").value.trim();
+  const level = Number(input);
 
-restoreEventPanel();
+  if (input==="" || !Number.isSafeInteger(level) ||
+      level<1 || level>MAX_OWNER_LEVEL) {
+    ownerMessage("Enter a whole-number level from 1 to 1,000,000.");
+    return;
+  }
+
+  state.xp = (level-1)*100;
+  state.level = level;
+
+  update();
+  save();
+
+  ownerMessage("Level changed to "+level+"!");
+  toast("Level changed to "+level+"!");
+}
+
+/* Double-click coin reward */
+function giveOwnerCoins() {
+  const input = $("ownerCoins").value.trim();
+  const amount = Number(input);
+
+  if (input==="" || !Number.isSafeInteger(amount) ||
+      amount<1 || amount>MAX_OWNER_COINS) {
+    ownerMessage("Enter a whole number from 1 to 1 Qa coins.");
+    return;
+  }
+
+  if (state.coins+amount>Number.MAX_SAFE_INTEGER) {
+    ownerMessage("The resulting balance would be too large. Try a smaller amount.");
+    return;
+  }
+
+  state.coins += amount;
+  update();
+  save();
+
+  ownerMessage("Added "+amount.toLocaleString()+" coins!");
+  toast("Added "+amount.toLocaleString()+" coins!");
+  $("ownerCoins").value = "";
+}
+
+/* Connect buttons */
+$("unlockAdminBtn").addEventListener("click",unlockAdmin);
+$("adminCode").addEventListener("keydown",e=>{
+  if (e.key==="Enter") unlockAdmin();
+});
+$("startEventBtn").addEventListener("click",startGoldenFishEvent);
+$("changeLevelBtn").addEventListener("dblclick",changeOwnerLevel);
+$("giveCoinsBtn").addEventListener("dblclick",giveOwnerCoins);
 
 $("castBtn").addEventListener("click",cast);
 $("buyLine").addEventListener("click",buyLine);
 $("buyBait").addEventListener("click",buyBait);
 $("buyHint").addEventListener("click",buyHint);
-$("shopJump").addEventListener("click",()=>{$("shopPanel").scrollIntoView({behavior:"smooth",block:"center"});});
+$("shopJump").addEventListener("click",()=>{
+  $("shopPanel").scrollIntoView({behavior:"smooth",block:"center"});
+});
 
 $("resetBtn").addEventListener("click",()=>{
-  if(confirm("Reset all Word Fishing progress saved in this browser? This cannot be undone.")){
-    state=fresh();
+  if (confirm("Reset all Word Fishing progress saved in this browser? This cannot be undone.")) {
+    state = fresh();
     save();
     setIdle("Welcome back, fisher! Cast your line to begin.");
     update();
@@ -799,6 +986,7 @@ $("resetBtn").addEventListener("click",()=>{
   }
 });
 
+restoreEventPanel();
 update();
 setIdle("Welcome to Word Fishing! Cast your line to hook your first vocabulary fish.");
 })();
