@@ -27,7 +27,7 @@ main{max-width:1100px;margin:auto;padding:8px 16px 30px;display:grid;grid-templa
 .scene{position:relative;height:390px;min-height:300px;background:linear-gradient(#8de7ff,#087dba);overflow:hidden}
 #underwater3d{position:absolute;inset:0;width:100%;height:100%;display:block}
 .scene-label,.scene-bottom{z-index:5}
-.word-float{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);z-index:6;background:#fff3;border:2px solid #ffffffc9;color:#fff;text-shadow:0 2px 5px #00384b;padding:10px 18px;border-radius:16px;font-size:clamp(1.2rem,4vw,2rem);font-weight:1000;letter-spacing:1px;backdrop-filter:blur(5px);text-align:center;pointer-events:none;box-shadow:0 6px 25px #00384b55}
+.word-float{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);z-index:6;background:#ffffff33;border:2px solid #ffffffc9;color:#fff;text-shadow:0 2px 5px #00384b;padding:10px 18px;border-radius:16px;font-size:clamp(1.2rem,4vw,2rem);font-weight:1000;letter-spacing:1px;backdrop-filter:blur(5px);text-align:center;pointer-events:none;box-shadow:0 6px 25px #00384b55}
 .word-float small{display:block;font-size:.7rem;letter-spacing:0}
 .scene-underwater{position:absolute;bottom:0;left:0;right:0;height:24%;z-index:1;background:linear-gradient(#ffffff00,#ffe0a8a8);pointer-events:none}
 .scene-label{position:absolute;left:14px;top:12px;background:#ffffffdb;border-radius:999px;padding:7px 11px;font-weight:900;font-size:.9rem}
@@ -77,96 +77,94 @@ footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
 </header>
 
 <main>
-  <section class="panel">
-    <div class="scene" aria-label="Interactive 3D underwater fishing scene">
-      <canvas id="underwater3d"></canvas>
-      <div class="scene-label" id="sceneStatus">3D Underwater · Zone 1</div>
-      <div class="word-float" id="underwaterWord"><small>YOUR NEXT CATCH</small>🐟 Dive in!</div>
-      <div class="scene-underwater"></div>
-      <div class="scene-bottom"><span id="sceneMessage">Ready to fish?</span><span id="zoneLabel">🌿 Starter Pond</span></div>
-    </div>
-    <div class="controls">
-      <button class="primary" id="castBtn">🎣 Cast Line</button>
-      <button class="gold" id="shopJump">🛒 Open Shop</button>
-      <button class="soft" id="resetBtn">↻ Reset</button>
-      <p class="small-note" id="controlHint">Cast a line to hook a vocabulary fish!</p>
-    </div>
-  </section>
-
-  <div class="side">
-    <section class="panel" id="questionPanel">
-      <div class="card-head"><h2>📚 Fishy Word Challenge</h2><span class="pill" id="questionCount">Ready</span></div>
-      <div class="content" id="questionContent">
-        <p>Cast your line to catch a fish. Then answer two questions: choose a synonym and the word's meaning.</p>
-        <p class="small-note">Correct answers earn coins and XP. A wrong answer lets the fish escape and breaks your line!</p>
-      </div>
-      <div class="content hidden" id="quizContent">
-        <div class="question-type" id="questionType">Synonym</div>
-        <div class="question-word" id="wordText">Brave</div>
-        <p id="questionPrompt">Choose the closest synonym.</p>
-        <div class="options" id="options"></div>
-        <div id="feedback" class="feedback hidden" role="status"></div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="card-head"><h2>📈 Level Progress</h2><span id="xpText">0 / 100 XP</span></div>
-      <div class="content">
-        <div class="progress-wrap"><div class="progress" id="xpBar"></div></div>
-        <p class="small-note">Earn XP by answering correctly. Each level takes 100 XP.</p>
-        <div style="margin-top:12px;font-weight:900">Abilities</div>
-        <div class="ability"><div class="ability-icon">🔁</div><div class="ability-text"><strong>Level 5 · Auto Cast</strong><small id="autoStatus">Locked — unlocks at level 5.</small></div></div>
-        <div class="ability"><div class="ability-icon">⚡</div><div class="ability-text"><strong>Level 10 · Instant Guess</strong><small id="instantStatus">Locked — unlocks at level 10.</small></div></div>
-        <div class="ability"><div class="ability-icon">👑</div><div class="ability-text"><strong>Level 25 · Automatic Wins</strong><small id="winStatus">Locked — unlocks at level 25.</small></div></div>
-      </div>
-    </section>
-
-    <section class="panel" id="shopPanel">
-      <div class="card-head"><h2>🛒 Fisher's Shop</h2><span class="pill">Coins</span></div>
-      <div class="content">
-        <div class="shop-row"><div><strong>🧵 Replacement Line</strong><small>Required after a wrong answer</small></div><button class="gold" id="buyLine">300 🪙</button></div>
-        <div class="shop-row"><div><strong>🪱 Lucky Bait</strong><small>Earn +10 bonus coins on your next correct catch</small></div><button class="soft" id="buyBait">80 🪙</button></div>
-        <div class="shop-row"><div><strong>📖 Word Guide</strong><small>Reveals a short hint on the next question</small></div><button class="soft" id="buyHint">50 🪙</button></div>
-        <p class="small-note" style="margin-top:10px" id="lineStatus">Fishing line: ready</p>
-      </div>
-    </section>
-
-    <section class="panel admin-panel" id="adminPanel">
-      <div class="card-head"><h2>🔐 Admin & Owner Panel</h2><span class="pill">Admin</span></div>
-      <div class="content">
-        <p class="small-note">Enter your access code to unlock the event and owner controls.</p>
-        <label for="adminCode"><strong>Access code</strong></label>
-        <input id="adminCode" type="password" autocomplete="off" placeholder="Enter admin code">
-        <button class="dark" id="unlockAdminBtn">🔓 Unlock Panel</button>
-        <div id="adminStatus" class="admin-status" role="status">Panel locked.</div>
-
-        <div id="adminControls" class="hidden">
-          <div class="event-banner">🐠 Golden Fish Event<br>
-            <span style="font-weight:700">Event reward: +250 coins once per browser.</span>
-          </div>
-          <button class="gold" id="startEventBtn">🎉 Start Golden Fish Event</button>
-          <p class="small-note">The event reward is awarded only once in this browser.</p>
-
-          <hr style="border:0;border-top:2px solid #d9edf2;width:100%">
-
-          <h3 style="margin:4px 0">👑 Owner Controls</h3>
-          <p class="small-note">Double-click a button to confirm the action.</p>
-
-          <label for="ownerLevel"><strong>Change Level</strong></label>
-          <input id="ownerLevel" type="number" min="1" max="1000000" step="1" placeholder="Level from 1 to 1,000,000">
-          <button class="dark" id="changeLevelBtn" type="button">👑 Double-click to Change Level</button>
-
-          <label for="ownerCoins"><strong>Give Yourself Coins</strong></label>
-          <input id="ownerCoins" type="number" min="1" max="1000000000000000" step="1" placeholder="Coins up to 1 Qa">
-          <button class="gold" id="giveCoinsBtn" type="button">🪙 Double-click to Give Coins</button>
-
-          <div id="ownerStatus" class="admin-status" role="status">Owner controls ready.</div>
-        </div>
-
-        <div id="eventAnnouncement" class="event-banner hidden" aria-live="polite"></div>
-      </div>
-    </section>
+<section class="panel">
+  <div class="scene" aria-label="Interactive 3D underwater fishing scene">
+    <canvas id="underwater3d"></canvas>
+    <div class="scene-label" id="sceneStatus">3D Underwater · Zone 1</div>
+    <div class="word-float" id="underwaterWord"><small>YOUR NEXT CATCH</small>🐟 Dive in!</div>
+    <div class="scene-underwater"></div>
+    <div class="scene-bottom"><span id="sceneMessage">Ready to fish?</span><span id="zoneLabel">🌿 Starter Pond</span></div>
   </div>
+  <div class="controls">
+    <button class="primary" id="castBtn">🎣 Cast Line</button>
+    <button class="gold" id="shopJump">🛒 Open Shop</button>
+    <button class="soft" id="resetBtn">↻ Reset</button>
+    <p class="small-note" id="controlHint">Cast a line to hook a vocabulary fish!</p>
+  </div>
+</section>
+
+<div class="side">
+<section class="panel" id="questionPanel">
+  <div class="card-head"><h2>📚 Fishy Word Challenge</h2><span class="pill" id="questionCount">Ready</span></div>
+  <div class="content" id="questionContent">
+    <p>Cast your line to catch a fish. Then answer two questions: choose a synonym and the word's meaning.</p>
+    <p class="small-note">Correct answers earn coins and XP. A wrong answer lets the fish escape and breaks your line!</p>
+  </div>
+  <div class="content hidden" id="quizContent">
+    <div class="question-type" id="questionType">Synonym</div>
+    <div class="question-word" id="wordText">Brave</div>
+    <p id="questionPrompt">Choose the closest synonym.</p>
+    <div class="options" id="options"></div>
+    <div id="feedback" class="feedback hidden" role="status"></div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="card-head"><h2>📈 Level Progress</h2><span id="xpText">0 / 100 XP</span></div>
+  <div class="content">
+    <div class="progress-wrap"><div class="progress" id="xpBar"></div></div>
+    <p class="small-note">Earn XP by answering correctly. Each level takes 100 XP.</p>
+    <div style="margin-top:12px;font-weight:900">Abilities</div>
+    <div class="ability"><div class="ability-icon">🔁</div><div class="ability-text"><strong>Level 5 · Auto Cast</strong><small id="autoStatus">Locked — unlocks at level 5.</small></div></div>
+    <div class="ability"><div class="ability-icon">⚡</div><div class="ability-text"><strong>Level 10 · Instant Guess</strong><small id="instantStatus">Locked — unlocks at level 10.</small></div></div>
+    <div class="ability"><div class="ability-icon">👑</div><div class="ability-text"><strong>Level 25 · Automatic Wins</strong><small id="winStatus">Locked — unlocks at level 25.</small></div></div>
+  </div>
+</section>
+
+<section class="panel" id="shopPanel">
+  <div class="card-head"><h2>🛒 Fisher's Shop</h2><span class="pill">Coins</span></div>
+  <div class="content">
+    <div class="shop-row"><div><strong>🧵 Replacement Line</strong><small>Required after a wrong answer</small></div><button class="gold" id="buyLine">300 🪙</button></div>
+    <div class="shop-row"><div><strong>🪱 Lucky Bait</strong><small>Earn +10 bonus coins on your next correct catch</small></div><button class="soft" id="buyBait">80 🪙</button></div>
+    <div class="shop-row"><div><strong>📖 Word Guide</strong><small>Reveals a short hint on the next question</small></div><button class="soft" id="buyHint">50 🪙</button></div>
+    <p class="small-note" style="margin-top:10px" id="lineStatus">Fishing line: ready</p>
+  </div>
+</section>
+
+<section class="panel admin-panel" id="adminPanel">
+  <div class="card-head"><h2>🔐 Admin & Owner Panel</h2><span class="pill">Admin</span></div>
+  <div class="content">
+    <p class="small-note">Enter your access code to unlock the event and owner controls.</p>
+    <label for="adminCode"><strong>Access code</strong></label>
+    <input id="adminCode" type="password" autocomplete="off" placeholder="Enter admin code">
+    <button class="dark" id="unlockAdminBtn">🔓 Unlock Panel</button>
+    <div id="adminStatus" class="admin-status" role="status">Panel locked.</div>
+
+    <div id="adminControls" class="hidden">
+      <div class="event-banner">🐠 Golden Fish Event<br>
+        <span style="font-weight:700">Event reward: +250 coins once per browser.</span>
+      </div>
+      <button class="gold" id="startEventBtn">🎉 Start Golden Fish Event</button>
+      <p class="small-note">The event reward is awarded only once in this browser.</p>
+      <hr style="border:0;border-top:2px solid #d9edf2;width:100%">
+      <h3 style="margin:4px 0">👑 Owner Controls</h3>
+      <p class="small-note">Tap a button and confirm the action when prompted.</p>
+
+      <label for="ownerLevel"><strong>Change Level</strong></label>
+      <input id="ownerLevel" type="number" min="1" max="1000000" step="1" placeholder="Level from 1 to 1,000,000">
+      <button class="dark" id="changeLevelBtn" type="button">👑 Change Level</button>
+
+      <label for="ownerCoins"><strong>Give Yourself Coins</strong></label>
+      <input id="ownerCoins" type="number" min="1" max="1000000000000000" step="1" placeholder="Coins up to 1 Qa">
+      <button class="gold" id="giveCoinsBtn" type="button">🪙 Give Coins</button>
+
+      <div id="ownerStatus" class="admin-status" role="status">Owner controls ready.</div>
+    </div>
+
+    <div id="eventAnnouncement" class="event-banner hidden" aria-live="polite"></div>
+  </div>
+</section>
+</div>
 </main>
 
 <footer>Word Fishing · Practice vocabulary, reel in rewards, and explore new levels. Progress saves in this browser.</footer>
@@ -174,254 +172,137 @@ footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
 
 <script>
 (() => {
-  const canvas = document.getElementById("underwater3d");
-  const wordLabel = document.getElementById("underwaterWord");
-
-  if (!canvas || !window.THREE) {
-    wordLabel.textContent = "3D scene could not load. Check your internet connection.";
+  const canvas=document.getElementById("underwater3d");
+  const wordLabel=document.getElementById("underwaterWord");
+  if(!canvas||!window.THREE){
+    wordLabel.textContent="3D scene could not load. Check your internet connection.";
     return;
   }
 
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x159fc5);
-  scene.fog = new THREE.Fog(0x159fc5, 9, 34);
+  const scene=new THREE.Scene();
+  scene.background=new THREE.Color(0x159fc5);
+  scene.fog=new THREE.Fog(0x159fc5,9,34);
+  const camera=new THREE.PerspectiveCamera(55,1,.1,100);
+  camera.position.set(0,4.5,12);
+  camera.lookAt(0,1,0);
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  renderer.shadowMap.enabled=true;
+  renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  scene.add(new THREE.HemisphereLight(0xc9f8ff,0x164e6c,2));
+  const sun=new THREE.DirectionalLight(0xffffff,2.2);
+  sun.position.set(-4,9,6);sun.castShadow=true;scene.add(sun);
 
-  const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 100);
-  camera.position.set(0, 4.5, 12);
-  camera.lookAt(0, 1, 0);
+  const water=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:0x087da8,roughness:.32,metalness:.1}));
+  water.rotation.x=-Math.PI/2;water.position.y=-1.7;water.receiveShadow=true;scene.add(water);
+  const sand=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:0xd8bd7a,roughness:1}));
+  sand.rotation.x=-Math.PI/2;sand.position.y=-3.4;scene.add(sand);
 
-  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-  scene.add(new THREE.HemisphereLight(0xc9f8ff, 0x164e6c, 2));
-  const sun = new THREE.DirectionalLight(0xffffff, 2.2);
-  sun.position.set(-4, 9, 6);
-  sun.castShadow = true;
-  scene.add(sun);
-
-  const water = new THREE.Mesh(
-    new THREE.PlaneGeometry(200, 200),
-    new THREE.MeshStandardMaterial({color:0x087da8,roughness:.32,metalness:.1})
-  );
-  water.rotation.x = -Math.PI/2;
-  water.position.y = -1.7;
-  water.receiveShadow = true;
-  scene.add(water);
-
-  const sand = new THREE.Mesh(
-    new THREE.PlaneGeometry(200, 200),
-    new THREE.MeshStandardMaterial({color:0xd8bd7a,roughness:1})
-  );
-  sand.rotation.x = -Math.PI/2;
-  sand.position.y = -3.4;
-  scene.add(sand);
-
-  for (let i=0; i<5; i++) {
-    const beam = new THREE.Mesh(
-      new THREE.ConeGeometry(.7, 10, 4, 1, true),
-      new THREE.MeshBasicMaterial({
-        color:0xb8f8ff,transparent:true,opacity:.09,
-        side:THREE.DoubleSide,depthWrite:false
-      })
-    );
-    beam.position.set(-5+i*2.5, 2, -3);
-    beam.rotation.z = Math.PI;
-    scene.add(beam);
+  for(let i=0;i<5;i++){
+    const beam=new THREE.Mesh(new THREE.ConeGeometry(.7,10,4,1,true),new THREE.MeshBasicMaterial({color:0xb8f8ff,transparent:true,opacity:.09,side:THREE.DoubleSide,depthWrite:false}));
+    beam.position.set(-5+i*2.5,2,-3);beam.rotation.z=Math.PI;scene.add(beam);
+  }
+  for(let i=0;i<17;i++){
+    const x=(Math.random()-.5)*24,z=-3-Math.random()*8,h=.7+Math.random()*1.6;
+    const plant=new THREE.Mesh(new THREE.ConeGeometry(.18,h,7),new THREE.MeshStandardMaterial({color:[0x2ec486,0x149c78,0x63d66f][i%3],roughness:.8}));
+    plant.position.set(x,-3.35+h/2,z);plant.rotation.z=(Math.random()-.5)*.35;scene.add(plant);
+  }
+  for(let i=0;i<12;i++){
+    const rock=new THREE.Mesh(new THREE.DodecahedronGeometry(.25+Math.random()*.45,0),new THREE.MeshStandardMaterial({color:0x698d9a,roughness:1}));
+    rock.position.set((Math.random()-.5)*24,-3.15,-2-Math.random()*10);rock.scale.y=.6;scene.add(rock);
   }
 
-  for (let i=0; i<17; i++) {
-    const x = (Math.random()-.5)*24;
-    const z = -3-Math.random()*8;
-    const h = .7+Math.random()*1.6;
-    const plant = new THREE.Mesh(
-      new THREE.ConeGeometry(.18,h,7),
-      new THREE.MeshStandardMaterial({
-        color:[0x2ec486,0x149c78,0x63d66f][i%3],roughness:.8
-      })
-    );
-    plant.position.set(x,-3.35+h/2,z);
-    plant.rotation.z = (Math.random()-.5)*.35;
-    scene.add(plant);
+  const fishMeshes=[],fishColors=[0xffb347,0xff6b8a,0x66e0d0,0xffdf5d,0xb59cff,0xff8c42];
+  function makeFish(x,y,z,scale,color,index){
+    const group=new THREE.Group();
+    const body=new THREE.Mesh(new THREE.SphereGeometry(.48,18,12),new THREE.MeshStandardMaterial({color,roughness:.35,metalness:.05}));
+    body.scale.set(1.35,.72,.72);body.castShadow=true;group.add(body);
+    const tail=new THREE.Mesh(new THREE.ConeGeometry(.34,.55,4),new THREE.MeshStandardMaterial({color,roughness:.4}));
+    tail.rotation.z=-Math.PI/2;tail.position.x=-.72;group.add(tail);
+    const eye=new THREE.Mesh(new THREE.SphereGeometry(.07,10,8),new THREE.MeshBasicMaterial({color:0x102d3c}));
+    eye.position.set(.42,.12,.27);group.add(eye);
+    const fin=new THREE.Mesh(new THREE.ConeGeometry(.18,.35,4),new THREE.MeshStandardMaterial({color:0xfff1a8}));
+    fin.rotation.z=Math.PI;fin.position.set(0,-.35,0);group.add(fin);
+    group.position.set(x,y,z);group.scale.setScalar(scale);
+    group.userData={homeX:x,homeY:y,homeZ:z,speed:.35+Math.random()*.45,phase:Math.random()*6,index};
+    scene.add(group);fishMeshes.push(group);return group;
   }
+  for(let i=0;i<9;i++)makeFish((Math.random()-.5)*15,-.1+Math.random()*2.3,-2-Math.random()*8,.55+Math.random()*.5,fishColors[i%fishColors.length],i);
 
-  for (let i=0; i<12; i++) {
-    const rock = new THREE.Mesh(
-      new THREE.DodecahedronGeometry(.25+Math.random()*.45,0),
-      new THREE.MeshStandardMaterial({color:0x698d9a,roughness:1})
-    );
-    rock.position.set((Math.random()-.5)*24,-3.15,-2-Math.random()*10);
-    rock.scale.y = .6;
-    scene.add(rock);
-  }
-
-  const fishMeshes = [];
-  const fishColors = [0xffb347,0xff6b8a,0x66e0d0,0xffdf5d,0xb59cff,0xff8c42];
-
-  function makeFish(x,y,z,scale,color,index) {
-    const group = new THREE.Group();
-    const body = new THREE.Mesh(
-      new THREE.SphereGeometry(.48,18,12),
-      new THREE.MeshStandardMaterial({color,roughness:.35,metalness:.05})
-    );
-    body.scale.set(1.35,.72,.72);
-    body.castShadow = true;
-    group.add(body);
-
-    const tail = new THREE.Mesh(
-      new THREE.ConeGeometry(.34,.55,4),
-      new THREE.MeshStandardMaterial({color,roughness:.4})
-    );
-    tail.rotation.z = -Math.PI/2;
-    tail.position.x = -.72;
-    group.add(tail);
-
-    const eye = new THREE.Mesh(
-      new THREE.SphereGeometry(.07,10,8),
-      new THREE.MeshBasicMaterial({color:0x102d3c})
-    );
-    eye.position.set(.42,.12,.27);
-    group.add(eye);
-
-    const fin = new THREE.Mesh(
-      new THREE.ConeGeometry(.18,.35,4),
-      new THREE.MeshStandardMaterial({color:0xfff1a8})
-    );
-    fin.rotation.z = Math.PI;
-    fin.position.set(0,-.35,0);
-    group.add(fin);
-
-    group.position.set(x,y,z);
-    group.scale.setScalar(scale);
-    group.userData = {
-      homeX:x,homeY:y,homeZ:z,
-      speed:.35+Math.random()*.45,
-      phase:Math.random()*6,index
-    };
-    scene.add(group);
-    fishMeshes.push(group);
-    return group;
-  }
-
-  for (let i=0; i<9; i++) {
-    makeFish(
-      (Math.random()-.5)*15,
-      -.1+Math.random()*2.3,
-      -2-Math.random()*8,
-      .55+Math.random()*.5,
-      fishColors[i%fishColors.length],
-      i
-    );
-  }
-
-  const bubbles = [];
-  for (let i=0; i<45; i++) {
-    const b = new THREE.Mesh(
-      new THREE.SphereGeometry(.045+Math.random()*.07,8,8),
-      new THREE.MeshBasicMaterial({color:0xc9faff,transparent:true,opacity:.55})
-    );
+  const bubbles=[];
+  for(let i=0;i<45;i++){
+    const b=new THREE.Mesh(new THREE.SphereGeometry(.045+Math.random()*.07,8,8),new THREE.MeshBasicMaterial({color:0xc9faff,transparent:true,opacity:.55}));
     b.position.set((Math.random()-.5)*18,-3+Math.random()*7,-1-Math.random()*12);
-    b.userData = {speed:.25+Math.random()*.55,offset:Math.random()*6};
-    scene.add(b);
-    bubbles.push(b);
+    b.userData={speed:.25+Math.random()*.55,offset:Math.random()*6};scene.add(b);bubbles.push(b);
   }
 
-  const hookGroup = new THREE.Group();
-  const hook = new THREE.Mesh(
-    new THREE.TorusGeometry(.22,.045,8,16,Math.PI*1.6),
-    new THREE.MeshStandardMaterial({color:0xf5f5f5,metalness:.85,roughness:.2})
-  );
-  hook.rotation.z = Math.PI/2;
-  hookGroup.add(hook);
+  const hookGroup=new THREE.Group();
+  const hook=new THREE.Mesh(new THREE.TorusGeometry(.22,.045,8,16,Math.PI*1.6),new THREE.MeshStandardMaterial({color:0xf5f5f5,metalness:.85,roughness:.2}));
+  hook.rotation.z=Math.PI/2;hookGroup.add(hook);
+  const hookStem=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,.65,8),new THREE.MeshStandardMaterial({color:0xf5f5f5,metalness:.8}));
+  hookStem.position.y=.35;hookGroup.add(hookStem);
+  hookGroup.position.set(0,1.3,1);hookGroup.visible=false;scene.add(hookGroup);
+  let caughtFish=null,targetHookY=1.3;
 
-  const hookStem = new THREE.Mesh(
-    new THREE.CylinderGeometry(.025,.025,.65,8),
-    new THREE.MeshStandardMaterial({color:0xf5f5f5,metalness:.8})
-  );
-  hookStem.position.y = .35;
-  hookGroup.add(hookStem);
-  hookGroup.position.set(0,1.3,1);
-  hookGroup.visible = false;
-  scene.add(hookGroup);
-
-  let caughtFish = null;
-  let targetHookY = 1.3;
-
-  function resize() {
-    const w = canvas.clientWidth || 640;
-    const h = canvas.clientHeight || 390;
-    renderer.setSize(w,h,false);
-    camera.aspect = w/h;
-    camera.updateProjectionMatrix();
+  function resize(){
+    const w=canvas.clientWidth||640,h=canvas.clientHeight||390;
+    renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
   }
-
-  if ("ResizeObserver" in window) {
-    new ResizeObserver(resize).observe(canvas.parentElement);
-  } else {
-    window.addEventListener("resize",resize);
-  }
+  if("ResizeObserver" in window)new ResizeObserver(resize).observe(canvas.parentElement);
+  else window.addEventListener("resize",resize);
   resize();
 
-  function animate(time) {
+  function animate(time){
     requestAnimationFrame(animate);
-    const t = time*.001;
-
-    fishMeshes.forEach(f => {
-      if (f === caughtFish) return;
-      f.position.x = f.userData.homeX+Math.sin(t*f.userData.speed+f.userData.phase)*1.25;
-      f.position.y = f.userData.homeY+Math.sin(t*1.6+f.userData.phase)*.18;
-      f.rotation.y = Math.sin(t*.6+f.userData.phase)*.18;
-      f.rotation.z = Math.sin(t*1.2+f.userData.phase)*.06;
+    const t=time*.001;
+    fishMeshes.forEach(f=>{
+      if(f===caughtFish)return;
+      f.position.x=f.userData.homeX+Math.sin(t*f.userData.speed+f.userData.phase)*1.25;
+      f.position.y=f.userData.homeY+Math.sin(t*1.6+f.userData.phase)*.18;
+      f.rotation.y=Math.sin(t*.6+f.userData.phase)*.18;
+      f.rotation.z=Math.sin(t*1.2+f.userData.phase)*.06;
     });
-
-    bubbles.forEach(b => {
-      b.position.y += b.userData.speed*.012;
-      if (b.position.y > 3.5) b.position.y = -3.2;
-      b.position.x += Math.sin(t+b.userData.offset)*.002;
+    bubbles.forEach(b=>{
+      b.position.y+=b.userData.speed*.012;
+      if(b.position.y>3.5)b.position.y=-3.2;
+      b.position.x+=Math.sin(t+b.userData.offset)*.002;
     });
-
-    hookGroup.position.y += (targetHookY-hookGroup.position.y)*.06;
-    camera.position.x = Math.sin(t*.12)*.22;
-    camera.lookAt(0,.4,0);
-    renderer.render(scene,camera);
+    hookGroup.position.y+=(targetHookY-hookGroup.position.y)*.06;
+    camera.position.x=Math.sin(t*.12)*.22;
+    camera.lookAt(0,.4,0);renderer.render(scene,camera);
   }
   requestAnimationFrame(animate);
 
-  window.WordFishing3D = {
-    hook(word) {
-      hookGroup.visible = true;
-      targetHookY = -.1;
-      wordLabel.innerHTML = "<small>YOU CAUGHT A FISH!</small>"+String(word).toUpperCase();
+  window.WordFishing3D={
+    hook(word){
+      hookGroup.visible=true;targetHookY=-.1;
+      wordLabel.innerHTML="<small>YOU CAUGHT A FISH!</small>"+String(word).toUpperCase();
       wordLabel.classList.remove("hidden");
-      if (!fishMeshes.length) return;
-      caughtFish = fishMeshes[Math.floor(Math.random()*fishMeshes.length)];
-      caughtFish.position.set(.7,.1,1.1);
-      caughtFish.scale.setScalar(1.15);
-      caughtFish.rotation.y = Math.PI;
+      if(!fishMeshes.length)return;
+      caughtFish=fishMeshes[Math.floor(Math.random()*fishMeshes.length)];
+      caughtFish.position.set(.7,.1,1.1);caughtFish.scale.setScalar(1.15);caughtFish.rotation.y=Math.PI;
     },
-    caught() {
-      hookGroup.visible = false;
-      if (caughtFish) {
+    caught(){
+      hookGroup.visible=false;
+      if(caughtFish){
         scene.remove(caughtFish);
-        const i = fishMeshes.indexOf(caughtFish);
-        if (i >= 0) fishMeshes.splice(i,1);
-        caughtFish = null;
+        const i=fishMeshes.indexOf(caughtFish);
+        if(i>=0)fishMeshes.splice(i,1);
+        caughtFish=null;
       }
-      wordLabel.innerHTML = "<small>GREAT CATCH!</small>🐟 Word learned!";
+      wordLabel.innerHTML="<small>GREAT CATCH!</small>🐟 Word learned!";
     },
-    escaped() {
-      hookGroup.visible = false;
-      if (caughtFish) {
+    escaped(){
+      hookGroup.visible=false;
+      if(caughtFish){
         caughtFish.position.set((Math.random()-.5)*12,-.5-Math.random()*1.5,-3-Math.random()*6);
-        caughtFish.scale.setScalar(.8);
-        caughtFish = null;
+        caughtFish.scale.setScalar(.8);caughtFish=null;
       }
-      wordLabel.innerHTML = "<small>THE FISH ESCAPED</small>🧵 Line broken";
+      wordLabel.innerHTML="<small>THE FISH ESCAPED</small>🧵 Line broken";
     },
-    ready() {
-      wordLabel.innerHTML = "<small>UNDERWATER VIEW</small>🐠 Cast to hook a fish!";
-      hookGroup.visible = false;
+    ready(){
+      wordLabel.innerHTML="<small>UNDERWATER VIEW</small>🐠 Cast to hook a fish!";
+      hookGroup.visible=false;
     }
   };
 })();
@@ -431,558 +312,304 @@ footer{text-align:center;padding:0 16px 24px;color:#547783;font-size:.85rem}
 (() => {
 "use strict";
 
-const SAVE_KEY = "wordFishingSave_v1";
-const ADMIN_CODE = "Jeremiah is DADDY";
-const EVENT_ID = "golden-fish-event-2026-10-v1";
-const EVENT_STATE_KEY = "wordFishingEventState_v1";
-const EVENT_CLAIM_KEY = "wordFishingEventClaim_" + EVENT_ID;
-const MAX_OWNER_COINS = 1000000000000000;
-const MAX_OWNER_LEVEL = 1000000;
+const SAVE_KEY="wordFishingSave_v1";
+const ADMIN_CODE="Jeremiah is DADDY";
+const EVENT_ID="golden-fish-event-2026-10-v1";
+const EVENT_STATE_KEY="wordFishingEventState_v1";
+const EVENT_CLAIM_KEY="wordFishingEventClaim_"+EVENT_ID;
+const MAX_OWNER_COINS=1000000000000000;
+const MAX_OWNER_LEVEL=1000000;
 
-const words = [
- {w:"brave",syn:"courageous",meaning:"Ready to face danger or difficulty",s:["cowardly","courageous","sleepy","careless"],m:["Feeling very tired","Ready to face danger or difficulty","Easy to break","Moving very slowly"]},
- {w:"enormous",syn:"huge",meaning:"Very large in size",s:["tiny","huge","quiet","gentle"],m:["Very large in size","Very loud","Not sure about something","Full of energy"]},
- {w:"ancient",syn:"old",meaning:"Belonging to a time long ago",s:["modern","young","old","bright"],m:["Belonging to a time long ago","Made very recently","Able to swim quickly","Easy to understand"]},
- {w:"swift",syn:"quick",meaning:"Moving or happening very fast",s:["slow","quick","heavy","careful"],m:["Moving or happening very fast","Hard to lift","Not making a sound","Full of color"]},
- {w:"delighted",syn:"pleased",meaning:"Very happy or pleased",s:["upset","confused","pleased","worried"],m:["Very happy or pleased","Feeling cold","Very difficult to find","Completely empty"]},
- {w:"fragile",syn:"delicate",meaning:"Easily broken or damaged",s:["strong","delicate","huge","rough"],m:["Easily broken or damaged","Able to run fast","Very old","Full of courage"]},
- {w:"observe",syn:"watch",meaning:"To look at something carefully",s:["ignore","watch","forget","create"],m:["To look at something carefully","To make something new","To leave in a hurry","To speak very loudly"]},
- {w:"silent",syn:"quiet",meaning:"Making little or no sound",s:["noisy","bright","quiet","wild"],m:["Making little or no sound","Full of people","Very hard to lift","Moving quickly"]},
- {w:"assist",syn:"help",meaning:"To give support or aid",s:["hinder","help","hide","argue"],m:["To give support or aid","To travel far away","To make a loud sound","To take something apart"]},
- {w:"scarce",syn:"rare",meaning:"Not common or hard to find",s:["plentiful","ordinary","rare","smooth"],m:["Not common or hard to find","Easy to find everywhere","Very noisy","Full of water"]},
- {w:"predict",syn:"forecast",meaning:"To say what you think will happen in the future",s:["remember","forecast","repair","discover"],m:["To say what you think will happen in the future","To fix something broken","To look at the past","To carry something"]},
- {w:"generous",syn:"giving",meaning:"Willing to give or share with others",s:["selfish","giving","angry","nervous"],m:["Willing to give or share with others","Always in a hurry","Hard to please","Unable to move"]},
- {w:"drowsy",syn:"sleepy",meaning:"Feeling like you need to sleep",s:["alert","sleepy","excited","brave"],m:["Feeling like you need to sleep","Feeling very hungry","Able to bend easily","Very bright"]},
- {w:"fortunate",syn:"lucky",meaning:"Having good things happen by chance",s:["unlucky","lucky","angry","weak"],m:["Having good things happen by chance","Feeling unwell","Very hard to understand","Making no sound"]},
- {w:"sturdy",syn:"strong",meaning:"Strong and not easily damaged",s:["fragile","strong","tiny","shy"],m:["Strong and not easily damaged","Easily broken","Very old-fashioned","Not easy to see"]},
- {w:"curious",syn:"inquisitive",meaning:"Wanting to learn or know more",s:["bored","inquisitive","careless","silent"],m:["Wanting to learn or know more","Feeling ready to sleep","Afraid of everything","Not willing to share"]},
- {w:"wander",syn:"roam",meaning:"To move around without a fixed path",s:["stay","roam","build","whisper"],m:["To move around without a fixed path","To sit perfectly still","To make a plan","To shout for help"]},
- {w:"purchase",syn:"buy",meaning:"To get something by paying for it",s:["sell","buy","borrow","drop"],m:["To get something by paying for it","To give something away","To lose something","To make something grow"]},
- {w:"mend",syn:"repair",meaning:"To fix something that is broken or damaged",s:["break","repair","hide","trade"],m:["To fix something that is broken or damaged","To make something disappear","To go on a trip","To choose between options"]},
- {w:"astonished",syn:"amazed",meaning:"Very surprised",s:["bored","amazed","sleepy","calm"],m:["Very surprised","Not interested","Feeling cold","Moving very slowly"]},
- {w:"humble",syn:"modest",meaning:"Not acting as if you are better than others",s:["proud","modest","loud","greedy"],m:["Not acting as if you are better than others","Wanting everything for yourself","Feeling very tired","Easy to damage"]},
- {w:"eager",syn:"keen",meaning:"Very excited and ready to do something",s:["unwilling","keen","sleepy","uncertain"],m:["Very excited and ready to do something","Not wanting to try","Feeling ill","Hard to find"]},
- {w:"vivid",syn:"bright",meaning:"Very clear, strong, or colorful",s:["dull","bright","weak","quiet"],m:["Very clear, strong, or colorful","Not making any sound","Very old","Easy to break"]},
- {w:"weary",syn:"tired",meaning:"Very tired, especially after effort",s:["energetic","tired","curious","cheerful"],m:["Very tired, especially after effort","Full of energy","Ready to share","Very surprised"]},
- {w:"beneath",syn:"under",meaning:"In a lower position than something",s:["above","beside","under","beyond"],m:["In a lower position than something","At a higher level","Far away from everything","In the middle of something"]}
+const words=[
+{w:"brave",syn:"courageous",meaning:"Ready to face danger or difficulty",s:["cowardly","courageous","sleepy","careless"],m:["Feeling very tired","Ready to face danger or difficulty","Easy to break","Moving very slowly"]},
+{w:"enormous",syn:"huge",meaning:"Very large in size",s:["tiny","huge","quiet","gentle"],m:["Very large in size","Very loud","Not sure about something","Full of energy"]},
+{w:"ancient",syn:"old",meaning:"Belonging to a time long ago",s:["modern","young","old","bright"],m:["Belonging to a time long ago","Made very recently","Able to swim quickly","Easy to understand"]},
+{w:"swift",syn:"quick",meaning:"Moving or happening very fast",s:["slow","quick","heavy","careful"],m:["Moving or happening very fast","Hard to lift","Not making a sound","Full of color"]},
+{w:"delighted",syn:"pleased",meaning:"Very happy or pleased",s:["upset","confused","pleased","worried"],m:["Very happy or pleased","Feeling cold","Very difficult to find","Completely empty"]},
+{w:"fragile",syn:"delicate",meaning:"Easily broken or damaged",s:["strong","delicate","huge","rough"],m:["Easily broken or damaged","Able to run fast","Very old","Full of courage"]},
+{w:"observe",syn:"watch",meaning:"To look at something carefully",s:["ignore","watch","forget","create"],m:["To look at something carefully","To make something new","To leave in a hurry","To speak very loudly"]},
+{w:"silent",syn:"quiet",meaning:"Making little or no sound",s:["noisy","bright","quiet","wild"],m:["Making little or no sound","Full of people","Very hard to lift","Moving quickly"]},
+{w:"assist",syn:"help",meaning:"To give support or aid",s:["hinder","help","hide","argue"],m:["To give support or aid","To travel far away","To make a loud sound","To take something apart"]},
+{w:"scarce",syn:"rare",meaning:"Not common or hard to find",s:["plentiful","ordinary","rare","smooth"],m:["Not common or hard to find","Easy to find everywhere","Very noisy","Full of water"]},
+{w:"predict",syn:"forecast",meaning:"To say what you think will happen in the future",s:["remember","forecast","repair","discover"],m:["To say what you think will happen in the future","To fix something broken","To look at the past","To carry something"]},
+{w:"generous",syn:"giving",meaning:"Willing to give or share with others",s:["selfish","giving","angry","nervous"],m:["Willing to give or share with others","Always in a hurry","Hard to please","Unable to move"]},
+{w:"drowsy",syn:"sleepy",meaning:"Feeling like you need to sleep",s:["alert","sleepy","excited","brave"],m:["Feeling like you need to sleep","Feeling very hungry","Able to bend easily","Very bright"]},
+{w:"fortunate",syn:"lucky",meaning:"Having good things happen by chance",s:["unlucky","lucky","angry","weak"],m:["Having good things happen by chance","Feeling unwell","Very hard to understand","Making no sound"]},
+{w:"sturdy",syn:"strong",meaning:"Strong and not easily damaged",s:["fragile","strong","tiny","shy"],m:["Strong and not easily damaged","Easily broken","Very old-fashioned","Not easy to see"]},
+{w:"curious",syn:"inquisitive",meaning:"Wanting to learn or know more",s:["bored","inquisitive","careless","silent"],m:["Wanting to learn or know more","Feeling ready to sleep","Afraid of everything","Not willing to share"]},
+{w:"wander",syn:"roam",meaning:"To move around without a fixed path",s:["stay","roam","build","whisper"],m:["To move around without a fixed path","To sit perfectly still","To make a plan","To shout for help"]},
+{w:"purchase",syn:"buy",meaning:"To get something by paying for it",s:["sell","buy","borrow","drop"],m:["To get something by paying for it","To give something away","To lose something","To make something grow"]},
+{w:"mend",syn:"repair",meaning:"To fix something that is broken or damaged",s:["break","repair","hide","trade"],m:["To fix something that is broken or damaged","To make something disappear","To go on a trip","To choose between options"]},
+{w:"astonished",syn:"amazed",meaning:"Very surprised",s:["bored","amazed","sleepy","calm"],m:["Very surprised","Not interested","Feeling cold","Moving very slowly"]},
+{w:"humble",syn:"modest",meaning:"Not acting as if you are better than others",s:["proud","modest","loud","greedy"],m:["Not acting as if you are better than others","Wanting everything for yourself","Feeling very tired","Easy to damage"]},
+{w:"eager",syn:"keen",meaning:"Very excited and ready to do something",s:["unwilling","keen","sleepy","uncertain"],m:["Very excited and ready to do something","Not wanting to try","Feeling ill","Hard to find"]},
+{w:"vivid",syn:"bright",meaning:"Very clear, strong, or colorful",s:["dull","bright","weak","quiet"],m:["Very clear, strong, or colorful","Not making any sound","Very old","Easy to break"]},
+{w:"weary",syn:"tired",meaning:"Very tired, especially after effort",s:["energetic","tired","curious","cheerful"],m:["Very tired, especially after effort","Full of energy","Ready to share","Very surprised"]},
+{w:"beneath",syn:"under",meaning:"In a lower position than something",s:["above","beside","under","beyond"],m:["In a lower position than something","At a higher level","Far away from everything","In the middle of something"]}
 ];
 
-const fresh = () => ({
-  coins:300,xp:0,level:1,caught:0,lineReady:true,
-  phase:"idle",wordIndex:-1,step:0,roundWord:null,
-  used:[],bait:false,hint:false,autoCast:false,
-  instantGuess:false,autoWins:false
-});
+const fresh=()=>({coins:300,xp:0,level:1,caught:0,lineReady:true,phase:"idle",wordIndex:-1,step:0,roundWord:null,used:[],bait:false,hint:false,autoCast:false,instantGuess:false,autoWins:false});
+let state=load(),toastTimer=null;
+const $=id=>document.getElementById(id);
 
-let state = load();
-let toastTimer = null;
-const $ = id => document.getElementById(id);
-
-function load() {
-  try {
-    const v = JSON.parse(localStorage.getItem(SAVE_KEY));
-    if (v && typeof v.coins === "number") {
-      return {...fresh(),...v,phase:"idle",roundWord:null,step:0};
-    }
-  } catch(e) {}
+function load(){
+  try{
+    const v=JSON.parse(localStorage.getItem(SAVE_KEY));
+    if(v&&typeof v.coins==="number")return {...fresh(),...v,phase:"idle",roundWord:null,step:0};
+  }catch(e){}
   return fresh();
 }
-
-function save() {
-  try {
-    localStorage.setItem(SAVE_KEY,JSON.stringify({
-      ...state,phase:"idle",roundWord:null,step:0
-    }));
-  } catch(e) {}
+function save(){
+  try{localStorage.setItem(SAVE_KEY,JSON.stringify({...state,phase:"idle",roundWord:null,step:0}));}catch(e){}
 }
-
-function toast(msg) {
-  const t = $("toast");
-  t.textContent = msg;
-  t.classList.remove("hidden");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>t.classList.add("hidden"),2400);
+function toast(msg){
+  const t=$("toast");t.textContent=msg;t.classList.remove("hidden");
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.add("hidden"),2400);
 }
-
-function levelFor(xp) {
-  return Math.floor(xp/100)+1;
-}
-
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i=a.length-1;i>0;i--) {
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
+function levelFor(xp){return Math.floor(xp/100)+1}
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
   return a;
 }
-
-function update() {
-  state.level = levelFor(state.xp);
-  $("coins").textContent = state.coins.toLocaleString();
-  $("level").textContent = state.level.toLocaleString();
-  $("caught").textContent = state.caught;
-
-  const into = state.xp%100;
-  $("xpText").textContent = `${into} / 100 XP`;
-  $("xpBar").style.width = into+"%";
-
-  $("autoStatus").textContent = state.level>=5
-    ? "Unlocked! Auto Cast is active."
-    : "Locked — unlocks at level 5.";
-  $("instantStatus").textContent = state.level>=10
-    ? "Unlocked! Instant Guess is active."
-    : "Locked — unlocks at level 10.";
-  $("winStatus").textContent = state.level>=25
-    ? "Unlocked! Automatic Wins is active."
-    : "Locked — unlocks at level 25.";
-
-  $("buyLine").disabled = state.lineReady || state.coins<300;
-  $("buyLine").textContent = state.lineReady ? "Line Ready ✓" : "300 🪙";
-  $("buyBait").disabled = state.coins<80 || state.bait;
-  $("buyBait").textContent = state.bait ? "Bait Ready ✓" : "80 🪙";
-  $("buyHint").disabled = state.coins<50 || state.hint;
-  $("buyHint").textContent = state.hint ? "Hint Ready ✓" : "50 🪙";
-
-  $("lineStatus").textContent = state.lineReady
-    ? "Fishing line: ready"
-    : "Fishing line: broken — buy a replacement for 300 coins.";
-
-  $("castBtn").disabled = state.phase!=="idle" || !state.lineReady;
-  $("castBtn").textContent = !state.lineReady
-    ? "🧵 Line Broken"
-    : state.phase==="idle" ? "🎣 Cast Line" : "🐟 Fish on the line!";
-
-  $("sceneStatus").textContent =
-    `3D Underwater · Zone ${Math.min(5,Math.floor((state.level-1)/5)+1)}`;
-
-  const zones = [
-    "🌿 Starter Pond","🌳 Willow Lake","🌊 Coral Bay",
-    "🪸 Deep Reef","🌙 Moonlit Sea"
-  ];
-  $("zoneLabel").textContent = zones[Math.min(4,Math.floor((state.level-1)/5))];
-
-  $("controlHint").textContent = !state.lineReady
-    ? "Visit the shop to buy a replacement line."
-    : state.level>=25 ? "Automatic Wins is unlocked! Cast to earn a catch."
-    : state.level>=10 ? "Instant Guess is unlocked!"
-    : state.level>=5 ? "Auto Cast is unlocked!"
-    : "Cast a line to hook a vocabulary fish!";
+function update(){
+  state.level=levelFor(state.xp);
+  $("coins").textContent=state.coins.toLocaleString();
+  $("level").textContent=state.level.toLocaleString();
+  $("caught").textContent=state.caught;
+  const into=state.xp%100;
+  $("xpText").textContent=`${into} / 100 XP`;
+  $("xpBar").style.width=into+"%";
+  $("autoStatus").textContent=state.level>=5?"Unlocked! Auto Cast is active.":"Locked — unlocks at level 5.";
+  $("instantStatus").textContent=state.level>=10?"Unlocked! Instant Guess is active.":"Locked — unlocks at level 10.";
+  $("winStatus").textContent=state.level>=25?"Unlocked! Automatic Wins is active.":"Locked — unlocks at level 25.";
+  $("buyLine").disabled=state.lineReady||state.coins<300;
+  $("buyLine").textContent=state.lineReady?"Line Ready ✓":"300 🪙";
+  $("buyBait").disabled=state.coins<80||state.bait;
+  $("buyBait").textContent=state.bait?"Bait Ready ✓":"80 🪙";
+  $("buyHint").disabled=state.coins<50||state.hint;
+  $("buyHint").textContent=state.hint?"Hint Ready ✓":"50 🪙";
+  $("lineStatus").textContent=state.lineReady?"Fishing line: ready":"Fishing line: broken — buy a replacement for 300 coins.";
+  $("castBtn").disabled=state.phase!=="idle"||!state.lineReady;
+  $("castBtn").textContent=!state.lineReady?"🧵 Line Broken":state.phase==="idle"?"🎣 Cast Line":"🐟 Fish on the line!";
+  $("sceneStatus").textContent=`3D Underwater · Zone ${Math.min(5,Math.floor((state.level-1)/5)+1)}`;
+  const zones=["🌿 Starter Pond","🌳 Willow Lake","🌊 Coral Bay","🪸 Deep Reef","🌙 Moonlit Sea"];
+  $("zoneLabel").textContent=zones[Math.min(4,Math.floor((state.level-1)/5))];
+  $("controlHint").textContent=!state.lineReady?"Visit the shop to buy a replacement line.":state.level>=25?"Automatic Wins is unlocked! Cast to earn a catch.":state.level>=10?"Instant Guess is unlocked!":state.level>=5?"Auto Cast is unlocked!":"Cast a line to hook a vocabulary fish!";
 }
-
-function setIdle(message="Ready to fish?") {
-  if (window.WordFishing3D) window.WordFishing3D.ready();
-  state.phase = "idle";
-  state.roundWord = null;
-  state.step = 0;
-
+function setIdle(message="Ready to fish?"){
+  if(window.WordFishing3D)window.WordFishing3D.ready();
+  state.phase="idle";state.roundWord=null;state.step=0;
   $("quizContent").classList.add("hidden");
   $("questionContent").classList.remove("hidden");
-  $("questionContent").innerHTML =
-    `<p>${message}</p><p class="small-note">Answer both the synonym and meaning questions. Correct answers earn coins and XP. A wrong answer lets the fish escape and breaks your line!</p>`;
-
-  $("questionCount").textContent = "Ready";
-  $("sceneMessage").textContent = "Ready to fish?";
-  update();
-  save();
+  $("questionContent").innerHTML=`<p>${message}</p><p class="small-note">Answer both the synonym and meaning questions. Correct answers earn coins and XP. A wrong answer lets the fish escape and breaks your line!</p>`;
+  $("questionCount").textContent="Ready";$("sceneMessage").textContent="Ready to fish?";
+  update();save();
 }
-
-function chooseWord() {
-  let choices = words.map((_,i)=>i).filter(i=>!state.used.includes(i));
-  if (!choices.length) {
-    state.used = [];
-    choices = words.map((_,i)=>i);
-  }
+function chooseWord(){
+  let choices=words.map((_,i)=>i).filter(i=>!state.used.includes(i));
+  if(!choices.length){state.used=[];choices=words.map((_,i)=>i)}
   return choices[Math.floor(Math.random()*choices.length)];
 }
-
-function cast() {
-  if (state.phase!=="idle") return;
-  if (!state.lineReady) {
-    toast("Your line is broken. Buy a replacement for 300 coins.");
-    return;
-  }
-
-  state.phase = "quiz";
-  state.wordIndex = chooseWord();
-  state.roundWord = words[state.wordIndex];
-  state.step = 0;
-
-  if (window.WordFishing3D) window.WordFishing3D.hook(state.roundWord.w);
-
-  state.used.push(state.wordIndex);
-  state.used = state.used.slice(-words.length);
-
-  $("questionContent").classList.add("hidden");
-  $("quizContent").classList.remove("hidden");
-  $("sceneMessage").textContent = "A fish is hooked!";
-  $("questionCount").textContent = "Catch #"+(state.caught+1);
+function cast(){
+  if(state.phase!=="idle")return;
+  if(!state.lineReady){toast("Your line is broken. Buy a replacement for 300 coins.");return}
+  state.phase="quiz";state.wordIndex=chooseWord();state.roundWord=words[state.wordIndex];state.step=0;
+  if(window.WordFishing3D)window.WordFishing3D.hook(state.roundWord.w);
+  state.used.push(state.wordIndex);state.used=state.used.slice(-words.length);
+  $("questionContent").classList.add("hidden");$("quizContent").classList.remove("hidden");
+  $("sceneMessage").textContent="A fish is hooked!";$("questionCount").textContent="Catch #"+(state.caught+1);
   $("feedback").classList.add("hidden");
-
-  if (state.level>=25) {
-    automaticWin();
-    return;
-  }
-
-  showQuestion();
-  update();
+  if(state.level>=25){automaticWin();return}
+  showQuestion();update();
 }
-
-function showQuestion() {
-  if (state.phase!=="quiz") return;
-  const w = state.roundWord;
-
-  $("questionType").textContent = state.step===0
-    ? "Question 1 of 2 · Synonym"
-    : "Question 2 of 2 · Meaning";
-  $("wordText").textContent = w.w.charAt(0).toUpperCase()+w.w.slice(1);
-  $("questionPrompt").textContent = state.step===0
-    ? "Choose the closest synonym."
-    : "Choose the correct meaning.";
-
-  const opts = shuffle(state.step===0 ? w.s : w.m);
-  if (state.hint) {
-    $("questionPrompt").textContent += " Hint: "+
-      (state.step===0 ? `It means “${w.syn}.”`
-      : `${w.meaning.split(" ").slice(0,3).join(" ")}…`);
-  }
-
-  const wrap = $("options");
-  wrap.innerHTML = "";
+function showQuestion(){
+  if(state.phase!=="quiz")return;
+  const w=state.roundWord;
+  $("questionType").textContent=state.step===0?"Question 1 of 2 · Synonym":"Question 2 of 2 · Meaning";
+  $("wordText").textContent=w.w.charAt(0).toUpperCase()+w.w.slice(1);
+  $("questionPrompt").textContent=state.step===0?"Choose the closest synonym.":"Choose the correct meaning.";
+  const opts=shuffle(state.step===0?w.s:w.m);
+  if(state.hint)$("questionPrompt").textContent+=" Hint: "+(state.step===0?`It means “${w.syn}.”`:`${w.meaning.split(" ").slice(0,3).join(" ")}…`);
+  const wrap=$("options");wrap.innerHTML="";
   opts.forEach(opt=>{
-    const b = document.createElement("button");
-    b.className = "option";
-    b.textContent = opt;
-    b.addEventListener("click",()=>answer(opt,b));
-    wrap.appendChild(b);
+    const b=document.createElement("button");b.className="option";b.textContent=opt;
+    b.addEventListener("click",()=>answer(opt,b));wrap.appendChild(b);
   });
   $("feedback").classList.add("hidden");
-
-  if (state.level>=10) {
-    setTimeout(()=>{if(state.phase==="quiz")autoAnswer();},350);
-  }
+  if(state.level>=10)setTimeout(()=>{if(state.phase==="quiz")autoAnswer()},350);
 }
-
-function correctAnswer() {
-  return state.step===0 ? state.roundWord.syn : state.roundWord.meaning;
-}
-
-function answer(value,button) {
-  if (state.phase!=="quiz") return;
-  const correct = correctAnswer();
-
-  if (value!==correct) {
-    [...$("options").children].forEach(b=>{
-      b.disabled = true;
-      if (b.textContent===correct) b.classList.add("correct");
-    });
-    if (button) button.classList.add("wrong");
-    fail("Not quite! The correct answer was: "+correct+". The fish escaped and broke your line.");
-    return;
+function correctAnswer(){return state.step===0?state.roundWord.syn:state.roundWord.meaning}
+function answer(value,button){
+  if(state.phase!=="quiz")return;
+  const correct=correctAnswer();
+  if(value!==correct){
+    [...$("options").children].forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add("correct")});
+    if(button)button.classList.add("wrong");
+    fail("Not quite! The correct answer was: "+correct+". The fish escaped and broke your line.");return;
   }
-
-  [...$("options").children].forEach(b=>{
-    b.disabled = true;
-    if (b.textContent===correct) b.classList.add("correct");
-  });
-
-  if (state.step===0) {
-    $("feedback").textContent = "Correct! Now choose the word's meaning.";
+  [...$("options").children].forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add("correct")});
+  if(state.step===0){
+    $("feedback").textContent="Correct! Now choose the word's meaning.";
     $("feedback").classList.remove("hidden","bad");
-    state.step = 1;
-    setTimeout(()=>{if(state.phase==="quiz")showQuestion();},500);
-  } else {
-    winCatch();
-  }
+    state.step=1;setTimeout(()=>{if(state.phase==="quiz")showQuestion()},500);
+  }else winCatch();
 }
-
-function fail(msg) {
-  if (window.WordFishing3D) window.WordFishing3D.escaped();
-  state.phase = "failed";
-  state.lineReady = false;
-  state.roundWord = null;
-  state.step = 0;
-
-  $("feedback").textContent = msg;
-  $("feedback").classList.remove("hidden");
-  $("feedback").classList.add("bad");
-  $("sceneMessage").textContent = "Oh no! The fish got away!";
-  $("questionCount").textContent = "Line broken";
-
-  const b = document.createElement("button");
-  b.className = "gold";
-  b.textContent = "🛒 Buy a new line · 300 coins";
-  b.style.marginTop = "12px";
-  b.addEventListener("click",buyLine);
-  $("options").appendChild(b);
-
-  update();
-  save();
+function fail(msg){
+  if(window.WordFishing3D)window.WordFishing3D.escaped();
+  state.phase="failed";state.lineReady=false;state.roundWord=null;state.step=0;
+  $("feedback").textContent=msg;$("feedback").classList.remove("hidden");$("feedback").classList.add("bad");
+  $("sceneMessage").textContent="Oh no! The fish got away!";$("questionCount").textContent="Line broken";
+  const b=document.createElement("button");b.className="gold";b.textContent="🛒 Buy a new line · 300 coins";b.style.marginTop="12px";b.addEventListener("click",buyLine);$("options").appendChild(b);
+  update();save();
 }
-
-function winCatch() {
-  if (window.WordFishing3D) window.WordFishing3D.caught();
-
-  const wasBait = state.bait;
-  const reward = 25+(wasBait?10:0);
-  state.coins += reward;
-  state.xp += 25;
-  state.caught++;
-  state.bait = false;
-  state.hint = false;
-  state.level = levelFor(state.xp);
-  state.phase = "idle";
-  state.roundWord = null;
-  state.step = 0;
-
-  $("quizContent").classList.add("hidden");
-  $("questionContent").classList.remove("hidden");
-  $("questionContent").innerHTML =
-    `<div style="font-size:2rem;font-weight:1000;color:#168a68">🎉 Fish caught!</div><p>You answered both questions correctly.</p><p><strong>+${reward} coins</strong> · <strong>+25 XP</strong></p><p class="small-note">Keep fishing to discover more words and unlock new abilities.</p>`;
-  $("questionCount").textContent = "Catch complete";
-  $("sceneMessage").textContent = "Great catch! +"+reward+" coins";
-
-  update();
-  save();
-  toast("Nice catch! +"+reward+" coins and +25 XP");
-
-  if (state.level>=5 && state.level<25) {
-    setTimeout(()=>{if(state.phase==="idle"&&state.lineReady)cast();},900);
-  }
+function winCatch(){
+  if(window.WordFishing3D)window.WordFishing3D.caught();
+  const wasBait=state.bait,reward=25+(wasBait?10:0);
+  state.coins+=reward;state.xp+=25;state.caught++;state.bait=false;state.hint=false;
+  state.level=levelFor(state.xp);state.phase="idle";state.roundWord=null;state.step=0;
+  $("quizContent").classList.add("hidden");$("questionContent").classList.remove("hidden");
+  $("questionContent").innerHTML=`<div style="font-size:2rem;font-weight:1000;color:#168a68">🎉 Fish caught!</div><p>You answered both questions correctly.</p><p><strong>+${reward} coins</strong> · <strong>+25 XP</strong></p><p class="small-note">Keep fishing to discover more words and unlock new abilities.</p>`;
+  $("questionCount").textContent="Catch complete";$("sceneMessage").textContent="Great catch! +"+reward+" coins";
+  update();save();toast("Nice catch! +"+reward+" coins and +25 XP");
+  if(state.level>=5&&state.level<25)setTimeout(()=>{if(state.phase==="idle"&&state.lineReady)cast()},900);
 }
-
-function automaticWin() {
-  $("questionContent").classList.add("hidden");
-  $("quizContent").classList.remove("hidden");
-  $("questionType").textContent = "Level 25 · Automatic Wins";
-  $("wordText").textContent = state.roundWord.w;
-  $("questionPrompt").textContent = "Your ability caught this fish automatically!";
-  $("options").innerHTML = "";
-  winCatch();
+function automaticWin(){
+  $("questionContent").classList.add("hidden");$("quizContent").classList.remove("hidden");
+  $("questionType").textContent="Level 25 · Automatic Wins";$("wordText").textContent=state.roundWord.w;
+  $("questionPrompt").textContent="Your ability caught this fish automatically!";$("options").innerHTML="";winCatch();
 }
-
-function autoAnswer() {
-  if (state.phase!=="quiz") return;
-  const correct = correctAnswer();
-  const button = [...$("options").children].find(b=>b.textContent===correct);
+function autoAnswer(){
+  if(state.phase!=="quiz")return;
+  const correct=correctAnswer(),button=[...$("options").children].find(b=>b.textContent===correct);
   answer(correct,button);
 }
-
-function buyLine() {
-  if (state.lineReady) {
-    toast("Your fishing line is already ready.");
-    return;
-  }
-  if (state.coins<300) {
-    toast("You need 300 coins for a replacement line.");
-    return;
-  }
-
-  state.coins -= 300;
-  state.lineReady = true;
-  state.phase = "idle";
-  setIdle("Your new fishing line is ready! Cast when you're ready.");
-  toast("Replacement line purchased for 300 coins.");
+function buyLine(){
+  if(state.lineReady){toast("Your fishing line is already ready.");return}
+  if(state.coins<300){toast("You need 300 coins for a replacement line.");return}
+  state.coins-=300;state.lineReady=true;state.phase="idle";
+  setIdle("Your new fishing line is ready! Cast when you're ready.");toast("Replacement line purchased for 300 coins.");
 }
-
-function buyBait() {
-  if (state.bait) return;
-  if (state.coins<80) {
-    toast("Not enough coins!");
-    return;
-  }
-  state.coins -= 80;
-  state.bait = true;
-  update();
-  save();
-  toast("Lucky Bait ready: +10 coins on your next catch.");
+function buyBait(){
+  if(state.bait)return;
+  if(state.coins<80){toast("Not enough coins!");return}
+  state.coins-=80;state.bait=true;update();save();toast("Lucky Bait ready: +10 coins on your next catch.");
 }
-
-function buyHint() {
-  if (state.hint) return;
-  if (state.coins<50) {
-    toast("Not enough coins!");
-    return;
-  }
-  state.coins -= 50;
-  state.hint = true;
-  update();
-  save();
-  toast("Word Guide ready for your next question.");
+function buyHint(){
+  if(state.hint)return;
+  if(state.coins<50){toast("Not enough coins!");return}
+  state.coins-=50;state.hint=true;update();save();toast("Word Guide ready for your next question.");
 }
 
 /* ADMIN AND OWNER CONTROLS */
-
-function getEventState() {
-  try {
-    return JSON.parse(localStorage.getItem(EVENT_STATE_KEY)) ||
-      {active:false,name:"",startedAt:null};
-  } catch(e) {
-    return {active:false,name:"",startedAt:null};
-  }
+function getEventState(){
+  try{return JSON.parse(localStorage.getItem(EVENT_STATE_KEY))||{active:false,name:"",startedAt:null}}
+  catch(e){return {active:false,name:"",startedAt:null}}
 }
+function setAdminStatus(message){$("adminStatus").textContent=message}
+function ownerMessage(message){$("ownerStatus").textContent=message}
 
-function setAdminStatus(message) {
-  $("adminStatus").textContent = message;
-}
-
-function ownerMessage(message) {
-  $("ownerStatus").textContent = message;
-}
-
-function unlockAdmin() {
-  if ($("adminCode").value !== ADMIN_CODE) {
+function unlockAdmin(){
+  if($("adminCode").value!==ADMIN_CODE){
     setAdminStatus("Incorrect code. The panel is still locked.");
-    $("adminControls").classList.add("hidden");
-    toast("Incorrect admin code.");
-    return;
+    $("adminControls").classList.add("hidden");toast("Incorrect admin code.");return;
   }
-
   $("adminControls").classList.remove("hidden");
   setAdminStatus("Admin panel unlocked for this page session.");
-
-  const eventState = getEventState();
-  if (eventState.active) {
-    $("eventAnnouncement").textContent =
-      "🎉 EVENT LIVE: "+eventState.name+"!";
+  const eventState=getEventState();
+  if(eventState.active){
+    $("eventAnnouncement").textContent="🎉 EVENT LIVE: "+eventState.name+"!";
     $("eventAnnouncement").classList.remove("hidden");
   }
-
   restoreEventPanel();
 }
-
-function startGoldenFishEvent() {
-  let eventState = getEventState();
-
-  if (!eventState.active) {
-    eventState = {
-      active:true,
-      name:"Golden Fish Event",
-      startedAt:new Date().toISOString()
-    };
-    try {
-      localStorage.setItem(EVENT_STATE_KEY,JSON.stringify(eventState));
-    } catch(e) {}
+function startGoldenFishEvent(){
+  let eventState=getEventState();
+  if(!eventState.active){
+    eventState={active:true,name:"Golden Fish Event",startedAt:new Date().toISOString()};
+    try{localStorage.setItem(EVENT_STATE_KEY,JSON.stringify(eventState))}catch(e){}
   }
-
-  $("eventAnnouncement").textContent =
-    "🎉 GOLDEN FISH EVENT IS LIVE! Enjoy the 250-coin celebration!";
+  $("eventAnnouncement").textContent="🎉 GOLDEN FISH EVENT IS LIVE! Enjoy the 250-coin celebration!";
   $("eventAnnouncement").classList.remove("hidden");
-
-  let alreadyClaimed = false;
-  try {
-    alreadyClaimed = localStorage.getItem(EVENT_CLAIM_KEY)==="claimed";
-  } catch(e) {}
-
-  if (!alreadyClaimed) {
-    state.coins += 250;
-    try {
-      localStorage.setItem(EVENT_CLAIM_KEY,"claimed");
-    } catch(e) {}
-
-    update();
-    save();
-    setAdminStatus("Golden Fish Event started! +250 coins awarded.");
-    toast("Golden Fish Event started! +250 coins!");
-  } else {
-    setAdminStatus("Event is active. Its reward was already claimed in this browser.");
-    toast("Event reward already claimed here.");
+  let alreadyClaimed=false;
+  try{alreadyClaimed=localStorage.getItem(EVENT_CLAIM_KEY)==="claimed"}catch(e){}
+  if(!alreadyClaimed){
+    state.coins+=250;
+    try{localStorage.setItem(EVENT_CLAIM_KEY,"claimed")}catch(e){}
+    update();save();setAdminStatus("Golden Fish Event started! +250 coins awarded.");toast("Golden Fish Event started! +250 coins!");
+  }else{
+    setAdminStatus("Event is active. Its reward was already claimed in this browser.");toast("Event reward already claimed here.");
   }
-
-  $("startEventBtn").disabled = true;
-  $("startEventBtn").textContent = alreadyClaimed
-    ? "✓ Reward Already Claimed"
-    : "✓ Event Started";
+  $("startEventBtn").disabled=true;
+  $("startEventBtn").textContent=alreadyClaimed?"✓ Reward Already Claimed":"✓ Event Started";
 }
-
-function restoreEventPanel() {
-  const eventState = getEventState();
-  if (eventState.active) {
-    $("eventAnnouncement").textContent = "🎉 EVENT LIVE: "+eventState.name+"!";
+function restoreEventPanel(){
+  const eventState=getEventState();
+  if(eventState.active){
+    $("eventAnnouncement").textContent="🎉 EVENT LIVE: "+eventState.name+"!";
     $("eventAnnouncement").classList.remove("hidden");
   }
-
-  let alreadyClaimed = false;
-  try {
-    alreadyClaimed = localStorage.getItem(EVENT_CLAIM_KEY)==="claimed";
-  } catch(e) {}
-
-  if (alreadyClaimed) {
-    $("startEventBtn").disabled = true;
-    $("startEventBtn").textContent = "✓ Reward Already Claimed";
+  let alreadyClaimed=false;
+  try{alreadyClaimed=localStorage.getItem(EVENT_CLAIM_KEY)==="claimed"}catch(e){}
+  if(alreadyClaimed){
+    $("startEventBtn").disabled=true;
+    $("startEventBtn").textContent="✓ Reward Already Claimed";
   }
 }
 
-/* Double-click level change */
-function changeOwnerLevel() {
-  const input = $("ownerLevel").value.trim();
-  const level = Number(input);
-
-  if (input==="" || !Number.isSafeInteger(level) ||
-      level<1 || level>MAX_OWNER_LEVEL) {
-    ownerMessage("Enter a whole-number level from 1 to 1,000,000.");
-    return;
+/* FIXED: Owner level button works with one click and confirmation. */
+function changeOwnerLevel(){
+  const input=$("ownerLevel").value.trim(),level=Number(input);
+  if(input===""||!Number.isSafeInteger(level)||level<1||level>MAX_OWNER_LEVEL){
+    ownerMessage("Enter a whole-number level from 1 to 1,000,000.");return;
   }
-
-  state.xp = (level-1)*100;
-  state.level = level;
-
-  update();
-  save();
-
+  if(!confirm("Change your level to "+level+"?")){
+    ownerMessage("Level change cancelled.");return;
+  }
+  state.xp=(level-1)*100;
+  state.level=level;
+  update();save();
   ownerMessage("Level changed to "+level+"!");
   toast("Level changed to "+level+"!");
 }
 
-/* Double-click coin reward */
-function giveOwnerCoins() {
-  const input = $("ownerCoins").value.trim();
-  const amount = Number(input);
-
-  if (input==="" || !Number.isSafeInteger(amount) ||
-      amount<1 || amount>MAX_OWNER_COINS) {
-    ownerMessage("Enter a whole number from 1 to 1 Qa coins.");
-    return;
+/* FIXED: Owner coin button works with one click and confirmation. */
+function giveOwnerCoins(){
+  const input=$("ownerCoins").value.trim(),amount=Number(input);
+  if(input===""||!Number.isSafeInteger(amount)||amount<1||amount>MAX_OWNER_COINS){
+    ownerMessage("Enter a whole number from 1 to 1 Qa coins.");return;
   }
-
-  if (state.coins+amount>Number.MAX_SAFE_INTEGER) {
-    ownerMessage("The resulting balance would be too large. Try a smaller amount.");
-    return;
+  if(state.coins+amount>Number.MAX_SAFE_INTEGER){
+    ownerMessage("The resulting balance would be too large. Try a smaller amount.");return;
   }
-
-  state.coins += amount;
-  update();
-  save();
-
+  if(!confirm("Add "+amount.toLocaleString()+" coins to your balance?")){
+    ownerMessage("Coin reward cancelled.");return;
+  }
+  state.coins+=amount;
+  update();save();
   ownerMessage("Added "+amount.toLocaleString()+" coins!");
   toast("Added "+amount.toLocaleString()+" coins!");
-  $("ownerCoins").value = "";
+  $("ownerCoins").value="";
 }
 
-/* Connect buttons */
+/* CONNECT BUTTONS — owner controls use click, not double-click. */
 $("unlockAdminBtn").addEventListener("click",unlockAdmin);
-$("adminCode").addEventListener("keydown",e=>{
-  if (e.key==="Enter") unlockAdmin();
-});
+$("adminCode").addEventListener("keydown",e=>{if(e.key==="Enter")unlockAdmin()});
 $("startEventBtn").addEventListener("click",startGoldenFishEvent);
-$("changeLevelBtn").addEventListener("dblclick",changeOwnerLevel);
-$("giveCoinsBtn").addEventListener("dblclick",giveOwnerCoins);
+$("changeLevelBtn").addEventListener("click",changeOwnerLevel);
+$("giveCoinsBtn").addEventListener("click",giveOwnerCoins);
 
 $("castBtn").addEventListener("click",cast);
 $("buyLine").addEventListener("click",buyLine);
 $("buyBait").addEventListener("click",buyBait);
 $("buyHint").addEventListener("click",buyHint);
-$("shopJump").addEventListener("click",()=>{
-  $("shopPanel").scrollIntoView({behavior:"smooth",block:"center"});
-});
+$("shopJump").addEventListener("click",()=>$("shopPanel").scrollIntoView({behavior:"smooth",block:"center"}));
 
 $("resetBtn").addEventListener("click",()=>{
-  if (confirm("Reset all Word Fishing progress saved in this browser? This cannot be undone.")) {
-    state = fresh();
-    save();
+  if(confirm("Reset all Word Fishing progress saved in this browser? This cannot be undone.")){
+    state=fresh();save();
     setIdle("Welcome back, fisher! Cast your line to begin.");
-    update();
-    toast("Game progress reset.");
+    update();toast("Game progress reset.");
   }
 });
 
