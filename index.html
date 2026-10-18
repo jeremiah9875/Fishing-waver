@@ -66,7 +66,6 @@ header p{color:#c8f5ff;margin:0}
 }
 footer{text-align:center;color:#bcefff;padding:16px}
 @media(max-width:760px){#gameLayout{grid-template-columns:1fr}#sceneWrap{height:270px}.panel{padding:12px}}
-@media(prefers-reduced-motion:reduce){#goldenFish{animation-duration:20s}}
 </style>
 </head>
 <body>
@@ -133,6 +132,15 @@ footer{text-align:center;color:#bcefff;padding:16px}
 </div>
 
 <div class="card">
+<h2>👑 Owner Rod</h2>
+<p>A special rod that earns <b style="color:#ffe36b">100,000,000 coins per correct catch!</b></p>
+<input id="ownerRodCode" type="password" placeholder="Enter owner code">
+<button id="unlockOwnerRod" style="width:100%">Unlock Owner Rod</button>
+<button id="equipOwnerRod" style="width:100%;margin-top:10px" disabled>Equip Owner Rod</button>
+<p id="ownerRodStatus">🔒 Owner Rod locked.</p>
+</div>
+
+<div class="card">
 <h2>✨ Golden Fish Event</h2>
 <p>Find the golden fish for a one-time bonus of <b style="color:#ffe36b">250 coins!</b></p>
 <button id="goldenEventButton" style="width:100%">🐠 Find Golden Fish</button>
@@ -171,12 +179,16 @@ footer{text-align:center;color:#bcefff;padding:16px}
 <script>
 (() => {
 "use strict";
+const $=id=>document.getElementById(id);
+const OWNER_CODE="Jeremiah is DADDY";
+const ADMIN_CODE="Jeremiah is DADDY";
+const OWNER_ROD_REWARD=100000000;
 
-const $ = id => document.getElementById(id);
-const DEFAULT = {
+const DEFAULT={
   coins:0,xp:0,level:1,caught:0,afkCaught:0,
   upgrades:{line:0,bait:0,hint:0},
-  caughtWords:[],goldenClaimed:false
+  caughtWords:[],goldenClaimed:false,
+  ownerRodUnlocked:false,ownerRodEquipped:false
 };
 
 function loadState(){
@@ -248,10 +260,9 @@ function notice(message){
   clearTimeout(noticeTimer);
   noticeTimer=setTimeout(()=>$("notice").classList.remove("show"),2800);
 }
-
 function addXP(amount){
   state.xp+=amount;
-  while(state.level<1000000 && state.xp>=state.level*100){
+  while(state.level<1000000&&state.xp>=state.level*100){
     state.level++;
     notice("🎉 Level up! You reached level "+numberText(state.level)+"!");
   }
@@ -269,7 +280,6 @@ function render(){
   $("nextLevel").textContent=numberText(goal)+" XP";
   $("xpBar").style.width=pct+"%";
   $("progressText").textContent=numberText(state.xp)+" / "+numberText(goal)+" XP";
-
   $("caughtWords").textContent=state.caughtWords.length
     ?state.caughtWords.slice(-30).reverse().join(" • ")
     :"No fish caught yet. Cast your line!";
@@ -280,13 +290,13 @@ function render(){
 
   renderShop();
   renderAFK();
+  renderOwnerRod();
   saveState();
 }
 
 function renderShop(){
   const container=$("shopItems");
   container.replaceChildren();
-
   SHOP.forEach(item=>{
     const owned=state.upgrades[item.id]||0;
     const card=document.createElement("div");
@@ -298,7 +308,6 @@ function renderShop(){
     const button=document.createElement("button");
     const price=item.price*(item.id==="hint"?1:owned+1);
     button.textContent=item.id==="hint"?"Buy Hint — "+price+" coins":"Upgrade — "+price+" coins";
-
     button.addEventListener("click",()=>{
       if(state.coins<price){notice("You need "+price+" coins for that item.");return}
       state.coins-=price;
@@ -311,26 +320,56 @@ function renderShop(){
   });
 }
 
-/* FIXED: This is the only renderAFK function.
-   It unlocks AFK fishing at level 100 and updates the button. */
+/* One AFK rendering function. Level 100 unlocks the button. */
 function renderAFK(){
   const button=$("afkButton");
   const status=$("afkStatus");
   const unlocked=state.level>=100;
-
   button.disabled=!unlocked;
-  button.textContent=!unlocked
-    ?"🔒 AFK Fishing Locked"
-    :afkEnabled
-      ?"⏹ Stop AFK Fishing"
-      :"🤖 Start AFK Fishing";
-
+  button.textContent=!unlocked?"🔒 AFK Fishing Locked":
+    afkEnabled?"⏹ Stop AFK Fishing":"🤖 Start AFK Fishing";
   status.textContent=!unlocked
     ?"Reach level 100 to unlock automatic fishing. Current level: "+numberText(state.level)+"."
     :afkEnabled
       ?"AFK fishing is running! Fish caught automatically: "+numberText(state.afkCaught)
       :"Unlocked! Start AFK fishing to catch one fish per second.";
 }
+
+/* Owner Rod state and display */
+function renderOwnerRod(){
+  $("equipOwnerRod").disabled=!state.ownerRodUnlocked;
+  $("equipOwnerRod").textContent=state.ownerRodEquipped
+    ?"Unequip Owner Rod":"Equip Owner Rod";
+
+  if(!state.ownerRodUnlocked){
+    $("ownerRodStatus").textContent="🔒 Owner Rod locked. Enter the owner code to unlock it.";
+  }else if(state.ownerRodEquipped){
+    $("ownerRodStatus").textContent="👑 Owner Rod equipped! Each correct catch earns 100M coins.";
+  }else{
+    $("ownerRodStatus").textContent="✅ Owner Rod unlocked but not equipped.";
+  }
+}
+
+$("unlockOwnerRod").addEventListener("click",()=>{
+  if($("ownerRodCode").value!==OWNER_CODE){
+    notice("Incorrect owner code!");
+    return;
+  }
+  state.ownerRodUnlocked=true;
+  state.ownerRodEquipped=true;
+  $("ownerRodCode").value="";
+  render();
+  notice("👑 Owner Rod unlocked and equipped!");
+});
+
+$("equipOwnerRod").addEventListener("click",()=>{
+  if(!state.ownerRodUnlocked)return;
+  state.ownerRodEquipped=!state.ownerRodEquipped;
+  render();
+  notice(state.ownerRodEquipped
+    ?"👑 Owner Rod equipped — 100M coins per catch!"
+    :"Owner Rod unequipped.");
+});
 
 function showChoices(){
   const container=$("choices");
@@ -348,7 +387,6 @@ function castLine(){
   if(challengeActive){notice("Answer your current question first!");return}
   currentWord=WORDS[Math.floor(Math.random()*WORDS.length)];
   challengeActive=true;
-
   $("question").textContent="What does “"+currentWord.word+"” mean?";
   $("wordMeaning").textContent="Choose the correct meaning from the four answers.";
   $("feedback").textContent="";
@@ -383,20 +421,25 @@ function chooseAnswer(index,button){
   $("wordMeaning").textContent="Your Word: "+caughtWord.word+" — Meaning: "+caughtWord.meaning;
   $("sceneLabel").textContent="🐟 Catching "+caughtWord.word+"!";
 
-  const coinsEarned=25+(state.upgrades.line||0)*10;
+  /* Owner Rod reward overrides the normal coin reward. */
+  const coinsEarned=state.ownerRodEquipped
+    ?OWNER_ROD_REWARD
+    :25+(state.upgrades.line||0)*10;
   const xpEarned=25+(state.upgrades.bait||0)*10;
+
   state.coins+=coinsEarned;
   addXP(xpEarned);
   state.caught++;
   state.caughtWords.push(caughtWord.word);
   render();
-  notice("🐟 You caught "+caughtWord.word+"! +"+coinsEarned+" coins and +"+xpEarned+" XP!");
+
+  notice("🐟 You caught "+caughtWord.word+"! +"+numberText(coinsEarned)+" coins and +"+xpEarned+" XP!");
   currentWord=null;
 }
 
 $("castButton").addEventListener("click",castLine);
 
-// Golden Fish reward
+// Golden Fish bonus
 $("goldenEventButton").addEventListener("click",()=>{
   if(state.goldenClaimed){
     notice("You already claimed the Golden Fish bonus on this browser!");
@@ -421,7 +464,6 @@ function stopAFK(){
   renderAFK();
   saveState();
 }
-
 function startAFK(){
   if(state.level<100){
     notice("Reach level 100 to unlock AFK fishing.");
@@ -443,19 +485,14 @@ function startAFK(){
   renderAFK();
   notice("AFK fishing started! Keep this page open.");
 }
-
 $("afkButton").addEventListener("click",()=>{
   if(afkEnabled){
     stopAFK();
     notice("AFK fishing stopped.");
-  }else{
-    startAFK();
-  }
+  }else startAFK();
 });
 
 // Admin panel
-const ADMIN_CODE="Jeremiah is DADDY";
-
 $("adminLogin").addEventListener("click",()=>{
   if($("adminCode").value!==ADMIN_CODE){
     notice("Incorrect admin code.");
@@ -465,12 +502,10 @@ $("adminLogin").addEventListener("click",()=>{
   $("adminPanel").classList.add("visible");
   notice("Admin panel opened.");
 });
-
 $("adminClose").addEventListener("click",()=>{
   adminUnlocked=false;
   $("adminPanel").classList.remove("visible");
 });
-
 $("ownerLevelButton").addEventListener("click",()=>{
   if(!adminUnlocked)return;
   const value=Number($("ownerLevelInput").value);
@@ -484,7 +519,6 @@ $("ownerLevelButton").addEventListener("click",()=>{
   render();
   notice("Owner level updated.");
 });
-
 $("ownerCoinsButton").addEventListener("click",()=>{
   if(!adminUnlocked)return;
   const value=Number($("ownerCoinsInput").value);
@@ -516,7 +550,6 @@ function makeFish(color=0xffa43b,scale=1){
   group.scale.setScalar(scale);
   return group;
 }
-
 function spawnFish(){
   if(!fishGroup)return;
   const colors=[0xffa43b,0x42e6d0,0x7f9cff,0xff78c6];
@@ -527,7 +560,6 @@ function spawnFish(){
   sceneFish.push(fish);
   if(sceneFish.length>18)fishGroup.remove(sceneFish.shift());
 }
-
 function spawnGoldenFish(){
   if(!fishGroup)return;
   if(goldenSceneFish)fishGroup.remove(goldenSceneFish);
@@ -537,11 +569,11 @@ function spawnGoldenFish(){
   fishGroup.add(goldenSceneFish);
 }
 
-// Visible fishing line and hook
 function startFishingAnimation(){
   if(!scene)return;
   fishing=true;
   castStart=performance.now();
+
   if(lineMesh){
     scene.remove(lineMesh);
     lineMesh.geometry.dispose();
@@ -550,8 +582,7 @@ function startFishingAnimation(){
 
   lineMesh=new THREE.Line(
     new THREE.BufferGeometry().setFromPoints([
-      new THREE.Vector3(0,4,1),
-      new THREE.Vector3(0,1,1)
+      new THREE.Vector3(0,4,1),new THREE.Vector3(0,1,1)
     ]),
     new THREE.LineBasicMaterial({color:0xffffff})
   );
@@ -565,7 +596,6 @@ function startFishingAnimation(){
   scene.add(hookMesh);
   castTarget=sceneFish.length?sceneFish[Math.floor(Math.random()*sceneFish.length)]:null;
 }
-
 function updateFishingLine(t){
   if(!lineMesh||!hookMesh)return;
   let endY=1;
@@ -598,14 +628,11 @@ function updateFishingLine(t){
   }
 
   const top=new THREE.Vector3(0,4,1);
-  const end=new THREE.Vector3(
-    castTarget&&catchAnimation?castTarget.position.x:0,endY,1
-  );
+  const end=new THREE.Vector3(castTarget&&catchAnimation?castTarget.position.x:0,endY,1);
   lineMesh.geometry.dispose();
   lineMesh.geometry=new THREE.BufferGeometry().setFromPoints([top,end]);
   hookMesh.position.copy(end);
 }
-
 function initScene(){
   if(!window.THREE){
     $("sceneLabel").textContent="🌊 Underwater fishing adventure";
@@ -687,7 +714,7 @@ function initScene(){
   }
 }
 
-// Loading bubbles and progress
+// Loading screen bubbles
 for(let i=0;i<25;i++){
   const bubble=document.createElement("span");
   bubble.className="bubble";
@@ -703,12 +730,15 @@ for(let i=0;i<25;i++){
 let loadProgress=0;
 const loadStarted=Date.now();
 let pageLoaded=document.readyState==="complete";
+let loadingFinished=false;
 window.addEventListener("load",()=>{pageLoaded=true},{once:true});
 
 const loadingTimer=setInterval(()=>{
+  if(loadingFinished)return;
   loadProgress=Math.min(95,loadProgress+2+Math.random()*5);
   $("loadingBar").style.width=loadProgress+"%";
   $("loadingPercent").textContent=Math.floor(loadProgress)+"%";
+
   const messages=[
     "Diving into the underwater world...",
     "Finding colorful fish...",
@@ -719,6 +749,7 @@ const loadingTimer=setInterval(()=>{
   $("loadingMessage").textContent=messages[Math.min(4,Math.floor(loadProgress/20))];
 
   if(pageLoaded&&Date.now()-loadStarted>=1800){
+    loadingFinished=true;
     clearInterval(loadingTimer);
     $("loadingBar").style.width="100%";
     $("loadingPercent").textContent="100%";
