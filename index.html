@@ -1,1265 +1,767 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Word Fishing 3D</title>
-
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;font-family:Arial,sans-serif;color:white;
-  background:linear-gradient(#041b39,#07517c,#087a92);
-}
-button,input{font:inherit;padding:11px;border-radius:9px}
-button{
-  border:0;cursor:pointer;font-weight:bold;
-  background:linear-gradient(135deg,#8de9ff,#4ac5ff);
-  color:#06243e;transition:.15s;
-}
-button:hover{filter:brightness(1.1)}
-button:disabled{opacity:.5;cursor:not-allowed}
-input{width:100%;margin:5px 0;background:#052641;color:white;border:2px solid #478db2}
-header{text-align:center;padding:16px;background:#062748;border-bottom:2px solid #51c9ed}
-header p{color:#bdeeff}
-#stats{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding:12px}
-.stat,.card{background:#07365c;border:1px solid #378bb4;border-radius:13px;padding:12px}
-.stat{text-align:center;min-width:90px}
-.stat small{display:block;color:#bcecff}
-.stat strong{font-size:19px;color:#ffe36b}
-#xpWrap{max-width:650px;width:90%;margin:0 auto 12px}
-#xpOuter{height:12px;background:#05233c;border-radius:20px;overflow:hidden}
-#xpBar{height:100%;width:0;background:#55e6a5}
-#layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:12px;max-width:1450px;margin:auto;padding:12px}
-#sceneWrap{height:350px;position:relative;overflow:hidden;border:2px solid #41c5e8;border-radius:14px;background:linear-gradient(#087ca9,#005078,#001f46)}
-#scene{position:absolute;inset:0}
-#sceneLabel,#sceneHint{position:absolute;background:#001d39bb;padding:8px;border-radius:8px}
-#sceneLabel{top:10px;left:10px}
-#sceneHint{bottom:10px;left:10px;right:10px;text-align:center;font-size:13px}
-.card{margin-bottom:12px;background:linear-gradient(145deg,#0a4068,#032342)}
-h2{font-size:19px;color:#a6edff;margin-top:0}
-#question{text-align:center;font-size:21px;color:#fff0a0;line-height:1.5}
-#answers{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.answerBtn{min-height:48px;background:#d9f7ff}
-.answerBtn.correct{background:#55e6a5}
-.answerBtn.wrong{background:#ff8e96}
-#feedback{min-height:28px;padding:10px 0;font-weight:bold}
-#castBtn{width:100%;background:linear-gradient(135deg,#ffe36b,#ffae42);font-size:16px}
-.shopItem{background:#062d4a;border:1px solid #276a8e;border-radius:10px;padding:10px;margin:8px 0}
-.shopItem p{font-size:13px;color:#c2eaff}
-.shopItem button{width:100%}
-#caughtWords{max-height:170px;overflow:auto;font-size:13px;line-height:1.8}
-#goldenCard{border-color:#eacb51;background:linear-gradient(145deg,#634718,#173d5a)}
-#goldenCard h2{color:#ffe36b}
-#adminOpen{width:100%;background:#b9a7ff}
-#adminPanel{display:none;position:fixed;inset:0;overflow:auto;z-index:20;background:#00152aee;padding:15px}
-#adminPanel.visible{display:block}
-.adminBox{max-width:680px;margin:20px auto;background:#041b38;border:2px solid #b9a7ff;border-radius:16px;padding:18px}
-.adminBox h2{color:#d2c7ff}
-.adminAction{width:100%;margin-top:8px}
-.adminGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ownerRodCard{margin:12px 0;padding:14px;border:2px solid #ffe36b;border-radius:13px;background:linear-gradient(145deg,#563e0c,#102e4a)}
-.ownerRodCard h3{color:#ffe36b}
-.ownerRodCard p{font-size:13px;color:#fff0b5;line-height:1.5}
-#unlockOwnerRod,#equipOwnerRod{width:100%;background:linear-gradient(135deg,#ffe36b,#ffac38);margin-top:8px}
-#ownerRodStatus,#adminMessage{font-size:13px;color:#bdeeff}
-#adminClose{width:100%;background:#ff9b9b;margin-top:12px}
-#ownerOceanCard{
-  margin:12px 0;padding:15px;border:2px solid #54e7ff;
-  border-radius:14px;background:linear-gradient(145deg,#063f75,#061c50);
-}
-#ownerOceanCard h3{color:#70f1ff}
-#ownerOceanCard p{font-size:13px;line-height:1.5;color:#d2f8ff}
-#unlockOceanBtn,#enterOceanBtn,#levelUpBtn,#oceanCoinsBtn,#returnOceanBtn{
-  width:100%;margin-top:8px;
-}
-#unlockOceanBtn{background:linear-gradient(135deg,#b7f7ff,#44c7ff)}
-#enterOceanBtn{background:linear-gradient(135deg,#74fff0,#27b8b0)}
-#levelUpBtn{background:linear-gradient(135deg,#ffe36b,#ffae42)}
-#oceanCoinsBtn{background:linear-gradient(135deg,#baffaa,#53df7c)}
-#returnOceanBtn{background:linear-gradient(135deg,#d5c7ff,#9580ff)}
-#oceanStatus{font-size:13px;color:#a7f7ff;min-height:20px}
-#oceanControls{display:none}
-#oceanBanner{
-  display:none;text-align:center;margin:10px 12px;padding:15px;
-  border:2px solid #63f5ff;border-radius:13px;
-  background:linear-gradient(120deg,#062866,#075b9b,#063e75);
-  box-shadow:0 0 20px #37dfff55;
-}
-#oceanBanner h2{margin-bottom:5px;color:#7bf8ff}
-#oceanBanner p{margin:0;color:#d9fbff}
-#toast{display:none;position:fixed;z-index:30;bottom:20px;left:50%;transform:translateX(-50%);max-width:90%;padding:12px 18px;border:1px solid #80eaff;border-radius:12px;background:#031d34}
-#loadingScreen{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;flex-direction:column;background:radial-gradient(#087fa7,#042849 70%,#011327);transition:opacity .5s}
-#loadingScreen h1{color:#9af1ff;text-align:center}
-#loadingFish{font-size:65px;animation:swim 1.3s infinite alternate}
-@keyframes swim{from{transform:translateX(-30px)}to{transform:translateX(30px)}}
-footer{text-align:center;padding:15px;color:#a9e7f7;font-size:12px}
-@media(max-width:850px){#layout{grid-template-columns:1fr}#sceneWrap{height:300px}}
-@media(max-width:430px){.adminGrid{grid-template-columns:1fr}#question{font-size:18px}}
+body{margin:0;background:#031b35;color:#fff;font-family:Arial,sans-serif}
+header{padding:18px;text-align:center;background:linear-gradient(120deg,#064e79,#087f8c,#173b86)}
+h1{margin:0;font-size:clamp(27px,5vw,44px)}
+header p{margin:8px 0 0}
+.stats{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;padding:12px;background:#07172c}
+.stat{background:#123454;border:1px solid #28618b;border-radius:12px;padding:10px 14px;font-weight:bold}
+main{max-width:1100px;margin:auto;padding:14px;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr))}
+.panel{background:#0a2947;border:1px solid #20547a;border-radius:16px;padding:16px;min-width:0}
+.panel h2{margin:0 0 12px;color:#7ce8ff}
+#sceneWrap{position:relative;overflow:hidden;border-radius:14px;background:#062a52;min-height:270px}
+#scene{display:block;width:100%;height:300px}
+#sceneLabel{position:absolute;top:12px;left:12px;background:#001a30c9;padding:8px 12px;border-radius:10px;font-weight:bold}
+#sceneHint{position:absolute;bottom:12px;left:12px;right:12px;background:#001a30c9;padding:9px;border-radius:10px;text-align:center}
+button,input{font:inherit}
+button{background:#087da5;color:white;border:0;border-radius:10px;padding:11px 13px;margin:4px 2px;cursor:pointer;font-weight:bold}
+button:hover{filter:brightness(1.2)}
+button:disabled{opacity:.45;cursor:not-allowed}
+input{width:100%;padding:11px;margin:5px 0;border-radius:8px;border:1px solid #397da1;background:#031a30;color:white}
+.answer{display:block;width:100%;text-align:left;margin:7px 0;background:#16466b}
+.gold{background:#a86b05}
+.purple{background:#6936a1}
+.green{background:#08774f}
+.red{background:#9d2d44}
+.muted{color:#a9c9df;font-size:14px}
+#question{font-size:20px;font-weight:bold;line-height:1.4;margin:12px 0}
+#feedback{min-height:24px;color:#8cf6cb;font-weight:bold;margin-top:8px}
+#xpBarOuter{height:12px;border-radius:9px;background:#173953;overflow:hidden}
+#xpBar{height:100%;width:0;background:linear-gradient(90deg,#10d4a0,#7dffbd)}
+ul{padding-left:22px}
+li{margin:6px 0}
+.hidden{display:none!important}
+.badge{display:inline-block;background:#145b75;border-radius:8px;padding:5px 8px;margin:3px;font-size:13px}
+.fragment{display:inline-block;background:#263a69;border:1px solid #8e9dff;border-radius:8px;padding:9px;margin:4px}
+#toast{position:fixed;z-index:10;top:18px;left:50%;transform:translateX(-50%);background:#f7b82e;color:#211400;font-weight:bold;padding:14px 20px;border-radius:12px;box-shadow:0 5px 25px #0009;text-align:center;max-width:90%;display:none}
+hr{border:0;border-top:1px solid #28506e;margin:14px 0}
+small{color:#a9c9df}
 </style>
 </head>
-
 <body>
-
-<div id="loadingScreen">
-  <h1>🎣 WORD FISHING 3D</h1>
-  <div id="loadingFish">🐠</div>
-  <p>Exploring the underwater world...</p>
-</div>
-
 <header>
-  <h1>🎣 Word Fishing 3D</h1>
-  <p>Catch fish by mastering synonyms AND meanings!</p>
+<h1>🎣 Word Fishing 3D</h1>
+<p>Catch fish, master words, discover secrets, and explore the ocean!</p>
 </header>
 
-<div id="oceanBanner">
-  <h2>👑 OWNER OCEAN</h2>
-  <p>You entered the special ocean! Instant level-ups are available in the Owner Panel.</p>
+<div class="stats">
+<div class="stat">🪙 Coins: <span id="coins">600</span></div>
+<div class="stat">⭐ Level: <span id="level">1</span></div>
+<div class="stat">✨ XP: <span id="xp">0</span></div>
+<div class="stat">🐟 Caught: <span id="caught">0</span></div>
+<div class="stat">🎣 Line: <span id="lineLevel">Normal</span></div>
 </div>
 
-<div id="stats">
-  <div class="stat"><small>🪙 Coins</small><strong id="coins">600</strong></div>
-  <div class="stat"><small>⭐ Level</small><strong id="level">1</strong></div>
-  <div class="stat"><small>🐟 Caught</small><strong id="caught">0</strong></div>
-  <div class="stat"><small>✨ XP</small><strong id="xp">0</strong></div>
+<main>
+<section class="panel">
+<h2>🌊 Your Ocean</h2>
+<div id="sceneWrap">
+<canvas id="scene"></canvas>
+<div id="sceneLabel">NORMAL OCEAN</div>
+<div id="sceneHint">Cast your line and catch a word fish!</div>
 </div>
-
-<div id="xpWrap">
-  <div id="xpText">Level progress</div>
-  <div id="xpOuter"><div id="xpBar"></div></div>
-</div>
-
-<main id="layout">
-<section>
-  <div id="sceneWrap">
-    <div id="scene"></div>
-    <div id="sceneLabel">🌊 Underwater Explorer</div>
-    <div id="sceneHint">Answer the synonym, then answer the meaning to complete your catch!</div>
-  </div>
-
-  <div class="card" style="margin-top:12px;text-align:center">
-    <h2>🧠 Two-Part Word Challenge</h2>
-    <p id="question">Cast your line to catch a word!</p>
-    <div id="answers"></div>
-    <div id="feedback" aria-live="polite"></div>
-    <button id="castBtn">🎣 Cast Fishing Line</button>
-  </div>
-
-  <div class="card">
-    <h2>📘 Your Caught Words</h2>
-    <div id="caughtWords">No words caught yet. Start fishing!</div>
-  </div>
+<p class="muted">The fish you catch will give you a vocabulary challenge. Answer both parts correctly to earn your reward.</p>
+<button id="castBtn" class="green" onclick="castLine()">🎣 Cast Fishing Line</button>
+<button onclick="returnLine()">↩️ Reel In</button>
+<div id="question">Ready to fish? Press Cast Fishing Line!</div>
+<div id="answers"></div>
+<div id="feedback"></div>
 </section>
 
-<aside>
-  <div class="card">
-    <h2>🛒 Fishing Shop</h2>
-    <div class="shopItem">
-      <b>🧵 Replacement Line — 300 coins</b>
-      <p>Replace a broken line.</p>
-      <button id="buyLine">Buy Replacement Line</button>
-    </div>
-    <div class="shopItem">
-      <b>🍀 Lucky Bait — 80 coins</b>
-      <p>Earn 10 bonus coins on your next catch.</p>
-      <button id="buyBait">Buy Lucky Bait</button>
-    </div>
-    <div class="shopItem">
-      <b>📖 Word Guide — 50 coins</b>
-      <p>Show a hint for your next challenge.</p>
-      <button id="buyGuide">Buy Word Guide</button>
-    </div>
-    <div class="shopItem">
-      <b>🎣 Better Fishing Line</b>
-      <p>Each upgrade adds 10 coins to regular catches.</p>
-      <p>Upgrade cost: <span id="upgradeCost">200</span> coins.</p>
-      <button id="buyUpgrade">Upgrade Line</button>
-    </div>
-  </div>
+<section class="panel">
+<h2>📊 Your Progress</h2>
+<div id="xpBarOuter"><div id="xpBar"></div></div>
+<p id="xpProgress" class="muted">0 / 100 XP to next level</p>
+<p>Every completed word catch gives XP. Every 100 XP earns a level.</p>
+<hr>
+<h3>📚 Words You Caught</h3>
+<ul id="caughtWords"><li>No words caught yet.</li></ul>
+<button onclick="showCaughtWords()">Show All Words</button>
+</section>
 
-  <div class="card" id="goldenCard">
-    <h2>✨ Golden Fish Event</h2>
-    <p id="goldenStatus">Find the Golden Fish for a special reward!</p>
-    <button id="goldenBtn" style="width:100%;background:#ffe36b">Find Golden Fish</button>
-  </div>
+<section class="panel">
+<h2>🛒 Fishing Shop</h2>
+<p class="muted">Upgrade your line to increase your chance of finding special fish.</p>
+<div class="badge">Normal Line: 0.99%</div>
+<div class="badge">Level 25: 5%</div>
+<div class="badge">Level 50: 10%</div>
+<div class="badge">Level 100: 20%</div>
+<div class="badge">Owner Rod: 50%</div>
+<hr>
+<h3>🎣 Fishing Line Upgrades</h3>
+<button onclick="buyLine(25)">Buy Level 25 Line — 1,000 coins</button>
+<button onclick="buyLine(50)">Buy Level 50 Line — 5,000 coins</button>
+<button onclick="buyLine(100)">Buy Level 100 Line — 20,000 coins</button>
+<hr>
+<h3>🧰 Supplies</h3>
+<button onclick="buyReplacement()">Replacement Line — 300 coins</button>
+<button onclick="buyBait()">Lucky Bait — 80 coins</button>
+<button onclick="buyGuide()">Word Guide — 50 coins</button>
+<p id="shopMessage" class="muted"></p>
+</section>
 
-  <div class="card">
-    <h2>🤖 AFK Fishing</h2>
-    <p id="afkStatus" style="font-size:13px">Unlock at Level 100. Keep the game open to earn rewards automatically.</p>
-    <button id="afkBtn" style="width:100%">AFK Fishing: OFF</button>
-  </div>
+<section class="panel">
+<h2>🧩 Secret Code Fragments</h2>
+<p>Special fish can carry pieces of a secret code. Collect all five unique fragments to unlock a hidden game mode!</p>
+<div id="fragmentDisplay"></div>
+<p id="fragmentProgress">Fragments collected: 0 / 5</p>
+<div id="secretModeBox" class="hidden">
+<hr>
+<h3>🌌 Secret Deep-Sea Challenge</h3>
+<p>You discovered the secret mode!</p>
+<button class="purple" onclick="startSecretMode()">Enter Secret Game Mode</button>
+<div id="secretGame" class="hidden">
+<p id="secretQuestion"></p>
+<div id="secretAnswers"></div>
+<p id="secretFeedback"></p>
+<button onclick="exitSecretMode()">Leave Secret Mode</button>
+</div>
+</div>
+</section>
 
-  <div class="card">
-    <h2>👑 Game Owner</h2>
-    <button id="adminOpen">Open Admin Panel</button>
-  </div>
-</aside>
+<section class="panel">
+<h2>🪄 Abilities</h2>
+<p>Level 5: <span id="autoCastStatus">🔒 Auto Cast</span></p>
+<p>Level 10: <span id="instantGuessStatus">🔒 Instant Guess</span></p>
+<p>Level 25: <span id="autoWinStatus">🔒 Automatic Wins</span></p>
+<p>Level 100: <span id="afkStatus">🔒 AFK Fishing</span></p>
+<button onclick="toggleAutoCast()">Toggle Auto Cast</button>
+<button onclick="toggleInstantGuess()">Toggle Instant Guess</button>
+<button onclick="toggleAutoWins()">Toggle Automatic Wins</button>
+<button onclick="toggleAFK()">Toggle AFK Fishing</button>
+<p class="muted">AFK rewards work while this page remains open and visible.</p>
+</section>
+
+<section class="panel">
+<h2>👑 Owner Panel</h2>
+<p class="muted">Enter the owner code to unlock owner controls.</p>
+<input id="ownerCode" type="password" placeholder="Enter owner code">
+<button onclick="unlockOwner()">Unlock Owner Panel</button>
+<div id="ownerControls" class="hidden">
+<hr>
+<h3>Owner Tools</h3>
+<label>Set Level (maximum 1,000,000)</label>
+<input id="setLevelInput" type="number" min="1" max="1000000" placeholder="Enter level">
+<button onclick="setLevel()">Set Level</button>
+<label>Add Coins</label>
+<input id="addCoinsInput" type="number" min="0" placeholder="Enter coin amount">
+<button onclick="addCoins()">Add Coins</button>
+<hr>
+<h3>🎣 Owner Rod</h3>
+<p>Special fish chance: <b>50%</b></p>
+<button onclick="toggleOwnerRod()">Equip / Unequip Owner Rod</button>
+<p id="ownerRodStatus"></p>
+<hr>
+<h3>🌊 Owner Ocean Mode</h3>
+<input id="oceanCode" type="password" placeholder="Enter ocean code">
+<button onclick="unlockOwnerOcean()">Unlock Ocean Mode</button>
+<div id="ownerOceanControls" class="hidden">
+<button class="purple" onclick="enterOwnerOcean()">Teleport to Owner Ocean</button>
+<button onclick="ownerInstantLevel()">Instant Level Up</button>
+<input id="ownerLevelAmount" type="number" min="1" max="999999" placeholder="Levels to add">
+<button onclick="addOwnerLevels()">Add Levels</button>
+<input id="ownerCoinAmount" type="number" min="0" placeholder="Coins to add">
+<button onclick="addOwnerCoins()">Add Owner Coins</button>
+<button onclick="leaveOwnerOcean()">Return to Normal Ocean</button>
+</div>
+</div>
+<p id="ownerMessage" class="muted"></p>
+</section>
+
+<section class="panel">
+<h2>ℹ️ How to Play</h2>
+<ol>
+<li>Cast your fishing line.</li>
+<li>Choose the correct synonym.</li>
+<li>Choose the correct meaning of the word.</li>
+<li>Complete both questions to earn coins and XP.</li>
+<li>Find special fish to collect secret code fragments.</li>
+<li>Upgrade your line to improve your special-fish odds.</li>
+</ol>
+<p class="muted">Game progress is saved in this browser. Clearing browser data can erase it. This is a local browser game, so owner controls and saved progress are not protected by a server.</p>
+<button class="red" onclick="resetSave()">Reset My Game Save</button>
+</section>
 </main>
 
-<!-- ADMIN AND OWNER PANEL -->
-<div id="adminPanel">
-<div class="adminBox">
-  <h2>👑 Admin / Owner Panel</h2>
-  <p>Enter the admin code to access owner controls.</p>
+<div id="toast"></div>
 
-  <input id="adminCode" type="password" placeholder="Enter admin code">
-  <button id="adminLogin" class="adminAction">Unlock Admin Controls</button>
-  <div id="adminMessage"></div>
-
-  <div id="adminControls" style="display:none">
-
-    <div class="card">
-      <h2>🛠️ Player Controls</h2>
-      <div class="adminGrid">
-        <div>
-          <label for="adminLevel">Set level</label>
-          <input id="adminLevel" type="number" min="1" max="1000000" value="100">
-          <button id="setLevel" class="adminAction">Set Level</button>
-        </div>
-        <div>
-          <label for="adminCoins">Add coins</label>
-          <input id="adminCoins" type="number" min="0" value="1000">
-          <button id="addCoins" class="adminAction">Add Coins</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="ownerRodCard">
-      <h3>🎣 Owner Rod</h3>
-      <p>Earn <b>100,000,000 coins</b> for each completed catch after answering BOTH questions correctly.</p>
-      <label for="ownerRodCode">Owner Rod code</label>
-      <input id="ownerRodCode" type="password" placeholder="Enter owner code">
-      <button id="unlockOwnerRod">🔓 Unlock Owner Rod</button>
-      <button id="equipOwnerRod" disabled>🎣 Equip Owner Rod</button>
-      <p id="ownerRodStatus">🔒 Owner Rod locked.</p>
-    </div>
-
-    <!-- NEW OWNER OCEAN MODE -->
-    <div id="ownerOceanCard">
-      <h3>🌊 Owner Ocean Mode</h3>
-      <p>
-        Unlock the secret ocean using its special code.
-        Teleport to the Owner Ocean, instantly gain levels,
-        and return to normal fishing whenever you want.
-      </p>
-
-      <label for="oceanCode">Owner Ocean secret code</label>
-      <input id="oceanCode" type="password" placeholder="Enter secret code">
-
-      <button id="unlockOceanBtn">🔐 Unlock Owner Ocean</button>
-      <p id="oceanStatus">🔒 Owner Ocean is locked.</p>
-
-      <div id="oceanControls">
-        <button id="enterOceanBtn">🌊 Teleport to Owner Ocean</button>
-
-        <label for="levelAmount" style="display:block;margin-top:12px">
-          How many levels do you want to gain?
-        </label>
-        <input id="levelAmount" type="number" min="1" max="999999" value="100">
-        <button id="levelUpBtn">⚡ Instant Level Up</button>
-
-        <label for="oceanCoinAmount" style="display:block;margin-top:12px">
-          How many coins do you want?
-        </label>
-        <input id="oceanCoinAmount" type="number" min="1" value="1000000">
-        <button id="oceanCoinsBtn">💰 Claim Custom Coins</button>
-
-        <button id="returnOceanBtn">🏠 Return to Normal Ocean</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>💾 Save Data</h2>
-      <button id="saveGame" class="adminAction">Save Game Now</button>
-      <button id="resetGame" class="adminAction" style="background:#ff9b9b">Reset My Game</button>
-    </div>
-  </div>
-
-  <button id="adminClose">Close Admin Panel</button>
-</div>
-</div>
-
-<div id="toast" role="status"></div>
-
-<footer>
-Word Fishing 3D · Progress saves locally in this browser.
-Owner controls are client-side game features.
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 "use strict";
 
-/* =========================
-   SAVE DATA AND SETTINGS
-========================= */
-
 const SAVE_KEY = "wordFishing3DSave";
 const OWNER_CODE = "Jeremiah is DADDY";
-const ADMIN_CODE = "Jeremiah is DADDY";
 const OCEAN_CODE = "Ocean";
-const OWNER_ROD_REWARD = 100000000;
 
-const DEFAULT = {
-  coins:600,
-  xp:0,
-  level:1,
-  caught:0,
-  caughtWords:[],
-  upgrades:{line:0},
-  replacementLines:0,
-  luckyBait:0,
-  wordGuide:0,
-  lineBroken:false,
-  goldenClaimed:false,
-  afkEnabled:false,
-  ownerRodUnlocked:false,
-  ownerRodEquipped:false,
-  ownerOceanUnlocked:false,
-  inOwnerOcean:false
+const defaultSave = {
+ coins:600,xp:0,level:1,caught:0,caughtWords:[],
+ lineStrength:0,replacementLines:0,luckyBait:0,wordGuide:0,
+ lineBroken:false,goldenClaimed:false,
+ afkEnabled:false,ownerRodUnlocked:false,ownerRodEquipped:false,
+ ownerOceanUnlocked:false,inOwnerOcean:false,ownerUnlocked:false,
+ fragments:[],secretUnlocked:false,
+ autoCast:false,instantGuess:false,autoWins:false
 };
 
-function loadState(){
-  try{
-    const saved=JSON.parse(localStorage.getItem(SAVE_KEY)||"null");
-    if(!saved)return structuredClone(DEFAULT);
-
-    return {
-      ...structuredClone(DEFAULT),
-      ...saved,
-      upgrades:{...DEFAULT.upgrades,...(saved.upgrades||{})},
-      caughtWords:Array.isArray(saved.caughtWords)?saved.caughtWords:[]
-    };
-  }catch(e){
-    return structuredClone(DEFAULT);
-  }
+let save;
+try {
+ save = Object.assign({},defaultSave,JSON.parse(localStorage.getItem(SAVE_KEY)||"{}"));
+} catch(e) {
+ save = {...defaultSave};
 }
-
-let state=loadState();
-
-function saveState(){
-  try{
-    localStorage.setItem(SAVE_KEY,JSON.stringify(state));
-  }catch(e){
-    toast("Could not save your game.");
-  }
-}
-
-function fmt(n){
-  n=Number(n)||0;
-  if(n>=1e15)return (n/1e15).toFixed(2)+" Qa";
-  if(n>=1e12)return (n/1e12).toFixed(2)+" T";
-  if(n>=1e9)return (n/1e9).toFixed(2)+" B";
-  if(n>=1e6)return (n/1e6).toFixed(2)+" M";
-  if(n>=1e3)return (n/1e3).toFixed(1)+"K";
-  return Math.floor(n).toLocaleString();
-}
-
-function toast(message){
-  const el=document.getElementById("toast");
-  el.textContent=message;
-  el.style.display="block";
-  clearTimeout(toast.timer);
-  toast.timer=setTimeout(()=>el.style.display="none",3000);
-}
-
-/* =========================
-   VOCABULARY WORDS
-========================= */
-
-const WORDS=[
-{word:"Happy",synonym:"Joyful",meaning:"Feeling pleasure or delight",choices:["Joyful","Angry","Sleepy","Worried"]},
-{word:"Enormous",synonym:"Huge",meaning:"Very large in size",choices:["Tiny","Huge","Quiet","Short"]},
-{word:"Rapid",synonym:"Fast",meaning:"Moving or happening quickly",choices:["Slow","Fast","Heavy","Soft"]},
-{word:"Brave",synonym:"Courageous",meaning:"Ready to face danger or difficulty",choices:["Afraid","Courageous","Careless","Lazy"]},
-{word:"Ancient",synonym:"Very old",meaning:"Belonging to the distant past",choices:["Brand-new","Very old","Modern","Future"]},
-{word:"Silent",synonym:"Quiet",meaning:"Making little or no sound",choices:["Loud","Quiet","Bright","Busy"]},
-{word:"Tiny",synonym:"Small",meaning:"Very little in size",choices:["Giant","Small","Wide","Tall"]},
-{word:"Assist",synonym:"Help",meaning:"To give support or aid",choices:["Hinder","Help","Ignore","Hide"]},
-{word:"Begin",synonym:"Start",meaning:"To do the first part of something",choices:["Finish","Start","Stop","Forget"]},
-{word:"Clever",synonym:"Smart",meaning:"Quick to understand or learn",choices:["Confused","Smart","Weak","Slow"]},
-{word:"Difficult",synonym:"Hard",meaning:"Not easy to do or understand",choices:["Easy","Hard","Simple","Clear"]},
-{word:"Furious",synonym:"Angry",meaning:"Extremely mad",choices:["Calm","Angry","Cheerful","Pleased"]},
-{word:"Generous",synonym:"Giving",meaning:"Willing to share with others",choices:["Selfish","Giving","Greedy","Rude"]},
-{word:"Honest",synonym:"Truthful",meaning:"Telling the truth",choices:["Truthful","Sneaky","False","Unfair"]},
-{word:"Imitate",synonym:"Copy",meaning:"To do something in the same way as another",choices:["Copy","Invent","Erase","Avoid"]},
-{word:"Journey",synonym:"Trip",meaning:"Travel from one place to another",choices:["Trip","Meal","Dream","Game"]},
-{word:"Kind",synonym:"Caring",meaning:"Friendly and helpful",choices:["Cruel","Caring","Mean","Rough"]},
-{word:"Locate",synonym:"Find",meaning:"To discover where something is",choices:["Lose","Find","Break","Drop"]},
-{word:"Massive",synonym:"Huge",meaning:"Very large or heavy",choices:["Tiny","Huge","Light","Weak"]},
-{word:"Observe",synonym:"Watch",meaning:"To look at something carefully",choices:["Watch","Forget","Hide","Build"]},
-{word:"Precious",synonym:"Valuable",meaning:"Worth a lot or greatly treasured",choices:["Worthless","Valuable","Common","Broken"]},
-{word:"Reluctant",synonym:"Unwilling",meaning:"Not wanting to do something",choices:["Eager","Unwilling","Excited","Ready"]},
-{word:"Scarce",synonym:"Rare",meaning:"Not easy to find or get",choices:["Common","Rare","Plentiful","Everywhere"]},
-{word:"Vanish",synonym:"Disappear",meaning:"To stop being visible",choices:["Appear","Disappear","Arrive","Grow"]},
-{word:"Peaceful",synonym:"Calm",meaning:"Free from disturbance or conflict",choices:["Noisy","Calm","Furious","Busy"]}
-];
+if(!Array.isArray(save.fragments)) save.fragments=[];
+if(!Array.isArray(save.caughtWords)) save.caughtWords=[];
 
 let currentWord=null;
-let questionActive=false;
-let answerLocked=false;
-let questionStage="synonym";
-let lineAnimation=null;
-let fishingAnimation=false;
+let questionStage=0;
+let currentOptions=[];
+let specialThisCatch=false;
+let specialWords=[];
+let secretCurrent=null;
+let secretMode=false;
+let caughtListExpanded=false;
+let autoCastTimer=null;
+let afkTimer=null;
+let audioContext=null;
 
-let scene3D,camera,renderer,clock;
-let fishObjects=[],bubbles=[],seaweedObjects=[];
-let fishingLine,fishingHook,fishingLineStart,goldenFishObject;
+const words=[
+ {word:"Happy",syn:"Joyful",meaning:"Feeling pleasure or delight",wrongSyn:["Angry","Sleepy","Afraid"],wrongMeaning:["Feeling very tired","Feeling great fear","Feeling strong anger"]},
+ {word:"Brave",syn:"Courageous",meaning:"Ready to face danger or difficulty",wrongSyn:["Timid","Careless","Quiet"],wrongMeaning:["Avoiding all challenges","Being unable to hear","Moving very slowly"]},
+ {word:"Rapid",syn:"Fast",meaning:"Happening or moving quickly",wrongSyn:["Tiny","Gentle","Late"],wrongMeaning:["Moving with great weight","Happening after a long delay","Having very little size"]},
+ {word:"Ancient",syn:"Very old",meaning:"Belonging to the distant past",wrongSyn:["Modern","Fresh","Brief"],wrongMeaning:["Made only yesterday","Lasting for a short time","Belonging to the future"]},
+ {word:"Enormous",syn:"Huge",meaning:"Extremely large",wrongSyn:["Narrow","Small","Weak"],wrongMeaning:["Not very powerful","Having little width","Very tiny in size"]},
+ {word:"Silent",syn:"Quiet",meaning:"Making little or no sound",wrongSyn:["Noisy","Bright","Rough"],wrongMeaning:["Giving off lots of light","Covered in bumps","Making a loud sound"]},
+ {word:"Clever",syn:"Smart",meaning:"Quick to learn or understand",wrongSyn:["Confused","Lazy","Fragile"],wrongMeaning:["Easy to break","Not wanting to work","Unable to understand something"]},
+ {word:"Tiny",syn:"Miniature",meaning:"Extremely small",wrongSyn:["Gigantic","Heavy","Wide"],wrongMeaning:["Having a great amount of weight","Very large in size","Having a lot of width"]},
+ {word:"Begin",syn:"Start",meaning:"To do the first part of something",wrongSyn:["Finish","Forget","Drop"],wrongMeaning:["To remember something","To stop something completely","To let something fall"]},
+ {word:"Difficult",syn:"Hard",meaning:"Not easy to do or understand",wrongSyn:["Simple","Cheerful","Smooth"],wrongMeaning:["Easy to understand","Feeling happy","Having no rough surface"]},
+ {word:"Purchase",syn:"Buy",meaning:"To get something by paying money",wrongSyn:["Sell","Borrow","Lose"],wrongMeaning:["To give something away for money","To misplace something","To use something temporarily"]},
+ {word:"Observe",syn:"Watch",meaning:"To look at something carefully",wrongSyn:["Ignore","Build","Shout"],wrongMeaning:["To make something from parts","To pay no attention","To speak very loudly"]},
+ {word:"Honest",syn:"Truthful",meaning:"Telling the truth and not cheating",wrongSyn:["Deceitful","Careless","Proud"],wrongMeaning:["Thinking very highly of oneself","Not paying attention","Not telling the truth"]},
+ {word:"Assist",syn:"Help",meaning:"To give support or aid",wrongSyn:["Hinder","Hide","Refuse"],wrongMeaning:["To keep something out of sight","To make a task harder","To say no to a request"]},
+ {word:"Fragile",syn:"Delicate",meaning:"Easily broken or damaged",wrongSyn:["Sturdy","Massive","Loud"],wrongMeaning:["Very noisy","Strong and difficult to damage","Very large"]},
+ {word:"Content",syn:"Satisfied",meaning:"Happy with what one has",wrongSyn:["Furious","Worried","Hungry"],wrongMeaning:["Feeling very angry","Needing food","Feeling nervous about something"]},
+ {word:"Weary",syn:"Tired",meaning:"Feeling in need of rest",wrongSyn:["Energetic","Curious","Pleased"],wrongMeaning:["Full of energy","Wanting to learn more","Feeling very happy"]},
+ {word:"Predict",syn:"Forecast",meaning:"To say what may happen in the future",wrongSyn:["Recall","Measure","Repair"],wrongMeaning:["To fix something broken","To find the size of something","To remember the past"]},
+ {word:"Generous",syn:"Giving",meaning:"Willing to give or share with others",wrongSyn:["Selfish","Shy","Strict"],wrongMeaning:["Not willing to share","Very quiet around others","Making sure rules are followed"]},
+ {word:"Mysterious",syn:"Unexplained",meaning:"Difficult to understand or explain",wrongSyn:["Obvious","Ordinary","Friendly"],wrongMeaning:["Easy to see or understand","Common and not unusual","Kind and welcoming"]},
+ {word:"Vanish",syn:"Disappear",meaning:"To stop being visible or present",wrongSyn:["Appear","Arrive","Remain"],wrongMeaning:["To stay in one place","To come into view","To reach a destination"]},
+ {word:"Protect",syn:"Guard",meaning:"To keep someone or something safe",wrongSyn:["Endanger","Damage","Forget"],wrongMeaning:["To cause harm","To fail to remember","To keep safe from harm"]},
+ {word:"Drowsy",syn:"Sleepy",meaning:"Feeling ready to fall asleep",wrongSyn:["Alert","Excited","Busy"],wrongMeaning:["Paying close attention","Having lots of tasks","Feeling eager and energetic"]},
+ {word:"Precious",syn:"Valuable",meaning:"Worth a lot or greatly treasured",wrongSyn:["Worthless","Common","Broken"],wrongMeaning:["Found everywhere","Having no value","Not working correctly"]},
+ {word:"Swift",syn:"Speedy",meaning:"Moving or happening very quickly",wrongSyn:["Slow","Careful","Still"],wrongMeaning:["Not moving at all","Taking a long time","Acting with caution"]}
+];
 
-/* =========================
-   GENERAL USER INTERFACE
-========================= */
+const fragmentNames=[
+ "Fragment Alpha","Fragment Beta","Fragment Gamma",
+ "Fragment Delta","Fragment Omega"
+];
 
-function shuffle(arr){
-  const a=[...arr];
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
+function persist(){
+ try{localStorage.setItem(SAVE_KEY,JSON.stringify(save));}
+ catch(e){console.warn("Could not save game",e);}
 }
-
-function addXP(amount){
-  state.xp+=amount;
-  while(state.xp>=100){
-    state.xp-=100;
-    state.level++;
-    toast("🎉 Level up! You reached Level "+state.level+"!");
-  }
+function $(id){return document.getElementById(id);}
+function toast(message){
+ const el=$("toast");
+ el.textContent=message;
+ el.style.display="block";
+ clearTimeout(toast.timer);
+ toast.timer=setTimeout(()=>el.style.display="none",3500);
 }
-
-function render(){
-  document.getElementById("coins").textContent=fmt(state.coins);
-  document.getElementById("level").textContent=fmt(state.level);
-  document.getElementById("caught").textContent=fmt(state.caught);
-  document.getElementById("xp").textContent=fmt(state.xp);
-  document.getElementById("xpBar").style.width=state.xp+"%";
-  document.getElementById("xpText").textContent=
-    "Level "+fmt(state.level)+" progress: "+state.xp+"/100 XP";
-
-  document.getElementById("upgradeCost").textContent=
-    fmt(200+(state.upgrades.line||0)*150);
-
-  const words=document.getElementById("caughtWords");
-  words.innerHTML="";
-  if(!state.caughtWords.length){
-    words.textContent="No words caught yet. Start fishing!";
-  }else{
-    state.caughtWords.slice(-40).reverse().forEach(w=>{
-      const d=document.createElement("div");
-      d.textContent="🐟 "+w.word+" — "+w.synonym+" | "+w.meaning;
-      words.appendChild(d);
-    });
-  }
-
-  document.getElementById("goldenStatus").textContent=
-    state.goldenClaimed
-    ?"You already claimed the Golden Fish reward!"
-    :"Find the Golden Fish for 250 coins and 50 XP.";
-  document.getElementById("goldenBtn").disabled=state.goldenClaimed;
-  document.getElementById("goldenBtn").textContent=
-    state.goldenClaimed?"Golden Fish Claimed":"Find Golden Fish";
-
-  if(state.level<100){
-    state.afkEnabled=false;
-    document.getElementById("afkBtn").disabled=true;
-    document.getElementById("afkBtn").textContent="🔒 Unlock at Level 100";
-    document.getElementById("afkStatus").textContent=
-      "Reach Level 100 to unlock AFK Fishing.";
-  }else{
-    document.getElementById("afkBtn").disabled=false;
-    document.getElementById("afkBtn").textContent=
-      state.afkEnabled?"AFK Fishing: ON":"AFK Fishing: OFF";
-    document.getElementById("afkStatus").textContent=
-      state.afkEnabled
-      ?"AFK Fishing is running while this page stays open."
-      :"AFK Fishing unlocked! Earn 25 coins and 25 XP each second.";
-  }
-
-  renderOwnerRod();
-  renderOwnerOcean();
-  saveState();
-}
-
-function renderOwnerRod(){
-  const b=document.getElementById("equipOwnerRod");
-  const s=document.getElementById("ownerRodStatus");
-  b.disabled=!state.ownerRodUnlocked;
-  b.textContent=state.ownerRodEquipped
-    ?"Unequip Owner Rod":"🎣 Equip Owner Rod";
-  s.textContent=!state.ownerRodUnlocked
-    ?"🔒 Owner Rod locked. Enter the owner code above."
-    :state.ownerRodEquipped
-    ?"👑 Equipped! Each completed catch earns 100,000,000 coins."
-    :"Owner Rod unlocked. Equip it to use its special reward.";
-}
-
-/* =========================
-   OWNER OCEAN MODE
-========================= */
-
-function renderOwnerOcean(){
-  const controls=document.getElementById("oceanControls");
-  const status=document.getElementById("oceanStatus");
-  const banner=document.getElementById("oceanBanner");
-
-  controls.style.display=state.ownerOceanUnlocked?"block":"none";
-  banner.style.display=state.inOwnerOcean?"block":"none";
-
-  if(!state.ownerOceanUnlocked){
-    status.textContent="🔒 Owner Ocean is locked. Enter the code to unlock it.";
-  }else if(state.inOwnerOcean){
-    status.textContent="🌊 Owner Ocean unlocked and active! Enjoy your special ocean.";
-    document.getElementById("enterOceanBtn").textContent="🌊 Owner Ocean Active";
-    document.getElementById("enterOceanBtn").disabled=true;
-  }else{
-    status.textContent="✅ Owner Ocean unlocked! You can teleport whenever you want.";
-    document.getElementById("enterOceanBtn").textContent="🌊 Teleport to Owner Ocean";
-    document.getElementById("enterOceanBtn").disabled=false;
-  }
-}
-
-function enterOwnerOcean(){
-  if(!state.ownerOceanUnlocked){
-    toast("Unlock Owner Ocean first!");
-    return;
-  }
-
-  state.inOwnerOcean=true;
-  document.body.style.background=
-    "linear-gradient(#07052c,#102d78,#087fa9)";
-
-  if(scene3D){
-    scene3D.background=new THREE.Color(0x10105c);
-    scene3D.fog.color.set(0x17145c);
-
-    fishObjects.forEach((fish,i)=>{
-      const colors=[0x9b5cff,0x4bf4ff,0xffdd55,0xff71e8,0x76ffae];
-      fish.traverse(obj=>{
-        if(obj.isMesh&&obj.material&&obj.material.color){
-          obj.material.color.set(colors[i%colors.length]);
-        }
-      });
-    });
-
-    if(goldenFishObject){
-      goldenFishObject.position.set(0,1.3,0);
-      goldenFishObject.visible=true;
-    }
-  }
-
-  document.getElementById("sceneLabel").textContent="👑 OWNER OCEAN";
-  document.getElementById("sceneHint").textContent=
-    "Welcome to Owner Ocean! Use your Owner Panel for instant level-ups.";
-  toast("🌊 Teleported to Owner Ocean!");
-  render();
-}
-
-function returnToNormalOcean(){
-  state.inOwnerOcean=false;
-  document.body.style.background=
-    "linear-gradient(#041b39,#07517c,#087a92)";
-
-  if(scene3D){
-    scene3D.background=new THREE.Color(0x05769b);
-    scene3D.fog.color.set(0x05769b);
-
-    const colors=[0xff8c42,0x5ce1e6,0xffd166,0xe879f9,0x7ae582,0xff729f];
-    fishObjects.forEach((fish,i)=>{
-      fish.traverse(obj=>{
-        if(obj.isMesh&&obj.material&&obj.material.color){
-          obj.material.color.set(colors[i%colors.length]);
-        }
-      });
-    });
-
-    if(goldenFishObject){
-      goldenFishObject.position.set(30,0,0);
-    }
-  }
-
-  document.getElementById("sceneLabel").textContent="🌊 Underwater Explorer";
-  document.getElementById("sceneHint").textContent=
-    "Answer the synonym, then answer the meaning to complete your catch!";
-  toast("🏠 Returned to the normal ocean.");
-  render();
-}
-
-document.getElementById("unlockOceanBtn").addEventListener("click",()=>{
-  const code=document.getElementById("oceanCode").value;
-
-  if(code===OCEAN_CODE){
-    state.ownerOceanUnlocked=true;
-    document.getElementById("oceanCode").value="";
-    document.getElementById("oceanStatus").textContent=
-      "✅ Owner Ocean unlocked! Teleport whenever you want.";
-    toast("🔓 Owner Ocean Mode unlocked!");
-    render();
-  }else{
-    document.getElementById("oceanStatus").textContent=
-      "❌ Incorrect code. Try again.";
-    toast("Incorrect Owner Ocean code.");
-  }
-});
-
-document.getElementById("enterOceanBtn").addEventListener("click",enterOwnerOcean);
-document.getElementById("returnOceanBtn").addEventListener("click",returnToNormalOcean);
-
-document.getElementById("levelUpBtn").addEventListener("click",()=>{
-  if(!state.ownerOceanUnlocked){
-    toast("Unlock Owner Ocean first.");
-    return;
-  }
-
-  const amount=Number(document.getElementById("levelAmount").value);
-  if(!Number.isFinite(amount)||amount<1){
-    toast("Enter a valid number of levels.");
-    return;
-  }
-
-  const gain=Math.min(999999,Math.floor(amount));
-  state.level=Math.min(1000000,state.level+gain);
-  state.xp=0;
-
-  toast("⚡ Instant level-up! You are now Level "+fmt(state.level)+"!");
-  render();
-});
-
-document.getElementById("oceanCoinsBtn").addEventListener("click",()=>{
-  if(!state.ownerOceanUnlocked){
-    toast("Unlock Owner Ocean first.");
-    return;
-  }
-
-  const amount=Number(document.getElementById("oceanCoinAmount").value);
-  if(!Number.isFinite(amount)||amount<1){
-    toast("Enter a valid coin amount.");
-    return;
-  }
-
-  const gain=Math.min(1e15,Math.floor(amount));
-  state.coins+=gain;
-  toast("💰 Added "+fmt(gain)+" coins!");
-  render();
-});
-
-/* =========================
-   TWO-PART WORD CHALLENGE
-========================= */
-
-function setQuestion(s){
-  document.getElementById("question").textContent=s;
-}
-function clearAnswers(){
-  document.getElementById("answers").innerHTML="";
-}
-
-function startFishing(){
-  if(fishingAnimation||questionActive)return;
-
-  if(state.lineBroken){
-    if(state.replacementLines<=0){
-      setQuestion("Your fishing line is broken!");
-      document.getElementById("feedback").textContent=
-        "Buy a Replacement Line for 300 coins.";
-      return;
-    }
-    state.replacementLines--;
-    state.lineBroken=false;
-  }
-
-  currentWord=WORDS[Math.floor(Math.random()*WORDS.length)];
-  questionStage="synonym";
-  questionActive=true;
-  answerLocked=false;
-
-  document.getElementById("feedback").textContent="";
-  document.getElementById("castBtn").disabled=true;
-  document.getElementById("castBtn").textContent="Answer both questions!";
-  clearAnswers();
-  setQuestion("Casting your line...");
-
-  animateFishingLine(()=>showQuestion("synonym"));
-}
-
-function showQuestion(stage){
-  questionStage=stage;
-  const answers=document.getElementById("answers");
-  answers.innerHTML="";
-
-  if(stage==="synonym"){
-    setQuestion("PART 1 OF 2 — What is a synonym for “"+currentWord.word+"”?");
-    let choices=shuffle(currentWord.choices);
-
-    if(!choices.includes(currentWord.synonym)){
-      choices[0]=currentWord.synonym;
-      choices=shuffle(choices);
-    }
-
-    choices.forEach(choice=>makeAnswer(choice,currentWord.synonym));
-  }else{
-    setQuestion("PART 2 OF 2 — What does “"+currentWord.word+"” mean?");
-    const otherMeanings=[...new Set(WORDS.map(w=>w.meaning))]
-      .filter(m=>m!==currentWord.meaning);
-    const choices=shuffle([
-      currentWord.meaning,
-      ...shuffle(otherMeanings).slice(0,3)
-    ]);
-
-    choices.forEach(choice=>makeAnswer(choice,currentWord.meaning));
-    document.getElementById("feedback").textContent=
-      "✅ Synonym correct! Now answer the meaning question to finish your catch.";
-  }
-}
-
-function makeAnswer(choice,correctAnswer){
-  const b=document.createElement("button");
-  b.className="answerBtn";
-  b.textContent=choice;
-  b.addEventListener("click",()=>answerQuestion(choice,correctAnswer,b));
-  document.getElementById("answers").appendChild(b);
-}
-
-function answerQuestion(answer,correctAnswer,button){
-  if(!questionActive||answerLocked)return;
-  answerLocked=true;
-
-  document.querySelectorAll(".answerBtn").forEach(b=>b.disabled=true);
-
-  if(answer!==correctAnswer){
-    button.classList.add("wrong");
-    questionActive=false;
-    state.lineBroken=true;
-
-    document.getElementById("feedback").textContent=
-      "❌ Not quite! The correct answer was “"+correctAnswer+"”. Your line broke!";
-    document.getElementById("castBtn").disabled=false;
-    document.getElementById("castBtn").textContent="🎣 Try Fishing Again";
-    showLineBreak();
-    render();
-    return;
-  }
-
-  button.classList.add("correct");
-
-  if(questionStage==="synonym"){
-    answerLocked=false;
-    showQuestion("meaning");
-    return;
-  }
-
-  /* REWARD ONLY AFTER BOTH QUESTIONS ARE CORRECT */
-  questionActive=false;
-
-  const reward=state.ownerRodEquipped
-    ?OWNER_ROD_REWARD
-    :25+(state.upgrades.line||0)*10;
-  const bonus=state.luckyBait>0?10:0;
-
-  if(state.luckyBait>0)state.luckyBait--;
-
-  state.coins+=reward+bonus;
-  state.caught++;
-  addXP(25);
-
-  state.caughtWords.push({
-    word:currentWord.word,
-    synonym:currentWord.synonym,
-    meaning:currentWord.meaning
+function soundDing(){
+ try{
+  audioContext=audioContext||new (window.AudioContext||window.webkitAudioContext)();
+  if(audioContext.state==="suspended")audioContext.resume();
+  const now=audioContext.currentTime;
+  [880,1174].forEach((frequency,i)=>{
+   const osc=audioContext.createOscillator();
+   const gain=audioContext.createGain();
+   osc.type="sine";
+   osc.frequency.value=frequency;
+   gain.gain.setValueAtTime(.0001,now+i*.12);
+   gain.gain.exponentialRampToValueAtTime(.22,now+i*.12+.025);
+   gain.gain.exponentialRampToValueAtTime(.0001,now+i*.12+.35);
+   osc.connect(gain);gain.connect(audioContext.destination);
+   osc.start(now+i*.12);osc.stop(now+i*.12+.38);
   });
-
-  document.getElementById("feedback").textContent=
-    "🎉 Perfect catch! Synonym: "+currentWord.synonym+
-    ". Meaning: "+currentWord.meaning+
-    ". You earned "+fmt(reward)+" coins and 25 XP"+
-    (bonus?" plus 10 bonus coins!":"!");
-
-  document.getElementById("castBtn").disabled=false;
-  document.getElementById("castBtn").textContent="🎣 Cast Again";
-
-  animateCaughtFish();
-  render();
+ }catch(e){}
+}
+function updateUI(){
+ $("coins").textContent=Math.floor(save.coins).toLocaleString();
+ $("level").textContent=save.level.toLocaleString();
+ $("xp").textContent=save.xp.toLocaleString();
+ $("caught").textContent=save.caught.toLocaleString();
+ $("lineLevel").textContent=save.ownerRodEquipped?"Owner Rod":save.lineStrength?("Level "+save.lineStrength):"Normal";
+ $("xpBar").style.width=Math.min(100,save.xp)+"%";
+ $("xpProgress").textContent=save.xp+" / 100 XP to next level";
+ $("autoCastStatus").textContent=save.level>=5?"🔓 Auto Cast unlocked":"🔒 Auto Cast (Level 5)";
+ $("instantGuessStatus").textContent=save.level>=10?"🔓 Instant Guess unlocked":"🔒 Instant Guess (Level 10)";
+ $("autoWinStatus").textContent=save.level>=25?"🔓 Automatic Wins unlocked":"🔒 Automatic Wins (Level 25)";
+ $("afkStatus").textContent=save.level>=100?"🔓 AFK Fishing unlocked":"🔒 AFK Fishing (Level 100)";
+ $("ownerRodStatus").textContent=save.ownerRodUnlocked?(save.ownerRodEquipped?"Owner Rod is equipped. 50% special-fish chance.":"Owner Rod unlocked. Equip it to use it."):"Owner Rod is locked.";
+ $("fragmentProgress").textContent="Fragments collected: "+save.fragments.length+" / 5";
+ $("fragmentDisplay").innerHTML=save.fragments.length?save.fragments.map(f=>'<span class="fragment">🧩 '+escapeHTML(f)+'</span>').join(""):"<p class='muted'>No fragments yet. Go fishing!</p>";
+ $("secretModeBox").classList.toggle("hidden",!save.secretUnlocked);
+ $("castBtn").disabled=!!currentWord||save.lineBroken;
+ $("caughtWords").innerHTML=save.caughtWords.length?save.caughtWords.slice(caughtListExpanded?0:-5).map(w=>"<li>"+escapeHTML(w)+"</li>").join(""):"<li>No words caught yet.</li>";
+ $("ownerControls").classList.toggle("hidden",!save.ownerUnlocked);
+ $("ownerOceanControls").classList.toggle("hidden",!save.ownerOceanUnlocked);
+ persist();
+}
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function shuffle(arr){
+ const out=arr.slice();
+ for(let i=out.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [out[i],out[j]]=[out[j],out[i]];
+ }
+ return out;
+}
+function chooseWord(){
+ return words[Math.floor(Math.random()*words.length)];
+}
+function getSpecialChance(){
+ if(save.ownerRodEquipped&&save.ownerRodUnlocked)return .50;
+ if(save.lineStrength>=100)return .20;
+ if(save.lineStrength>=50)return .10;
+ if(save.lineStrength>=25)return .05;
+ return .0099;
+}
+function castLine(){
+ if(currentWord)return;
+ if(save.lineBroken){
+  $("feedback").textContent="Your line is broken! Buy a replacement line first.";
+  return;
+ }
+ if(save.autoWins&&save.level>=25){
+  currentWord=chooseWord();
+  completeCatch(true);
+  return;
+ }
+ currentWord=chooseWord();
+ questionStage=0;
+ specialThisCatch=false;
+ $("sceneHint").textContent="A fish is biting! Answer both questions.";
+ $("feedback").textContent="";
+ $("question").textContent="A fish is on your line...";
+ $("answers").innerHTML="";
+ updateSceneFish();
+ setTimeout(()=>{
+  if(!currentWord)return;
+  if(save.instantGuess&&save.level>=10){
+   questionStage=0;
+   renderQuestion();
+  }else{
+   renderQuestion();
+  }
+ },500);
+}
+function renderQuestion(){
+ if(!currentWord)return;
+ const isSyn=questionStage===0;
+ const target=isSyn?currentWord.syn:currentWord.meaning;
+ const wrongs=isSyn?currentWord.wrongSyn:currentWord.wrongMeaning;
+ currentOptions=shuffle([target,...wrongs]);
+ $("question").textContent=isSyn?
+  "Find the synonym for: "+currentWord.word:
+  "Correct! Now choose the meaning of: "+currentWord.word;
+ $("answers").innerHTML="";
+ currentOptions.forEach(option=>{
+  const b=document.createElement("button");
+  b.className="answer";
+  b.textContent=option;
+  b.onclick=()=>answerQuestion(option);
+  $("answers").appendChild(b);
+ });
+ if(save.wordGuide>0){
+  save.wordGuide--;
+  $("feedback").textContent="📖 Word Guide: Look for the answer closest to the word's meaning.";
+ }
+}
+function answerQuestion(answer){
+ if(!currentWord)return;
+ const correct=questionStage===0?currentWord.syn:currentWord.meaning;
+ if(answer!==correct){
+  $("feedback").textContent="❌ Incorrect! Your fishing line broke. Buy a replacement line to fish again.";
+  $("question").textContent="The fish escaped!";
+  $("answers").innerHTML="";
+  $("sceneHint").textContent="Line broken!";
+  save.lineBroken=true;
+  currentWord=null;
+  updateSceneFish();
+  updateUI();
+  return;
+ }
+ if(questionStage===0){
+  questionStage=1;
+  $("feedback").textContent="✅ Correct synonym! One more question!";
+  renderQuestion();
+ }else{
+  completeCatch(false);
+ }
+}
+function completeCatch(auto){
+ const caughtWord=currentWord?currentWord.word:"Secret Catch";
+ const chance=getSpecialChance();
+ specialThisCatch=Math.random()<chance;
+ save.caught++;
+ save.xp+=25;
+ save.coins+=save.ownerRodEquipped&&save.ownerRodUnlocked?100000000:25+(save.lineStrength*10);
+ if(save.luckyBait>0){
+  save.coins+=10;
+  save.luckyBait--;
+ }
+ save.caughtWords.unshift(caughtWord);
+ if(save.caughtWords.length>100)save.caughtWords.length=100;
+ if(specialThisCatch){
+  soundDing();
+  const found=getNewFragment();
+  if(found){
+   toast("✨ SPECIAL FISH! 🔔 Ding! You found "+found+"!");
+   $("feedback").textContent="🌟 SPECIAL FISH! Ding! You found "+found+"!";
+  }else{
+   toast("✨ SPECIAL FISH! 🔔 You already collected every fragment!");
+   $("feedback").textContent="✨ Special fish caught! All fragments collected!";
+  }
+  $("sceneHint").textContent="✨ SPECIAL FISH!";
+ }else{
+  $("feedback").textContent="🐟 Great catch! +25 XP and coins!";
+  $("sceneHint").textContent="Fish caught! Cast again.";
+ }
+ currentWord=null;
+ $("question").textContent=auto?"Automatic catch completed!":"Catch completed! You answered both questions.";
+ $("answers").innerHTML="";
+ levelUpCheck();
+ updateSceneFish();
+ updateUI();
+ if(save.autoCast&&save.level>=5){
+  clearTimeout(autoCastTimer);
+  autoCastTimer=setTimeout(castLine,1800);
+ }
+}
+function getNewFragment(){
+ const missing=fragmentNames.filter(f=>!save.fragments.includes(f));
+ if(!missing.length)return null;
+ const found=missing[Math.floor(Math.random()*missing.length)];
+ save.fragments.push(found);
+ if(save.fragments.length>=5){
+  save.secretUnlocked=true;
+  toast("🌌 ALL FRAGMENTS FOUND! SECRET GAME MODE UNLOCKED!");
+ }
+ return found;
+}
+function levelUpCheck(){
+ while(save.xp>=100){
+  save.xp-=100;
+  save.level=Math.min(1000000,save.level+1);
+  toast("⭐ LEVEL UP! You are now level "+save.level+"!");
+ }
+}
+function returnLine(){
+ currentWord=null;
+ $("answers").innerHTML="";
+ $("question").textContent="Line reeled in. Cast when you're ready.";
+ $("feedback").textContent="";
+ $("sceneHint").textContent="Cast your line and catch a word fish!";
+ updateSceneFish();
+ updateUI();
+}
+function buyLine(level){
+ const costs={25:1000,50:5000,100:20000};
+ if(save.lineStrength>=level){
+  $("shopMessage").textContent="You already own this line level or a stronger one.";
+  return;
+ }
+ if(save.coins<costs[level]){
+  $("shopMessage").textContent="Not enough coins!";
+  return;
+ }
+ save.coins-=costs[level];
+ save.lineStrength=level;
+ $("shopMessage").textContent="🎣 Line upgraded to level "+level+"! Special-fish chance: "+(getSpecialChance()*100).toFixed(2)+"%.";
+ updateUI();
+}
+function buyReplacement(){
+ if(save.coins<300){$("shopMessage").textContent="You need 300 coins.";return;}
+ if(!save.lineBroken){$("shopMessage").textContent="Your line is not broken.";return;}
+ save.coins-=300;
+ save.lineBroken=false;
+ save.replacementLines++;
+ $("shopMessage").textContent="Replacement line purchased!";
+ updateUI();
+}
+function buyBait(){
+ if(save.coins<80){$("shopMessage").textContent="You need 80 coins.";return;}
+ save.coins-=80;save.luckyBait++;
+ $("shopMessage").textContent="Lucky Bait purchased! Your next catch earns 10 extra coins.";
+ updateUI();
+}
+function buyGuide(){
+ if(save.coins<50){$("shopMessage").textContent="You need 50 coins.";return;}
+ save.coins-=50;save.wordGuide++;
+ $("shopMessage").textContent="Word Guide purchased! It gives a hint on your next question.";
+ updateUI();
+}
+function showCaughtWords(){
+ caughtListExpanded=!caughtListExpanded;
+ updateUI();
+}
+function toggleAutoCast(){
+ if(save.level<5){toast("Reach level 5 to unlock Auto Cast.");return;}
+ save.autoCast=!save.autoCast;
+ toast("Auto Cast "+(save.autoCast?"enabled":"disabled")+".");
+ updateUI();
+}
+function toggleInstantGuess(){
+ if(save.level<10){toast("Reach level 10 to unlock Instant Guess.");return;}
+ save.instantGuess=!save.instantGuess;
+ toast("Instant Guess "+(save.instantGuess?"enabled":"disabled")+".");
+ updateUI();
+}
+function toggleAutoWins(){
+ if(save.level<25){toast("Reach level 25 to unlock Automatic Wins.");return;}
+ save.autoWins=!save.autoWins;
+ toast("Automatic Wins "+(save.autoWins?"enabled":"disabled")+".");
+ updateUI();
+}
+function toggleAFK(){
+ if(save.level<100){toast("Reach level 100 to unlock AFK Fishing.");return;}
+ save.afkEnabled=!save.afkEnabled;
+ toast("AFK Fishing "+(save.afkEnabled?"enabled":"disabled")+".");
+ updateUI();
+}
+function unlockOwner(){
+ if($("ownerCode").value===OWNER_CODE){
+  save.ownerUnlocked=true;
+  $("ownerMessage").textContent="👑 Owner Panel unlocked!";
+  toast("Owner Panel unlocked!");
+ }else{
+  $("ownerMessage").textContent="Incorrect owner code.";
+ }
+ updateUI();
+}
+function setLevel(){
+ if(!save.ownerUnlocked)return;
+ const n=Math.max(1,Math.min(1000000,Math.floor(Number($("setLevelInput").value)||1)));
+ save.level=n;save.xp=0;
+ $("ownerMessage").textContent="Level set to "+n+".";
+ updateUI();
+}
+function addCoins(){
+ if(!save.ownerUnlocked)return;
+ const n=Math.max(0,Math.floor(Number($("addCoinsInput").value)||0));
+ save.coins+=n;
+ $("ownerMessage").textContent="Added "+n.toLocaleString()+" coins.";
+ updateUI();
+}
+function toggleOwnerRod(){
+ if(!save.ownerUnlocked)return;
+ if(!save.ownerRodUnlocked){
+  save.ownerRodUnlocked=true;
+  save.ownerRodEquipped=true;
+ }else{
+  save.ownerRodEquipped=!save.ownerRodEquipped;
+ }
+ $("ownerMessage").textContent=save.ownerRodEquipped?"Owner Rod equipped! 50% special-fish chance.":"Owner Rod unequipped.";
+ updateUI();
+}
+function unlockOwnerOcean(){
+ if(!save.ownerUnlocked)return;
+ if($("oceanCode").value!==OCEAN_CODE){
+  $("ownerMessage").textContent="Incorrect ocean code.";
+  return;
+ }
+ save.ownerOceanUnlocked=true;
+ $("ownerOceanControls").classList.remove("hidden");
+ $("ownerMessage").textContent="🌊 Owner Ocean controls unlocked!";
+ updateUI();
+}
+function enterOwnerOcean(){
+ if(!save.ownerOceanUnlocked)return;
+ save.inOwnerOcean=true;
+ $("sceneLabel").textContent="👑 OWNER OCEAN";
+ $("sceneHint").textContent="Welcome to the secret Owner Ocean!";
+ $("scene").style.filter="hue-rotate(90deg) saturate(1.6)";
+ toast("Teleported to the Owner Ocean!");
+ updateUI();
+}
+function leaveOwnerOcean(){
+ save.inOwnerOcean=false;
+ $("sceneLabel").textContent="NORMAL OCEAN";
+ $("sceneHint").textContent="Back in the normal ocean!";
+ $("scene").style.filter="";
+ toast("Returned to the normal ocean.");
+ updateUI();
+}
+function ownerInstantLevel(){
+ if(!save.ownerOceanUnlocked)return;
+ save.level=Math.min(1000000,save.level+1);
+ save.xp=0;
+ toast("⚡ Instant level up! Level "+save.level);
+ updateUI();
+}
+function addOwnerLevels(){
+ if(!save.ownerOceanUnlocked)return;
+ const n=Math.max(1,Math.min(999999,Math.floor(Number($("ownerLevelAmount").value)||1)));
+ save.level=Math.min(1000000,save.level+n);
+ save.xp=0;
+ toast("Added levels! You are now level "+save.level);
+ updateUI();
+}
+function addOwnerCoins(){
+ if(!save.ownerOceanUnlocked)return;
+ const n=Math.max(0,Math.floor(Number($("ownerCoinAmount").value)||0));
+ save.coins+=n;
+ toast("Added "+n.toLocaleString()+" coins!");
+ updateUI();
+}
+function startSecretMode(){
+ if(!save.secretUnlocked)return;
+ secretMode=true;
+ $("secretGame").classList.remove("hidden");
+ secretNextQuestion();
+ toast("🌌 Welcome to the Secret Deep-Sea Challenge!");
+}
+function secretNextQuestion(){
+ const w=chooseWord();
+ secretCurrent=w;
+ $("secretQuestion").textContent="Secret Challenge: Choose the meaning of "+w.word;
+ $("secretFeedback").textContent="";
+ $("secretAnswers").innerHTML="";
+ shuffle([w.meaning,...w.wrongMeaning]).forEach(option=>{
+  const b=document.createElement("button");
+  b.className="answer";
+  b.textContent=option;
+  b.onclick=()=>{
+   if(option===w.meaning){
+    save.coins+=100;
+    save.xp+=50;
+    levelUpCheck();
+    $("secretFeedback").textContent="🌟 Correct! +100 coins and +50 XP!";
+    updateUI();
+    setTimeout(()=>{if(secretMode)secretNextQuestion()},900);
+   }else{
+    $("secretFeedback").textContent="Not quite! Try another answer.";
+   }
+  };
+  $("secretAnswers").appendChild(b);
+ });
+}
+function exitSecretMode(){
+ secretMode=false;
+ $("secretGame").classList.add("hidden");
+}
+function resetSave(){
+ if(!confirm("Reset your local game progress? This cannot be undone."))return;
+ localStorage.removeItem(SAVE_KEY);
+ location.reload();
 }
 
-document.getElementById("castBtn").addEventListener("click",()=>{
-  if(!questionActive)startFishing();
-});
-
-/* =========================
-   SHOP
-========================= */
-
-function spend(amount){
-  if(state.coins<amount){
-    toast("Not enough coins!");
-    return false;
+/* Simple 3D underwater scene */
+let renderer,scene,camera,fishGroup,bubbles=[],seaweed=[],frame=0;
+function initScene(){
+ const canvas=$("scene");
+ try{
+  renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  scene=new THREE.Scene();
+  scene.background=new THREE.Color(save.inOwnerOcean?0x24135e:0x06375b);
+  scene.fog=new THREE.Fog(save.inOwnerOcean?0x24135e:0x06375b,8,25);
+  camera=new THREE.PerspectiveCamera(60,1,.1,100);
+  camera.position.set(0,1,8);
+  scene.add(new THREE.HemisphereLight(0x9beaff,0x07354a,2));
+  const light=new THREE.DirectionalLight(0xffffff,2);
+  light.position.set(3,6,5);scene.add(light);
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(30,30),new THREE.MeshStandardMaterial({color:0x07516a,roughness:1}));
+  floor.rotation.x=-Math.PI/2;floor.position.y=-2.4;scene.add(floor);
+  fishGroup=new THREE.Group();scene.add(fishGroup);
+  for(let i=0;i<18;i++){
+   const bubble=new THREE.Mesh(new THREE.SphereGeometry(.045+Math.random()*.06,8,8),new THREE.MeshStandardMaterial({color:0x9beeff,transparent:true,opacity:.55}));
+   bubble.position.set((Math.random()-.5)*12,-2+Math.random()*6,(Math.random()-.5)*4);
+   scene.add(bubble);bubbles.push(bubble);
   }
-  state.coins-=amount;
-  return true;
+  for(let i=0;i<9;i++){
+   const stem=new THREE.Mesh(new THREE.CylinderGeometry(.04,.16,1.4,7),new THREE.MeshStandardMaterial({color:i%2?0x0f9c7c:0x147c66}));
+   stem.position.set(-5+i*1.25,-1.7,-1);
+   stem.rotation.z=(Math.random()-.5)*.5;
+   scene.add(stem);seaweed.push(stem);
+  }
+  updateSceneFish();
+  resizeScene();
+  window.addEventListener("resize",resizeScene);
+  animateScene();
+ }catch(e){
+  $("sceneHint").textContent="3D scene could not load. Check your internet connection.";
+ }
+}
+function resizeScene(){
+ if(!renderer||!camera)return;
+ const w=$("sceneWrap").clientWidth;
+ const h=300;
+ renderer.setSize(w,h,false);
+ camera.aspect=w/h;camera.updateProjectionMatrix();
+}
+function updateSceneFish(){
+ if(!scene||!fishGroup)return;
+ while(fishGroup.children.length)fishGroup.remove(fishGroup.children[0]);
+ const count=currentWord?3:6;
+ for(let i=0;i<count;i++){
+  const color=currentWord&&i===0?0xffc34d:[0x23d4dc,0xff8b70,0x8c9cff,0x68e89d][i%4];
+  const fish=new THREE.Group();
+  const body=new THREE.Mesh(new THREE.SphereGeometry(.36,16,12),new THREE.MeshStandardMaterial({color,roughness:.4}));
+  body.scale.set(1.35,.7,.55);fish.add(body);
+  const tail=new THREE.Mesh(new THREE.ConeGeometry(.25,.42,4),new THREE.MeshStandardMaterial({color}));
+  tail.rotation.z=-Math.PI/2;tail.position.x=-.5;fish.add(tail);
+  const eye=new THREE.Mesh(new THREE.SphereGeometry(.045,8,8),new THREE.MeshBasicMaterial({color:0xffffff}));
+  eye.position.set(.3,.09,.18);fish.add(eye);
+  fish.position.set((i-(count-1)/2)*1.6,Math.sin(i*2)*.65-.1,-.3);
+  fish.userData.offset=i;
+  fishGroup.add(fish);
+ }
+}
+function animateScene(){
+ requestAnimationFrame(animateScene);
+ if(!renderer||!scene||!camera)return;
+ frame+=.012;
+ fishGroup.children.forEach(f=>{
+  f.position.y+=Math.sin(frame*2+f.userData.offset)*.0015;
+  f.position.x+=Math.sin(frame+f.userData.offset)*.001;
+ });
+ bubbles.forEach(b=>{
+  b.position.y+=.012;
+  if(b.position.y>3)b.position.y=-2.5;
+ });
+ seaweed.forEach((s,i)=>s.rotation.z=Math.sin(frame+i)*.12);
+ renderer.render(scene,camera);
 }
 
-document.getElementById("buyLine").onclick=()=>{
-  if(!spend(300))return;
-  state.replacementLines++;
-  state.lineBroken=false;
-  toast("Replacement line purchased!");
-  render();
-};
-
-document.getElementById("buyBait").onclick=()=>{
-  if(!spend(80))return;
-  state.luckyBait++;
-  toast("Lucky Bait ready!");
-  render();
-};
-
-document.getElementById("buyGuide").onclick=()=>{
-  if(!spend(50))return;
-  state.wordGuide++;
-  toast("Word Guide ready for your next challenge.");
-  render();
-};
-
-document.getElementById("buyUpgrade").onclick=()=>{
-  const cost=200+(state.upgrades.line||0)*150;
-  if(!spend(cost))return;
-  state.upgrades.line++;
-  toast("Fishing line upgraded!");
-  render();
-};
-
-/* Golden Fish */
-document.getElementById("goldenBtn").onclick=()=>{
-  if(state.goldenClaimed)return;
-  state.goldenClaimed=true;
-  state.coins+=250;
-  addXP(50);
-  toast("✨ Golden Fish! +250 coins and +50 XP!");
-  render();
-};
-
-/* AFK Fishing */
-document.getElementById("afkBtn").onclick=()=>{
-  if(state.level<100){
-    toast("Reach Level 100 first!");
-    return;
-  }
-  state.afkEnabled=!state.afkEnabled;
-  toast(state.afkEnabled?"AFK Fishing ON!":"AFK Fishing OFF!");
-  render();
-};
-
+/* AFK rewards are limited to a visible, open game tab. */
 setInterval(()=>{
-  if(state.afkEnabled&&state.level>=100&&!document.hidden){
-    state.coins+=25;
-    addXP(25);
-    render();
-  }
+ if(save.afkEnabled&&save.level>=100&&!document.hidden){
+  save.coins+=25;
+  save.xp+=25;
+  levelUpCheck();
+  updateUI();
+ }
 },1000);
 
-/* =========================
-   ADMIN PANEL
-========================= */
-
-const adminPanel=document.getElementById("adminPanel");
-
-document.getElementById("adminOpen").onclick=()=>{
-  adminPanel.classList.add("visible");
-};
-document.getElementById("adminClose").onclick=()=>{
-  adminPanel.classList.remove("visible");
-};
-
-document.getElementById("adminLogin").onclick=()=>{
-  if(document.getElementById("adminCode").value===ADMIN_CODE){
-    document.getElementById("adminControls").style.display="block";
-    document.getElementById("adminMessage").textContent=
-      "✅ Admin controls unlocked.";
-  }else{
-    document.getElementById("adminControls").style.display="none";
-    document.getElementById("adminMessage").textContent=
-      "❌ Incorrect admin code.";
-  }
-};
-
-document.getElementById("setLevel").onclick=()=>{
-  const n=Number(document.getElementById("adminLevel").value);
-  if(!Number.isFinite(n)||n<1){
-    toast("Enter a valid level.");
-    return;
-  }
-  state.level=Math.min(1000000,Math.floor(n));
-  state.xp=0;
-  toast("Level updated!");
-  render();
-};
-
-document.getElementById("addCoins").onclick=()=>{
-  const n=Number(document.getElementById("adminCoins").value);
-  if(!Number.isFinite(n)||n<0){
-    toast("Enter a valid coin amount.");
-    return;
-  }
-  state.coins+=Math.floor(n);
-  toast("Coins added!");
-  render();
-};
-
-/* Owner Rod */
-document.getElementById("unlockOwnerRod").onclick=()=>{
-  if(document.getElementById("ownerRodCode").value===OWNER_CODE){
-    state.ownerRodUnlocked=true;
-    state.ownerRodEquipped=true;
-    document.getElementById("ownerRodCode").value="";
-    toast("👑 Owner Rod unlocked and equipped!");
-    render();
-  }else{
-    document.getElementById("ownerRodStatus").textContent=
-      "❌ Incorrect Owner Rod code.";
-  }
-};
-
-document.getElementById("equipOwnerRod").onclick=()=>{
-  if(!state.ownerRodUnlocked)return;
-  state.ownerRodEquipped=!state.ownerRodEquipped;
-  toast(state.ownerRodEquipped?"Owner Rod equipped!":"Owner Rod unequipped.");
-  render();
-};
-
-document.getElementById("saveGame").onclick=()=>{
-  saveState();
-  toast("Game saved!");
-};
-
-document.getElementById("resetGame").onclick=()=>{
-  if(!confirm("Reset all your saved progress in this browser?"))return;
-
-  state=structuredClone(DEFAULT);
-  questionActive=false;
-  answerLocked=false;
-  currentWord=null;
-
-  clearAnswers();
-  setQuestion("Cast your line to catch a word!");
-  document.getElementById("feedback").textContent="";
-  document.getElementById("castBtn").disabled=false;
-  document.getElementById("castBtn").textContent="🎣 Cast Fishing Line";
-
-  returnToNormalOcean();
-  render();
-  toast("Game progress reset.");
-};
-
-/* =========================
-   THREE.JS UNDERWATER WORLD
-========================= */
-
-function createFish(color,scale=1){
-  const g=new THREE.Group();
-
-  const body=new THREE.Mesh(
-    new THREE.SphereGeometry(.55,16,12),
-    new THREE.MeshStandardMaterial({color,roughness:.45})
-  );
-  body.scale.set(1.2,.68,.55);
-  g.add(body);
-
-  const tail=new THREE.Mesh(
-    new THREE.ConeGeometry(.3,.6,4),
-    new THREE.MeshStandardMaterial({color})
-  );
-  tail.rotation.z=-Math.PI/2;
-  tail.position.x=-.78;
-  g.add(tail);
-
-  const eye=new THREE.Mesh(
-    new THREE.SphereGeometry(.06,8,8),
-    new THREE.MeshBasicMaterial({color:0xffffff})
-  );
-  eye.position.set(.4,.14,.28);
-  g.add(eye);
-
-  g.scale.setScalar(scale);
-  g.userData.tail=tail;
-  return g;
-}
-
-function init3D(){
-  const container=document.getElementById("scene");
-
-  if(typeof THREE==="undefined"){
-    container.textContent="3D could not load. Check your internet connection and reload.";
-    return;
-  }
-
-  scene3D=new THREE.Scene();
-  scene3D.background=new THREE.Color(0x05769b);
-  scene3D.fog=new THREE.Fog(0x05769b,8,25);
-
-  camera=new THREE.PerspectiveCamera(
-    55,container.clientWidth/Math.max(container.clientHeight,1),.1,100
-  );
-  camera.position.set(0,1.2,9);
-  camera.lookAt(0,0,0);
-
-  renderer=new THREE.WebGLRenderer({antialias:true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
-  renderer.setSize(container.clientWidth,container.clientHeight);
-  container.appendChild(renderer.domElement);
-
-  clock=new THREE.Clock();
-
-  scene3D.add(new THREE.HemisphereLight(0xaff7ff,0x03274a,2));
-
-  const light=new THREE.DirectionalLight(0xffffff,2);
-  light.position.set(3,6,5);
-  scene3D.add(light);
-
-  const floor=new THREE.Mesh(
-    new THREE.PlaneGeometry(50,50),
-    new THREE.MeshStandardMaterial({color:0x064367})
-  );
-  floor.rotation.x=-Math.PI/2;
-  floor.position.y=-3;
-  scene3D.add(floor);
-
-  for(let i=0;i<10;i++){
-    const rock=new THREE.Mesh(
-      new THREE.DodecahedronGeometry(.25+Math.random()*.4),
-      new THREE.MeshStandardMaterial({color:0x24627a})
-    );
-    rock.position.set((Math.random()-.5)*17,-2.7,-2-Math.random()*3);
-    scene3D.add(rock);
-  }
-
-  for(let i=0;i<8;i++){
-    const weed=new THREE.Mesh(
-      new THREE.CylinderGeometry(.04,.1,.8+Math.random(),7),
-      new THREE.MeshStandardMaterial({color:0x19ad84})
-    );
-    weed.position.set((Math.random()-.5)*16,-2.5,-2-Math.random()*3);
-    scene3D.add(weed);
-    seaweedObjects.push(weed);
-  }
-
-  const colors=[0xff8c42,0x5ce1e6,0xffd166,0xe879f9,0x7ae582,0xff729f];
-
-  for(let i=0;i<12;i++){
-    const f=createFish(colors[i%colors.length],.45+Math.random()*.35);
-    f.position.set((Math.random()-.5)*14,-1.8+Math.random()*3.7,-1-Math.random()*4);
-    f.userData.startX=f.position.x;
-    f.userData.baseY=f.position.y;
-    f.userData.speed=.25+Math.random()*.45;
-    f.userData.offset=Math.random()*10;
-    scene3D.add(f);
-    fishObjects.push(f);
-  }
-
-  for(let i=0;i<30;i++){
-    const b=new THREE.Mesh(
-      new THREE.SphereGeometry(.04+Math.random()*.05,8,8),
-      new THREE.MeshBasicMaterial({color:0x9bf1ff,transparent:true,opacity:.5})
-    );
-    b.position.set((Math.random()-.5)*17,-3+Math.random()*7,-1-Math.random()*5);
-    b.userData.speed=.25+Math.random()*.6;
-    scene3D.add(b);
-    bubbles.push(b);
-  }
-
-  fishingLineStart=new THREE.Vector3(0,3.2,1.5);
-
-  fishingLine=new THREE.Line(
-    new THREE.BufferGeometry().setFromPoints([
-      fishingLineStart,new THREE.Vector3(0,1,1.5)
-    ]),
-    new THREE.LineBasicMaterial({color:0xe1faff})
-  );
-  scene3D.add(fishingLine);
-
-  fishingHook=new THREE.Mesh(
-    new THREE.TorusGeometry(.13,.025,8,14,Math.PI*1.6),
-    new THREE.MeshStandardMaterial({color:0xe9edf4,metalness:.8})
-  );
-  fishingHook.position.set(0,1,1.5);
-  scene3D.add(fishingHook);
-
-  goldenFishObject=createFish(0xffd52b,1.1);
-  goldenFishObject.position.set(30,0,0);
-  scene3D.add(goldenFishObject);
-
-  function resize(){
-    if(!renderer)return;
-    const w=container.clientWidth;
-    const h=Math.max(container.clientHeight,1);
-    camera.aspect=w/h;
-    camera.updateProjectionMatrix();
-    renderer.setSize(w,h);
-  }
-
-  if(window.ResizeObserver){
-    new ResizeObserver(resize).observe(container);
-  }else{
-    window.addEventListener("resize",resize);
-  }
-
-  animate3D();
-
-  /* Restore Owner Ocean if it was active when saved. */
-  if(state.inOwnerOcean&&state.ownerOceanUnlocked){
-    enterOwnerOcean();
-  }
-}
-
-function animateFishingLine(callback){
-  fishingAnimation=true;
-
-  if(!renderer||!fishingLine){
-    setTimeout(()=>{
-      fishingAnimation=false;
-      callback();
-    },500);
-    return;
-  }
-
-  lineAnimation={
-    start:performance.now(),
-    duration:700,
-    down:true,
-    callback:()=>{
-      setTimeout(()=>{
-        lineAnimation={
-          start:performance.now(),
-          duration:500,
-          down:false,
-          callback:()=>{
-            fishingAnimation=false;
-            callback();
-          }
-        };
-      },250);
-    }
-  };
-}
-
-function animateCaughtFish(){
-  if(!scene3D)return;
-
-  const fish=createFish(0xffd166,.8);
-  fish.position.set(0,-2,1);
-  scene3D.add(fish);
-
-  const start=performance.now();
-
-  function rise(){
-    const p=Math.min(1,(performance.now()-start)/900);
-    fish.position.y=-2+p*4;
-    fish.position.x=Math.sin(p*4)*.5;
-
-    if(p<1){
-      requestAnimationFrame(rise);
-    }else{
-      scene3D.remove(fish);
-      fish.traverse(o=>{
-        if(o.geometry)o.geometry.dispose();
-      });
-    }
-  }
-
-  rise();
-}
-
-function showLineBreak(){
-  if(!fishingHook)return;
-  fishingHook.material.color.set(0xff4b5c);
-  setTimeout(()=>{
-    if(fishingHook)fishingHook.material.color.set(0xe9edf4);
-  },900);
-}
-
-function animate3D(){
-  requestAnimationFrame(animate3D);
-  if(!renderer||!scene3D)return;
-
-  const t=clock.getElapsedTime();
-
-  fishObjects.forEach(f=>{
-    f.position.x=f.userData.startX+
-      Math.sin(t*f.userData.speed+f.userData.offset)*1.4;
-    f.position.y=f.userData.baseY+
-      Math.sin(t*1.3+f.userData.offset)*.16;
-    f.userData.tail.rotation.y=
-      Math.sin(t*5+f.userData.offset)*.45;
-  });
-
-  bubbles.forEach(b=>{
-    b.position.y+=b.userData.speed*.012;
-    if(b.position.y>4){
-      b.position.y=-3;
-      b.position.x=(Math.random()-.5)*17;
-    }
-  });
-
-  seaweedObjects.forEach((w,i)=>{
-    w.rotation.z=Math.sin(t*.8+i)*.07;
-  });
-
-  if(goldenFishObject&&state.goldenClaimed){
-    goldenFishObject.position.x=Math.sin(t*1.4)*2;
-    goldenFishObject.position.y=1.3+Math.sin(t*2)*.35;
-  }else if(goldenFishObject&&!state.inOwnerOcean){
-    goldenFishObject.position.set(30,0,0);
-  }
-
-  if(lineAnimation){
-    const p=Math.min(1,(performance.now()-lineAnimation.start)/lineAnimation.duration);
-    const eased=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
-    const y=lineAnimation.down?2.2-4.6*eased:-2.4+4.6*eased;
-    const end=new THREE.Vector3(
-      lineAnimation.down?.3*Math.sin(p*3):0,y,1.5
-    );
-
-    fishingLine.geometry.setFromPoints([fishingLineStart,end]);
-    fishingHook.position.copy(end);
-
-    if(p>=1){
-      const cb=lineAnimation.callback;
-      lineAnimation=null;
-      if(cb)cb();
-    }
-  }
-
-  renderer.render(scene3D,camera);
-}
-
-/* =========================
-   STARTUP
-========================= */
-
-render();
-
-try{
-  init3D();
-}catch(e){
-  console.error(e);
-  document.getElementById("scene").textContent=
-    "3D scene failed to start. Try reloading the page.";
-}
-
-window.addEventListener("load",()=>{
-  setTimeout(()=>{
-    const loading=document.getElementById("loadingScreen");
-    if(loading){
-      loading.style.opacity="0";
-      setTimeout(()=>loading.remove(),550);
-    }
-  },800);
-});
-
-window.addEventListener("beforeunload",saveState);
 document.addEventListener("visibilitychange",()=>{
-  if(document.hidden)saveState();
+ if(document.hidden)return;
+ updateUI();
 });
+
+initScene();
+updateUI();
 </script>
 </body>
 </html>
